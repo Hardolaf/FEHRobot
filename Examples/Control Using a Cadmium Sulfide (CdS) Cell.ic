@@ -2,13 +2,41 @@
  *
  * Team D2
  * Primary: Joseph Warner
+ * Secondary:
  */
 
+/* Microswitch Digital Port */
+#define MICROSWITCH 15
+
+/* DC Motor Port */
+#define MOTOR 0
+
+/* Cadmium Sulfide (CdS) Cell Analog Port */
+#define CDS 6
+
 int main() {
-    /*  */
+    /* Speed of the motor
+     * Starts at 100 (full)
+     */
+    int speed = 100;
     
+    /* Store the reading from the CdS cell */
+    int cdsReading;
+    
+    /* wait for the user to press the button to start */
+    printf("Press start to begin\n");
+    while (!start_button());
+    
+    /* Change the speed based on the input from the CdS Cell */
     while (1) {
-        printf("%d\n", analog(6));
-        sleep(0.25);
+        /* Stop the motor if the microswitch is pressed */
+        if (digital(MICROSWITCH)) {
+            motor(MOTOR, 0);
+        } else {
+            cdsReading = analog(CDS);
+        }
+        
+        /* Wait a bit before the next loop */
+        sleep(0.1);
     }
 }
