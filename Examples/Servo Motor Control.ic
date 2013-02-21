@@ -1,0 +1,14 @@
+/* Servo Motor Control
+ *
+ * Team D2
+ * Primary: Joseph Warner
+ * Secondary:
+ */
+
+/* Include servo motor libraries */
+#use "exp_servo_lib.ic"
+#use "exp_servo_calibrate.ic"
+
+int main() {
+    exp_servo_enable(); exp_servo_calibrate(0);
+}
