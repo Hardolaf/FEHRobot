@@ -1,0 +1,14 @@
+/* Control Using a Cadmium Sulfide (CdS) Cell
+ *
+ * Team D2
+ * Primary: Joseph Warner
+ */
+
+int main() {
+    /*  */
+    
+    while (1) {
+        printf("%d\n", analog(6));
+        sleep(0.25);
+    }
+}

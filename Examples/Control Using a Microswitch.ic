@@ -1,0 +1,17 @@
+/* Control Using a Microswitch
+ *
+ * Team D2
+ * Primary: Joseph Warner
+ */
+
+int main() {
+    while (1) {
+        if (digital(15)) {
+            motor(0, 0);
+            printf("Motor 0\n");
+        } else {
+            motor(0, 100);
+            printf("Motor 100\n");
+        }
+    }
+}

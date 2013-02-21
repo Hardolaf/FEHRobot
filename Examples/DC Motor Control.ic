@@ -1,0 +1,19 @@
+/* DC Motor Control
+ *
+ * Team D2
+ * Primary: Joseph Warner
+ */
+
+int main() {
+    motor(0, 100);
+    printf("Motor 100\n");
+    sleep(1.0);
+    motor(0, 0);
+    printf("Motor 0\n");
+    sleep(2.0);
+    motor(0, -100);
+    printf("Motor -100\n");
+    sleep(1.0);
+    motor(0, 0);
+    printf("Motor 0\n");
+}
