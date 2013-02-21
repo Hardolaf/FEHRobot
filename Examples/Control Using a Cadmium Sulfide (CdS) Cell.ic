@@ -28,13 +28,20 @@ int main() {
     while (!start_button());
     
     /* Change the speed based on the input from the CdS Cell */
-    while (1) {
-        /* Stop the motor if the microswitch is pressed */
+    while (1) {        
         if (digital(MICROSWITCH)) {
-            motor(MOTOR, 0);
+            /* Set motor speed to 0 if the microswitch is pressed */
+            speed = 0;
         } else {
+            /* Read the analog input from the CdS Cell */
             cdsReading = analog(CDS);
+            
+            /* Adjust the motor speed based on the cdsReading */
         }
+        
+        /* Adjust the motor speed based on the checks above */
+        motor(MOTOR, speed);
+        printf("Motor speed: %d", speed);
         
         /* Wait a bit before the next loop */
         sleep(0.1);
