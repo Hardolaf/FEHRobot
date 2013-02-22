@@ -2,7 +2,7 @@
  *
  * Team D2
  * Primary: Joseph Warner
- * Secondary:
+ * Secondary: Nik Shay
  */
 
 /* Microswitch Digital Port */
@@ -23,9 +23,31 @@ int main() {
     /* Store the reading from the CdS cell */
     int cdsReading;
     
+    /* Calibration variables */
+    int highCdS;
+    int lowCdS;
+    int average;
+    
+    /* Make sure the motor is off */
+    motor(MOTOR, 0);
+    
     /* wait for the user to press the button to start */
-    printf("Press start to begin\n");
+    printf("Press start to  begin\n");
     while (!start_button());
+    sleep(0.25);
+    
+    /* Have the user calibrate the device */
+    printf("Calibrate the sensor for high ligh. Press start when ready\n");
+    while (!start_button());
+    highCdS = analog(CDS);
+    sleep(0.25);
+    printf("Calibrate the sensor for darkness. Press start when ready\n");
+    while (!start_button());
+    lowCdS = analog(CDS);
+    sleep(0.25);
+    
+    /* Average the CdS readings */
+    average = (highCdS + lowCdS) / 2;
     
     /* Change the speed based on the input from the CdS Cell */
     while (1) {        
@@ -37,11 +59,18 @@ int main() {
             cdsReading = analog(CDS);
             
             /* Adjust the motor speed based on the cdsReading */
+            speed = -100 * (cdsReading - average) / average;
+            
+            if (speed > 100) {
+                speed = 100;
+            } else if (speed < -100) {
+                speed = -100;
+            }
         }
         
         /* Adjust the motor speed based on the checks above */
         motor(MOTOR, speed);
-        printf("Motor speed: %d", speed);
+        printf("Motor speed: %d\n", speed);
         
         /* Wait a bit before the next loop */
         sleep(0.1);

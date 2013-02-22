@@ -2,13 +2,63 @@
  *
  * Team D2
  * Primary: Joseph Warner
- * Secondary:
+ * Secondary: Nik Shay
  */
 
 /* Include servo motor libraries */
 #use "exp_servo_lib.ic"
-#use "exp_servo_calibrate.ic"
+
+/* Servo Motor Port */
+#define SERVO 1
+
+/* Cadmium Sulfide (CdS) Cell Analog Port */
+#define CDS 6
 
 int main() {
-    exp_servo_enable(); exp_servo_calibrate(0);
+    /* Store the reading from the CdS cell */
+    int cdsReading;
+    
+    /* CdS Calibration variables */
+    int highCdS;
+    
+    /* Desired Angle Measurement */
+    int angle;
+    
+    /* Experimental Calibration for Servo Motos */
+    exp_servo_enable();
+    exp_servo_min[SERVO] = 200;
+    exp_servo_max[SERVO] = 3194;
+    
+    /* wait for the user to press the button to start */
+    printf("Press start to  begin\n");
+    while (!start_button());
+    sleep(0.25);
+    
+    /* Have the user calibrate the device */
+    printf("Press start when in darkness\n");
+    while (!start_button());
+    highCdS = analog(CDS);
+    sleep(0.25);
+    
+    /* Change the speed based on the input from the CdS Cell */
+    while (!stop_button()) {
+        /* Read the analog input from the CdS Cell */
+        cdsReading = analog(CDS);
+        
+        /* Adjust the motor speed based on the cdsReading */
+        angle = 180 * cdsReading / highCdS;
+        
+        if (angle > 180) {
+            angle = 180;
+        } else if (angle < 0) {
+            angle = 0;
+        }
+        
+        /* Adjust the motor speed based on the checks above */
+        exp_servo_deg(SERVO, angle);
+        printf("Angle: %d\n", angle);
+        
+        /* Wait a bit before the next loop */
+        sleep(0.1);
+    }
 }
