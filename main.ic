@@ -49,4 +49,7 @@ int main() {
     /* Define all necessary variables */
     int motor_speed_left  = 0;
     int motor_speed_right = 0;
+    
+    /* Ensure all motors are off */
+    alloff();
 }
