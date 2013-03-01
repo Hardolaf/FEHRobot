@@ -66,7 +66,7 @@
  **/
 #define COMPARISON_GREATER 2
 #define COMPARISON_EQUAL   1
-#define COMPAIRSON_LESSER  0
+#define COMPARISON_LESSER  0
 
 /**
  * Defines global variables:
@@ -86,11 +86,11 @@
 int action_chain[]  = {ACTION_FORWARD,  ACTION_STOP};
 int event_chain[]   = {EVENT_CDS_LIGHT, EVENT_BUTTON_STOP_PRESSED};
 int chain_index     = 0;
+int chain_max_index = 2;
 
 /* Ensure all motors are off and speeds set to 0 */
 int motor_speed_left  = MOTOR_STOPPED;
 int motor_speed_right = MOTOR_STOPPED;
-int chain_max_index   = _array_size(action_chain);
 
 /**
  * Compares the values value1 and value2 based on the check.
@@ -107,7 +107,7 @@ int chain_max_index   = _array_size(action_chain);
  *   int   1 for true, 0 for false, -1 for invalid check 
  **/
 int compare_values(int value1, int value2, int check) {
-    if (check == -1) {
+    if (check == COMPARISON_LESSER) {
         if (value1 < value2) {
             return 1;
         } else {
@@ -115,7 +115,7 @@ int compare_values(int value1, int value2, int check) {
         }
     }
     
-    if (check == 0) {
+    if (check == COMPARISON_EQUAL) {
         if (value1 == value2) {
             return 1;
         } else {
@@ -123,7 +123,7 @@ int compare_values(int value1, int value2, int check) {
         }
     }
     
-    if (check == 1) {
+    if (check == COMPARISON_GREATER) {
         if (value1 > value2) {
             return 1;
         } else {
@@ -166,7 +166,10 @@ int event_check_CDS(int port, int value, int check) {
 int event_check(int event) {
     switch (event) {
         case EVENT_CDS_LIGHT:
-          return event_check_CDS(CDS_CELL, CDS_LIGHT_START, -1);
+          return event_check_CDS(CDS_CELL, CDS_LIGHT_START, COMPARISON_LESSER);
+          break;
+        case EVENT_BUTTON_STOP_PRESSED:
+          return stop_button();
           break;
     }
     
@@ -177,13 +180,11 @@ int event_check(int event) {
  * Checks to see if the current chain_index in the event_chain should occur
  **/
 int step() {
-    if (event_check(event_chain[chain_index])) {
-        execute_step();
-    } else {
-        step();
+    if (event_check(event_chain[chain_index]) == 1) {
+        return execute_step();
     }
     
-    return 0;
+    return 1;
 }
 
 /**
@@ -204,10 +205,12 @@ int execute_step() {
         case ACTION_STOP:
           motor_speed_left  = MOTOR_STOPPED;
           motor_speed_right = MOTOR_STOPPED;
+          update_motors();
         break;
         case ACTION_FORWARD:
           motor_speed_left  = MOTOR_TOP_SPEED;
           motor_speed_right = MOTOR_TOP_SPEED;
+          update_motors();
         break;
     }
     
@@ -225,7 +228,9 @@ int main() {
     /* Execute the steps in order until tall steps have been taken */
     while (chain_index < chain_max_index) {
         step();
+        printf("%d\n", chain_index);
     }
+    return 0;
     
     /* Shutdown all motors */
     motor_speed_left  = MOTOR_STOPPED;
