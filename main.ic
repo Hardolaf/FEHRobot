@@ -23,5 +23,7 @@
  * Launch the robot and handle startup
  **/
 int main() {
-    
+    /* Define all necessary variables */
+    int motor_speed_left  = 0;
+    int motor_speed_right = 0;
 }
