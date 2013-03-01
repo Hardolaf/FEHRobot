@@ -20,36 +20,201 @@
 #define MOTOR_RIGHT 1
 
 /**
- * Actions
+ * Sensor Constants
  **/
-/* Movement Directions */
-#define STOP      0
-#define FORWARD   1
-#define BACKWARDS 2
-#define RIGHT     3
-#define LEFT      4
+/* CDS Cell Readinds */
+#define CDS_LIGHT_START 35
+#define CDS_LIGHT_RED   0
+#define CDS_LIGHT_BLUE  0
 
 /**
- * Events
+ * Action Constants
+ **/
+/* Movement Directions */
+#define ACTION_STOP      0
+#define ACTION_FORWARD   1
+#define ACTION_BACKWARDS 2
+#define ACTION_RIGHT     3
+#define ACTION_LEFT      4
+
+/**
+ * Event Constants
  **/
 /* Microswitch Events */
-#define MS_PRESS   0
-#define MS_RELEASE 1
+#define EVENT_MS_PRESS   0
+#define EVENT_MS_RELEASE 1
 
 /* Light Sensor Events */
-#define CDS_LIGHT    10
-#define CDS_NO_LIGHT 11
-#define CDS_BLUE     12
-#define CDS_RED      13
+#define EVENT_CDS_LIGHT    10
+#define EVENT_CDS_NO_LIGHT 11
+#define EVENT_CDS_BLUE     12
+#define EVENT_CDS_RED      13
+
+/* Button Events */
+#define EVENT_BUTTON_STOP_PRESSED  20
+#define EVENT_BUTTON_START_PRESSED 21
+
+/**
+ * Comparison Constants
+ *   These are used by compare_values
+ **/
+#define COMPARISON_GREATER 2
+#define COMPARISON_EQUAL   1
+#define COMPAIRSON_LESSER  0
+
+/**
+ * Compares the values value1 and value2 based on the check.
+ *
+ * Parameters
+ *   int   value1
+ *           The first value being compared
+ *   int   value2
+ *           The second value being compared
+ *   int   check
+ *           Corresponds to the comparison constants
+ *
+ * Return
+ *   int   1 for true, 0 for false, -1 for invalid check 
+ **/
+int compare_values(int value1, int value2, int check) {
+    if (check == -1) {
+        if (value1 < value2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    if (check == 0) {
+        if (value1 == value2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    if (check == 1) {
+        if (value1 > value2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    // Invalid check
+    return -1;
+}
+
+/**
+ * Checks the CDS reading and compares it to be <, ==, or > to a value
+ *
+ * Parameters
+ *   int   CDS_cell
+ *           The analog port number of the CDS cell being checked
+ *   int   value
+ *           The value being compared to the CDS cell analog reading
+ *   int   check
+ *           Corresponds to the comparison constants
+ *
+ * Return
+ *   int   see compare_values
+ **/
+int event_check_CDS(int port, int value, int check) {
+    return compare_values(analog(port), value, check);
+}
+
+/**
+ * Check to see if the specified event has occurred
+ *
+ * Parameters
+ *   int   event
+ *           Corresponds to Event constants
+ *
+ * Return
+ *   int   1 for event has occurred, 0 for event has not occurred
+ **/
+int event_check(int event) {
+    switch (event) {
+        case EVENT_CDS_LIGHT:
+          return event_check_CDS(CDS_CELL, CDS_LIGHT_START, -1);
+          break;
+    }
+    
+    return 0;
+}
+
+/**
+ * Checks to see if the current chain_index in the event_chain should occur
+ **/
+int step() {
+    if (event_check(event_chain[chain_index])) {
+        execute_step();
+    } else {
+        step();
+    }
+    
+    return 0;
+}
+
+/**
+ * Updates the motors to the latest speeds
+ **/
+int update_motors() {
+    motor(MOTOR_LEFT, motor_speed_left);
+    motor(MOTOR_RIGHT, motor_speed_right);
+    return 0;
+}
+
+/**
+ * Executes the current chain_index in action_chain then increments chain_index by 1
+ **/
+int execute_step() {
+    switch(action_chain[chain_index]) {
+        case ACTION_STOP:
+          motor_speed_left  = 0;
+        motor_speed_right = 0;
+        break;
+    }
+    
+    chain_index++;
+    return 0;
+}
 
 /**
  * Launch the robot and handle startup
+ *
+ * Defines global variables:
+ *   int[] action_chain
+ *           The chain of actions that will be taken
+ *   int[] event_chain
+ *           The chain of actions that will trigger the corresponding action_chain item
+ *   int   chain_index
+ *           The current index in event_chain
+ *   int   chain_max_index
+ *           The index at which execution stops
+ *   int   motor_speed_left
+ *           The speed of the left motor
+ *   int   motor_speed_right
+ *           The speed of the right motor
  **/
 int main() {
-    /* Define all necessary variables */
+    int[] action_chain  = {ACTION_FORWARD, ACTION_STOP};
+    int[] event_chain   = {EVENT_CDS_LIGHT, EVENT_BUTTON_STOP_PRESSED};
+    int chain_index     = 0;
+    int chain_max_index = 2;
+    
+    /* Ensure all motors are off and speeds set to 0 */
     int motor_speed_left  = 0;
     int motor_speed_right = 0;
-    
-    /* Ensure all motors are off */
     alloff();
+    
+    /* Execute the steps in order until tall steps have been taken */
+    while (chain_index < chain_max_index) {
+        step();
+    }
+    
+    /* Shutdown all motors */
+    alloff();
+    
+    return 0;
 }
