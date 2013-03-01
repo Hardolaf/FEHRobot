@@ -20,6 +20,12 @@
 #define MOTOR_RIGHT 1
 
 /**
+ * Motor constants
+ **/
+#define MOTOR_TOP_SPEED -75
+#define MOTOR_STOPPED    0
+
+/**
  * Sensor Constants
  **/
 /* CDS Cell Readinds */
@@ -61,6 +67,30 @@
 #define COMPARISON_GREATER 2
 #define COMPARISON_EQUAL   1
 #define COMPAIRSON_LESSER  0
+
+/**
+ * Defines global variables:
+ *   int   action_chain[]
+ *           The chain of actions that will be taken
+ *   int   event_chain[]
+ *           The chain of actions that will trigger the corresponding action_chain item
+ *   int   chain_index
+ *           The current index in event_chain
+ *   int   chain_max_index
+ *           The index at which execution stops
+ *   int   motor_speed_left
+ *           The speed of the left motor
+ *   int   motor_speed_right
+ *           The speed of the right motor
+ **/
+int action_chain[]  = {ACTION_FORWARD,  ACTION_STOP};
+int event_chain[]   = {EVENT_CDS_LIGHT, EVENT_BUTTON_STOP_PRESSED};
+int chain_index     = 0;
+
+/* Ensure all motors are off and speeds set to 0 */
+int motor_speed_left  = MOTOR_STOPPED;
+int motor_speed_right = MOTOR_STOPPED;
+int chain_max_index   = _array_size(action_chain);
 
 /**
  * Compares the values value1 and value2 based on the check.
@@ -169,10 +199,15 @@ int update_motors() {
  * Executes the current chain_index in action_chain then increments chain_index by 1
  **/
 int execute_step() {
-    switch(action_chain[chain_index]) {
+    int action = action_chain[chain_index];
+    switch(action) {
         case ACTION_STOP:
-          motor_speed_left  = 0;
-        motor_speed_right = 0;
+          motor_speed_left  = MOTOR_STOPPED;
+          motor_speed_right = MOTOR_STOPPED;
+        break;
+        case ACTION_FORWARD:
+          motor_speed_left  = MOTOR_TOP_SPEED;
+          motor_speed_right = MOTOR_TOP_SPEED;
         break;
     }
     
@@ -182,31 +217,10 @@ int execute_step() {
 
 /**
  * Launch the robot and handle startup
- *
- * Defines global variables:
- *   int[] action_chain
- *           The chain of actions that will be taken
- *   int[] event_chain
- *           The chain of actions that will trigger the corresponding action_chain item
- *   int   chain_index
- *           The current index in event_chain
- *   int   chain_max_index
- *           The index at which execution stops
- *   int   motor_speed_left
- *           The speed of the left motor
- *   int   motor_speed_right
- *           The speed of the right motor
  **/
 int main() {
-    int[] action_chain  = {ACTION_FORWARD, ACTION_STOP};
-    int[] event_chain   = {EVENT_CDS_LIGHT, EVENT_BUTTON_STOP_PRESSED};
-    int chain_index     = 0;
-    int chain_max_index = 2;
-    
-    /* Ensure all motors are off and speeds set to 0 */
-    int motor_speed_left  = 0;
-    int motor_speed_right = 0;
-    alloff();
+    // Keep the robot stopped
+    update_motors();
     
     /* Execute the steps in order until tall steps have been taken */
     while (chain_index < chain_max_index) {
@@ -214,7 +228,9 @@ int main() {
     }
     
     /* Shutdown all motors */
-    alloff();
+    motor_speed_left  = MOTOR_STOPPED;
+    motor_speed_right = MOTOR_STOPPED;
+    update_motors();
     
     return 0;
 }
