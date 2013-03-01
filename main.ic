@@ -20,6 +20,16 @@
 #define MOTOR_RIGHT 1
 
 /**
+ * Actions
+ **/
+/* Movement Directions */
+#define STOP      0
+#define FORWARD   1
+#define BACKWARDS 2
+#define RIGHT     3
+#define LEFT      4
+
+/**
  * Launch the robot and handle startup
  **/
 int main() {
