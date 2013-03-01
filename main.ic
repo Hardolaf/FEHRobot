@@ -47,8 +47,8 @@
  * Event Constants
  **/
 /* Microswitch Events */
-#define EVENT_MS_PRESS   0
-#define EVENT_MS_RELEASE 1
+#define EVENT_MS_RF_PRESS 0
+#define EVENT_MS_LF_PRESS 1
 
 /* Light Sensor Events */
 #define EVENT_CDS_LIGHT    10
@@ -165,12 +165,33 @@ int event_check_CDS(int port, int value, int check) {
  **/
 int event_check(int event) {
     switch (event) {
+        /* Microswitch Events */
+        case EVENT_MS_RF_PRESS:
+          return digital(MICROSWITCH_RIGHT_FRONT);
+        break;
+        case EVENT_MS_LF_PRESS:
+          return digital(MICROSWITCH_LEFT_FRONT);
+        break;
+        /* CDS Cell Events */
         case EVENT_CDS_LIGHT:
           return event_check_CDS(CDS_CELL, CDS_LIGHT_START, COMPARISON_LESSER);
-          break;
+        break;
+        case EVENT_CDS_NO_LIGHT:
+          return event_check_CDS(CDS_CELL, CDS_LIGHT_START, COMPARISON_GREATER);
+        break;
+        case EVENT_CDS_BLUE:
+          return event_check_CDS(CDS_CELL, CDS_LIGHT_BLUE, COMPARISON_GREATER);
+        break;
+        case EVENT_CDS_RED:
+          return event_check_CDS(CDS_CELL, CDS_LIGHT_RED, COMPARISON_GREATER);
+        break;
+        /* Button Events */
         case EVENT_BUTTON_STOP_PRESSED:
           return stop_button();
-          break;
+        break;
+        case EVENT_BUTTON_START_PRESSED:
+          return start_button();
+        break;
     }
     
     return 0;
@@ -210,6 +231,21 @@ int execute_step() {
         case ACTION_FORWARD:
           motor_speed_left  = MOTOR_TOP_SPEED;
           motor_speed_right = MOTOR_TOP_SPEED;
+          update_motors();
+        break;
+        case ACTION_BACKWARDS:
+          motor_speed_left  = -1 * MOTOR_TOP_SPEED;
+          motor_speed_right = -1 * MOTOR_TOP_SPEED;
+          update_motors();
+        break;
+        case ACTION_RIGHT:
+          motor_speed_left  = -1 * MOTOR_TOP_SPEED;
+          motor_speed_right = MOTOR_TOP_SPEED;
+          update_motors();
+        break;
+        case ACTION_LEFT:
+          motor_speed_left  = MOTOR_TOP_SPEED;
+          motor_speed_right = -1 * MOTOR_TOP_SPEED;
           update_motors();
         break;
     }
