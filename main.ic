@@ -36,12 +36,15 @@
 /**
  * Action Constants
  **/
+/* Quasi-Actions */
+#define ACTION_START 0
+#define ACTION_STOP  1
+
 /* Movement Directions */
-#define ACTION_STOP      0
-#define ACTION_FORWARD   1
-#define ACTION_BACKWARDS 2
-#define ACTION_RIGHT     3
-#define ACTION_LEFT      4
+#define ACTION_FORWARD   10
+#define ACTION_BACKWARDS 11
+#define ACTION_RIGHT     12
+#define ACTION_LEFT      13
 
 /**
  * Event Constants
@@ -83,10 +86,10 @@
  *   int   motor_speed_right
  *           The speed of the right motor
  **/
-int action_chain[]  = {ACTION_FORWARD,  ACTION_STOP};
-int event_chain[]   = {EVENT_CDS_LIGHT, EVENT_BUTTON_STOP_PRESSED};
+int action_chain[]  = {ACTION_START,               ACTION_FORWARD,  ACTION_STOP};
+int event_chain[]   = {EVENT_BUTTON_START_PRESSED, EVENT_CDS_LIGHT, EVENT_BUTTON_STOP_PRESSED};
 int chain_index     = 0;
-int chain_max_index = 2;
+int chain_max_index = _array_size(action_chain);
 
 /* Ensure all motors are off and speeds set to 0 */
 int motor_speed_left  = MOTOR_STOPPED;
@@ -223,30 +226,40 @@ int update_motors() {
 int execute_step() {
     int action = action_chain[chain_index];
     switch(action) {
+        /* Quasi Actions */
+        case ACTION_START:
+          printf("Ready to start run\n");
+        break;
         case ACTION_STOP:
           motor_speed_left  = MOTOR_STOPPED;
           motor_speed_right = MOTOR_STOPPED;
           update_motors();
+          printf("Run Complete\n");
         break;
+        /* Motor Actions */
         case ACTION_FORWARD:
           motor_speed_left  = MOTOR_TOP_SPEED;
           motor_speed_right = MOTOR_TOP_SPEED;
           update_motors();
+          printf("Forward\n");
         break;
         case ACTION_BACKWARDS:
           motor_speed_left  = -1 * MOTOR_TOP_SPEED;
           motor_speed_right = -1 * MOTOR_TOP_SPEED;
           update_motors();
+          printf("Backwards\n");
         break;
         case ACTION_RIGHT:
           motor_speed_left  = -1 * MOTOR_TOP_SPEED;
           motor_speed_right = MOTOR_TOP_SPEED;
           update_motors();
+          printf("Right\n");
         break;
         case ACTION_LEFT:
           motor_speed_left  = MOTOR_TOP_SPEED;
           motor_speed_right = -1 * MOTOR_TOP_SPEED;
           update_motors();
+        printf("Left\n");
         break;
     }
     
@@ -261,10 +274,12 @@ int main() {
     // Keep the robot stopped
     update_motors();
     
+    // Tell the user to start the run
+    printf("Press Start to start run.");
+    
     /* Execute the steps in order until tall steps have been taken */
     while (chain_index < chain_max_index) {
         step();
-        printf("%d\n", chain_index);
     }
     return 0;
     
