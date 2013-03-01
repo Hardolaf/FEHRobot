@@ -1,0 +1,58 @@
+/* Control Using a Cadmium Sulfide (CdS) Cell
+ *
+ * Team D2
+ * Primary: Joseph Warner
+ * Secondary: Nik Shay
+ */
+
+/* Microswitch Digital Port */
+#define MICROSWITCH 15
+
+/* DC Motor Port */
+#define MOTOR1 0
+#define MOTOR2 1
+
+/* Cadmium Sulfide (CdS) Cell Analog Port */
+#define CDS 6
+
+int main() {
+    /* Speed of the motor
+     * Starts at 100 (full)
+     */
+    int speed;
+    
+    /* Make sure the motor is off */
+    motor(MOTOR1, 0);
+    motor(MOTOR2, 0);
+    
+    /* Tell the robot to begin */
+    printf("Press button to start\n");
+    while (!start_button());
+    sleep(0.25);
+    
+    /* Start with the light */
+    printf("Waiting for light\n");
+    while (analog(CDS) > 35) {
+        sleep(0.01);
+    }
+    
+    
+    while (1) {
+        if (stop_button()) {
+            main();
+            break;
+        } else if (digital(MICROSWITCH)) {
+            /* Set motor speed to 0 if the microswitch is pressed */
+            speed = 0;
+        } else {
+            speed = -50;
+        }
+        
+        /* Adjust the motor speed based on the checks above */
+        motor(MOTOR1, speed);
+        motor(MOTOR2, speed);
+        printf("Motor speed: %d\n", speed);
+        
+        sleep(0.1);
+    }
+}
