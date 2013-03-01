@@ -37,8 +37,9 @@
  * Action Constants
  **/
 /* Quasi-Actions */
-#define ACTION_START 0
-#define ACTION_STOP  1
+#define ACTION_START           0
+#define ACTION_STOP            1
+#define ACTION_WAIT_ONE_SECOND 2
 
 /* Movement Directions */
 #define ACTION_FORWARD   10
@@ -52,6 +53,7 @@
 /* Microswitch Events */
 #define EVENT_MS_RF_PRESS 0
 #define EVENT_MS_LF_PRESS 1
+#define EVENT_MS_BF_PRESS 2
 
 /* Light Sensor Events */
 #define EVENT_CDS_LIGHT    10
@@ -86,14 +88,13 @@
  *   int   motor_speed_right
  *           The speed of the right motor
  **/
-int action_chain[]  = {ACTION_START,               ACTION_FORWARD,  ACTION_STOP};
-int event_chain[]   = {EVENT_BUTTON_START_PRESSED, EVENT_CDS_LIGHT, EVENT_BUTTON_STOP_PRESSED};
-int chain_index     = 0;
-int chain_max_index = _array_size(action_chain);
-
-/* Ensure all motors are off and speeds set to 0 */
-int motor_speed_left  = MOTOR_STOPPED;
-int motor_speed_right = MOTOR_STOPPED;
+int  action_chain[]    = {ACTION_START,               ACTION_FORWARD,  ACTION_BACKWARDS, ACTION_STOP};
+int  event_chain[]     = {EVENT_BUTTON_START_PRESSED, EVENT_CDS_LIGHT, EVENT_MS_BF_PRESS, EVENT_BUTTON_STOP_PRESSED};
+int  chain_index       = 0;
+int  chain_max_index   = _array_size(action_chain);
+int  motor_speed_left  = MOTOR_STOPPED;
+int  motor_speed_right = MOTOR_STOPPED;
+long last_action       = mseconds();
 
 /**
  * Compares the values value1 and value2 based on the check.
@@ -174,6 +175,9 @@ int event_check(int event) {
         break;
         case EVENT_MS_LF_PRESS:
           return digital(MICROSWITCH_LEFT_FRONT);
+        break;
+        case EVENT_MS_BF_PRESS:
+          return digital(MICROSWITCH_LEFT_FRONT) && digital(MICROSWITCH_RIGHT_FRONT);
         break;
         /* CDS Cell Events */
         case EVENT_CDS_LIGHT:
@@ -264,6 +268,7 @@ int execute_step() {
     }
     
     chain_index++;
+    last_action = mseconds();
     return 0;
 }
 
