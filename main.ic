@@ -1,0 +1,27 @@
+/** Competition Code
+ *
+ * Team D2
+ * author: Joseph Warner
+ **/
+
+/**
+ * Hardware Constants
+ *   All ports in numerical order within 
+ **/
+/* Analog */
+#define CDS_CELL 6
+
+/* Digital */
+#define MICROSWITCH_RIGHT_FRONT 14
+#define MICROSWITCH_LEFT_FRONT  15
+
+/* DC Motors */
+#define MOTOR_LEFT  0
+#define MOTOR_RIGHT 1
+
+/**
+ * Launch the robot and handle startup
+ **/
+int main() {
+    
+}
