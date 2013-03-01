@@ -30,6 +30,19 @@
 #define LEFT      4
 
 /**
+ * Events
+ **/
+/* Microswitch Events */
+#define MS_PRESS   0
+#define MS_RELEASE 1
+
+/* Light Sensor Events */
+#define CDS_LIGHT    10
+#define CDS_NO_LIGHT 11
+#define CDS_BLUE     12
+#define CDS_RED      13
+
+/**
  * Launch the robot and handle startup
  **/
 int main() {
