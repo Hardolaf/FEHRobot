@@ -1,8 +1,9 @@
-/* Control Using a Cadmium Sulfide (CdS) Cell
+/* Performance Test 1
+ *
+ * TESTED: 2/28/2013 - Works for completing primary objective.
  *
  * Team D2
  * Primary: Joseph Warner
- * Secondary: Nik Shay
  */
 
 /* Microswitch Digital Port */
@@ -16,9 +17,6 @@
 #define CDS 6
 
 int main() {
-    /* Speed of the motor
-     * Starts at 100 (full)
-     */
     int speed;
     
     /* Make sure the motor is off */
@@ -39,12 +37,14 @@ int main() {
     
     while (1) {
         if (stop_button()) {
+            /* Restart the program when stop is pressed */
             main();
             break;
         } else if (digital(MICROSWITCH)) {
             /* Set motor speed to 0 if the microswitch is pressed */
             speed = 0;
         } else {
+            /* Run at half speed */
             speed = -50;
         }
         
@@ -53,6 +53,7 @@ int main() {
         motor(MOTOR2, speed);
         printf("Motor speed: %d\n", speed);
         
+        /* Wait a tenth of a second */
         sleep(0.1);
     }
 }
