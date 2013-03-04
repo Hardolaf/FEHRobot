@@ -1,0 +1,53 @@
+/* Thee Optosensor Line Following
+ *
+ * Team D2
+ * Primary: Joseph Warner
+ * Secondary: Miranda McGrothers
+ */
+
+#define LEFT_MOTOR 0
+#define RIGHT_MOTOR 2
+
+#define L_OPTOSENSOR_PORT 5
+#define M_OPTOSENSOR_PORT 4
+#define R_OPTOSENSOR_PORT 3
+
+// Calibration numbers
+#define OPTOSENSOR_LINE 150
+
+#define SPEED_SLOW 0
+#define SPEED_FAST 30
+
+int main() {
+    int motor_speed_left = 0;
+    int motor_speed_right = 0;
+    motor(LEFT_MOTOR, motor_speed_left);
+    motor(RIGHT_MOTOR, motor_speed_right);
+    
+    // Wait for the start button
+    printf("Press start to begin\n");
+    while(!start_button());
+    
+    // Assume that we start on the right side of the line
+    while (!stop_button()) {
+        if (analog(M_OPTOSENSOR_PORT) < OPTOSENSOR_LINE) {
+            // Straight
+            motor_speed_left = SPEED_FAST;
+            motor_speed_right = SPEED_FAST;
+        } else if (analog(L_OPTOSENSOR_PORT) > OPTOSENSOR_LINE) {
+            // Right
+            motor_speed_left = SPEED_FAST;
+            motor_speed_right = SPEED_SLOW;
+        } else {
+            // Left
+            motor_speed_left = SPEED_SLOW;
+            motor_speed_right = SPEED_FAST;
+        }
+        
+        motor(LEFT_MOTOR, motor_speed_left);
+        motor(RIGHT_MOTOR, motor_speed_right);
+    }
+    
+    alloff();
+    printf("Run complete\n");
+}
