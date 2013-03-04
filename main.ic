@@ -17,7 +17,7 @@
 
 /* DC Motors */
 #define MOTOR_LEFT  0
-#define MOTOR_RIGHT 1
+#define MOTOR_RIGHT 2
 
 /**
  * Motor constants
@@ -40,6 +40,7 @@
 #define ACTION_START           0
 #define ACTION_STOP            1
 #define ACTION_WAIT_ONE_SECOND 2
+#define ACTION_NULL            3
 
 /* Movement Directions */
 #define ACTION_FORWARD   10
@@ -54,6 +55,7 @@
 #define EVENT_MS_RF_PRESS 0
 #define EVENT_MS_LF_PRESS 1
 #define EVENT_MS_BF_PRESS 2
+#define EVENT_MS_EF_PRESS 3
 
 /* Light Sensor Events */
 #define EVENT_CDS_LIGHT    10
@@ -88,8 +90,8 @@
  *   int   motor_speed_right
  *           The speed of the right motor
  **/
-int  action_chain[]    = {ACTION_START,               ACTION_FORWARD,  ACTION_BACKWARDS, ACTION_STOP};
-int  event_chain[]     = {EVENT_BUTTON_START_PRESSED, EVENT_CDS_LIGHT, EVENT_MS_BF_PRESS, EVENT_BUTTON_STOP_PRESSED};
+int  action_chain[]    = {ACTION_START,               ACTION_FORWARD,  ACTION_NULL,       ACTION_STOP};//,       ACTION_STOP};
+int  event_chain[]     = {EVENT_BUTTON_START_PRESSED, EVENT_CDS_LIGHT, EVENT_MS_EF_PRESS, EVENT_MS_BF_PRESS};//, EVENT_BUTTON_STOP_PRESSED};
 int  chain_index       = 0;
 int  chain_max_index   = _array_size(action_chain);
 int  motor_speed_left  = MOTOR_STOPPED;
@@ -179,6 +181,20 @@ int event_check(int event) {
         case EVENT_MS_BF_PRESS:
           return digital(MICROSWITCH_LEFT_FRONT) && digital(MICROSWITCH_RIGHT_FRONT);
         break;
+        case EVENT_MS_EF_PRESS:
+          if (digital(MICROSWITCH_LEFT_FRONT) || digital(MICROSWITCH_RIGHT_FRONT)) {
+            if(digital(MICROSWITCH_LEFT_FRONT) && digital(MICROSWITCH_RIGHT_FRONT)) {
+                motor_speed_left  = MOTOR_STOPPED;
+                motor_speed_right = MOTOR_STOPPED;
+            } else if(digital(MICROSWITCH_LEFT_FRONT)) {
+                motor_speed_right  = MOTOR_STOPPED;
+            } else {
+                motor_speed_left = MOTOR_STOPPED;
+            }
+            return 1;
+        } else {
+            return 0;
+        }
         /* CDS Cell Events */
         case EVENT_CDS_LIGHT:
           return event_check_CDS(CDS_CELL, CDS_LIGHT_START, COMPARISON_LESSER);
@@ -236,39 +252,43 @@ int execute_step() {
         break;
         case ACTION_STOP:
           motor_speed_left  = MOTOR_STOPPED;
-          motor_speed_right = MOTOR_STOPPED;
+        motor_speed_right = MOTOR_STOPPED;
+        update_motors();
+        printf("Run Complete\n");
+        break;
+        case ACTION_NULL:
           update_motors();
-          printf("Run Complete\n");
         break;
         /* Motor Actions */
         case ACTION_FORWARD:
           motor_speed_left  = MOTOR_TOP_SPEED;
-          motor_speed_right = MOTOR_TOP_SPEED;
-          update_motors();
-          printf("Forward\n");
+        motor_speed_right = MOTOR_TOP_SPEED;
+        update_motors();
+        printf("Forward\n");
         break;
         case ACTION_BACKWARDS:
           motor_speed_left  = -1 * MOTOR_TOP_SPEED;
-          motor_speed_right = -1 * MOTOR_TOP_SPEED;
-          update_motors();
-          printf("Backwards\n");
+        motor_speed_right = -1 * MOTOR_TOP_SPEED;
+        update_motors();
+        printf("Backwards\n");
         break;
         case ACTION_RIGHT:
           motor_speed_left  = -1 * MOTOR_TOP_SPEED;
-          motor_speed_right = MOTOR_TOP_SPEED;
-          update_motors();
-          printf("Right\n");
+        motor_speed_right = MOTOR_TOP_SPEED;
+        update_motors();
+        printf("Right\n");
         break;
         case ACTION_LEFT:
           motor_speed_left  = MOTOR_TOP_SPEED;
-          motor_speed_right = -1 * MOTOR_TOP_SPEED;
-          update_motors();
+        motor_speed_right = -1 * MOTOR_TOP_SPEED;
+        update_motors();
         printf("Left\n");
         break;
     }
     
     chain_index++;
     last_action = mseconds();
+    beep();
     return 0;
 }
 
@@ -280,13 +300,55 @@ int main() {
     update_motors();
     
     // Tell the user to start the run
-    printf("Press Start to start run.");
+    printf("Press Start to start run\n");
     
     /* Execute the steps in order until tall steps have been taken */
     while (chain_index < chain_max_index) {
         step();
     }
-    return 0;
+    
+    chain_index = 0;
+    action_chain[chain_index] = ACTION_BACKWARDS;
+    execute_step();
+    sleep(0.75);
+    
+    chain_index = 0;
+    action_chain[chain_index] = ACTION_RIGHT;
+    execute_step();
+    sleep(0.5);
+    
+    // Hit wall on upper level
+    chain_index = 0;
+    action_chain[chain_index] = ACTION_FORWARD;
+    action_chain[chain_index + 1] = ACTION_NULL;
+    event_chain[chain_index + 1] = EVENT_MS_EF_PRESS;
+    action_chain[chain_index + 2] = ACTION_STOP;
+    event_chain[chain_index + 2] = EVENT_MS_BF_PRESS;
+    execute_step();
+    while(chain_index < 3) {
+        step();
+    }
+    
+    chain_index = 0;
+    action_chain[chain_index] = ACTION_BACKWARDS;
+    execute_step();
+    sleep(0.75);
+    
+    chain_index = 0;
+    action_chain[chain_index] = ACTION_LEFT;
+    execute_step();
+    sleep(0.5);
+    
+    chain_index = 0;
+    action_chain[chain_index] = ACTION_FORWARD;
+    action_chain[chain_index + 1] = ACTION_NULL;
+    event_chain[chain_index + 1] = EVENT_MS_EF_PRESS;
+    action_chain[chain_index + 2] = ACTION_STOP;
+    event_chain[chain_index + 2] = EVENT_MS_BF_PRESS;
+    execute_step();
+    while(chain_index < 3) {
+        step();
+    }
     
     /* Shutdown all motors */
     motor_speed_left  = MOTOR_STOPPED;
