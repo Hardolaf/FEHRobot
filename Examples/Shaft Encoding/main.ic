@@ -1,0 +1,46 @@
+/* Shat Encoding
+ *
+ * Team D2
+ * Primary: Joseph Warner
+ * Secondary: Miranda McGrothers
+ */
+
+#use fencdr4.icb
+
+#define LEFT_MOTOR 0
+#define RIGHT_MOTOR 2
+
+#define SPEED_SLOW 0
+#define SPEED_FAST 30
+
+#define RUNTIME 2000
+
+int main() {
+    int motor_speed_left = 0;
+    int motor_speed_right = 0;
+    long time;
+    motor(LEFT_MOTOR, motor_speed_left);
+    motor(RIGHT_MOTOR, motor_speed_right);
+    
+    encoder4_low_threshold = 30;
+    encoder4_high_threshold = 60;
+    
+    // Wait for the start button
+    printf("Press start to begin\n");
+    while(!start_button());
+    
+    motor(LEFT_MOTOR, SPEED_FAST);
+    motor(RIGHT_MOTOR, SPEED_FAST);
+    
+    time = mseconds() + (long)RUNTIME;
+
+    while (time > mseconds()) {
+        printf("%d\n", encoder4_counts);
+    }
+    
+    alloff();
+    
+    while(!start_button());
+    
+    main();
+}
