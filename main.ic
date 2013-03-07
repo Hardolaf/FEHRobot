@@ -1,78 +1,113 @@
-/** Competition Code
- *
- * Team D2
- * author: Joseph Warner
- **/
+/*!
+ * \file   main.ic
+ * \author Joseph Warner (warner.512@osu.edu)
+ * \date   Spring, 2013
+ * \brief  Controls the robot in the competition
+ */
 
+/**
+ * All constants used in the operation of the robot
+ */
 /**
  * Hardware Constants
  *   All ports in numerical order within 
- **/
+ */
 /* Analog */
+/** Analog port of the CDS Cell */
 #define CDS_CELL 6
 
 /* Digital */
+/** Digital port of the Microswitch located on the front right */
 #define MICROSWITCH_RIGHT_FRONT 14
+/** Digital port of the Microswitch located on the front left */
 #define MICROSWITCH_LEFT_FRONT  15
 
 /* DC Motors */
+/** Motor port of the left motor */
 #define MOTOR_LEFT  0
+/** Motor port of the right motor */
 #define MOTOR_RIGHT 2
 
 /**
  * Motor constants
- **/
+ */
+/** The maximum speed that the motors will be run at */
 #define MOTOR_TOP_SPEED -75
+/** The minimum speed that the motors will be run at */
 #define MOTOR_STOPPED    0
 
 /**
  * Sensor Constants
- **/
-/* CDS Cell Readinds */
+ */
+/* CDS Cell Readings */
+/** The defined point between a light on the ground and no light */
 #define CDS_LIGHT_START 35
+/** The reading from the CDS defined to be an indicator of a red light */
 #define CDS_LIGHT_RED   0
+/** The reading from the CDS defined to be an indicator a blue light */
 #define CDS_LIGHT_BLUE  0
 
 /**
  * Action Constants
- **/
+ */
 /* Quasi-Actions */
+/** Start of the run */
 #define ACTION_START           0
+/** Stops all physical activity on the robot */
 #define ACTION_STOP            1
+/** One second wait before any additional processes */
 #define ACTION_WAIT_ONE_SECOND 2
+/** No action */
 #define ACTION_NULL            3
 
 /* Movement Directions */
+/** Move forward */
 #define ACTION_FORWARD   10
+/** Move backwards */
 #define ACTION_BACKWARDS 11
+/** Move right */
 #define ACTION_RIGHT     12
+/** Move left */
 #define ACTION_LEFT      13
 
 /**
  * Event Constants
- **/
+ */
 /* Microswitch Events */
+/** Right front microswitch pressed */
 #define EVENT_MS_RF_PRESS 0
+/** Left front microswitch pressed */
 #define EVENT_MS_LF_PRESS 1
+/** Both front microswitches pressed */
 #define EVENT_MS_BF_PRESS 2
+/** One front microswitch pressed */
 #define EVENT_MS_EF_PRESS 3
 
 /* Light Sensor Events */
+/** Light recognized by CDS cell */
 #define EVENT_CDS_LIGHT    10
+/** No light recognized by CDS cell */
 #define EVENT_CDS_NO_LIGHT 11
+/** Blue light recognized by CDS cell */
 #define EVENT_CDS_BLUE     12
+/** Red light recognized by CDS cell */
 #define EVENT_CDS_RED      13
 
 /* Button Events */
+/** Stop button pressed */
 #define EVENT_BUTTON_STOP_PRESSED  20
+/** Start button pressed */
 #define EVENT_BUTTON_START_PRESSED 21
 
 /**
  * Comparison Constants
  *   These are used by compare_values
- **/
+ */
+/** Greater than */
 #define COMPARISON_GREATER 2
+/** Equal to */
 #define COMPARISON_EQUAL   1
+/** Less than */
 #define COMPARISON_LESSER  0
 
 /**
@@ -89,7 +124,7 @@
  *           The speed of the left motor
  *   int   motor_speed_right
  *           The speed of the right motor
- **/
+ */
 int  action_chain[]    = {ACTION_START,               ACTION_FORWARD,  ACTION_NULL,       ACTION_STOP};//,       ACTION_STOP};
 int  event_chain[]     = {EVENT_BUTTON_START_PRESSED, EVENT_CDS_LIGHT, EVENT_MS_EF_PRESS, EVENT_MS_BF_PRESS};//, EVENT_BUTTON_STOP_PRESSED};
 int  chain_index       = 0;
@@ -111,7 +146,7 @@ long last_action       = mseconds();
  *
  * Return
  *   int   1 for true, 0 for false, -1 for invalid check 
- **/
+ */
 int compare_values(int value1, int value2, int check) {
     if (check == COMPARISON_LESSER) {
         if (value1 < value2) {
@@ -154,7 +189,7 @@ int compare_values(int value1, int value2, int check) {
  *
  * Return
  *   int   see compare_values
- **/
+ */
 int event_check_CDS(int port, int value, int check) {
     return compare_values(analog(port), value, check);
 }
@@ -168,7 +203,7 @@ int event_check_CDS(int port, int value, int check) {
  *
  * Return
  *   int   1 for event has occurred, 0 for event has not occurred
- **/
+ */
 int event_check(int event) {
     switch (event) {
         /* Microswitch Events */
@@ -222,7 +257,7 @@ int event_check(int event) {
 
 /**
  * Checks to see if the current chain_index in the event_chain should occur
- **/
+ */
 int step() {
     if (event_check(event_chain[chain_index]) == 1) {
         return execute_step();
@@ -233,7 +268,7 @@ int step() {
 
 /**
  * Updates the motors to the latest speeds
- **/
+ */
 int update_motors() {
     motor(MOTOR_LEFT, motor_speed_left);
     motor(MOTOR_RIGHT, motor_speed_right);
@@ -242,7 +277,7 @@ int update_motors() {
 
 /**
  * Executes the current chain_index in action_chain then increments chain_index by 1
- **/
+ */
 int execute_step() {
     int action = action_chain[chain_index];
     switch(action) {
@@ -294,7 +329,7 @@ int execute_step() {
 
 /**
  * Launch the robot and handle startup
- **/
+ */
 int main() {
     // Keep the robot stopped
     update_motors();
