@@ -7,8 +7,9 @@
 
 /*!
  * /defgroup hardware_constants Hardware Constants
- * All ports in numerical order within 
-/*@{*/
+ * These constants correspond to the hardware ports that each device is
+ * connected to. Some of the ports are analog, some are digital.
+ @{*/
 /*! Analog port of the CDS Cell  */
 #define CDS_CELL 6
 
@@ -25,7 +26,8 @@
 
 /*!
  * /defgroup motor_constants Motor Constants
-/*@{*/
+ * These constants define different speed settings for the motors.
+ @{*/
 /*! The maximum speed that the motors will be run at */
 #define MOTOR_TOP_SPEED -75
 /*! The minimum speed that the motors will be run at */
@@ -34,7 +36,9 @@
 
 /*!
  * \defgroup sensor_constants Sensor Constants
-/*@{*/
+ * These constants all correspond to experimentally determined values used to
+ * calibrate the various sensors on the robot.
+ @{*/
 /*! The defined point between a light on the ground and no light */
 #define CDS_LIGHT_START 35
 /*! The reading from the CDS defined to be an indicator of a red light */
@@ -45,7 +49,10 @@
 
 /*!
  * \defgroup action_constants Action Constants
-/*@{*/
+ * These constants define all of the simplified actions that the robot may take
+ * during operation. More complex actions can be created by combining these
+ * actions with other actions.
+ @{*/
 /*! Start of the run */
 #define ACTION_START           0
 /*! Stops all physical activity on the robot */
@@ -67,7 +74,9 @@
 
 /*!
  * \defgroup event_constants Event Constants
-/*@{*/
+ * These constants define the various events that can be observed during
+ * robot operation.
+ @{*/
 /*! Right front microswitch pressed */
 #define EVENT_MS_RF_PRESS 0
 /*! Left front microswitch pressed */
@@ -95,7 +104,7 @@
 /*!
  * \defgroup comparison_constants Comparison Constants
  * These are used by compare_values
-/*@{*/
+ @{*/
 /*! Greater than */
 #define COMPARISON_GREATER 2
 /*! Equal to */
@@ -104,6 +113,10 @@
 #define COMPARISON_LESSER  0
 /*@}*/
 
+/*!
+ * \defgroup global_variables Global Variables
+ * All global variables used in the execution of the robot.
+ @{*/
 /*! The chain of actions that will be take */
 int  action_chain[]    = {ACTION_START,               ACTION_FORWARD,  ACTION_NULL,       ACTION_STOP};//,       ACTION_STOP};
 /*! The chain of actions that will trigger the corresponding action_chain item */
@@ -118,7 +131,12 @@ int  motor_speed_left  = MOTOR_STOPPED;
 int  motor_speed_right = MOTOR_STOPPED;
 /*! The time of the last actions in milliseconds since the robot was turn on. */
 long last_action       = mseconds();
+/*@}*/
 
+/*!
+ * \defgroup functions Functions
+ * The functions that make the robot operate
+ @{*/
 /*!
  * Compares the values value1 and value2 based on the check.
  *
@@ -174,7 +192,7 @@ int event_check_CDS(int port, int value, int check) {
  * Check to see if the specified event has occurred
  *
  * \param[in] event Corresponds to an event constant
- * \see event_check_cds()
+ * \see event_check_CDS()
  * \return 1 for event has occurred, 0 for event has not occurred
  */
 int event_check(int event) {
@@ -384,3 +402,4 @@ int main() {
     
     return 0;
 }
+/*@}*/
