@@ -5,147 +5,127 @@
  * \brief  Controls the robot in the competition
  */
 
-/**
- * All constants used in the operation of the robot
- */
-/**
- * Hardware Constants
- *   All ports in numerical order within 
- */
-/* Analog */
-/** Analog port of the CDS Cell */
+/*!
+ * /defgroup hardware_constants Hardware Constants
+ * All ports in numerical order within 
+/*@{*/
+/*! Analog port of the CDS Cell  */
 #define CDS_CELL 6
 
-/* Digital */
-/** Digital port of the Microswitch located on the front right */
+/*! Digital port of the Microswitch located on the front right */
 #define MICROSWITCH_RIGHT_FRONT 14
-/** Digital port of the Microswitch located on the front left */
+/*! Digital port of the Microswitch located on the front left */
 #define MICROSWITCH_LEFT_FRONT  15
 
-/* DC Motors */
-/** Motor port of the left motor */
+/*! Motor port of the left motor */
 #define MOTOR_LEFT  0
-/** Motor port of the right motor */
+/*! Motor port of the right motor */
 #define MOTOR_RIGHT 2
+/*@}*/
 
-/**
- * Motor constants
- */
-/** The maximum speed that the motors will be run at */
+/*!
+ * /defgroup motor_constants Motor Constants
+/*@{*/
+/*! The maximum speed that the motors will be run at */
 #define MOTOR_TOP_SPEED -75
-/** The minimum speed that the motors will be run at */
+/*! The minimum speed that the motors will be run at */
 #define MOTOR_STOPPED    0
+/*@}*/
 
-/**
- * Sensor Constants
- */
-/* CDS Cell Readings */
-/** The defined point between a light on the ground and no light */
+/*!
+ * \defgroup sensor_constants Sensor Constants
+/*@{*/
+/*! The defined point between a light on the ground and no light */
 #define CDS_LIGHT_START 35
-/** The reading from the CDS defined to be an indicator of a red light */
+/*! The reading from the CDS defined to be an indicator of a red light */
 #define CDS_LIGHT_RED   0
-/** The reading from the CDS defined to be an indicator a blue light */
+/*! The reading from the CDS defined to be an indicator a blue light */
 #define CDS_LIGHT_BLUE  0
+/*@}*/
 
-/**
- * Action Constants
- */
-/* Quasi-Actions */
-/** Start of the run */
+/*!
+ * \defgroup action_constants Action Constants
+/*@{*/
+/*! Start of the run */
 #define ACTION_START           0
-/** Stops all physical activity on the robot */
+/*! Stops all physical activity on the robot */
 #define ACTION_STOP            1
-/** One second wait before any additional processes */
+/*! One second wait before any additional processes */
 #define ACTION_WAIT_ONE_SECOND 2
-/** No action */
+/*! No action */
 #define ACTION_NULL            3
 
-/* Movement Directions */
-/** Move forward */
+/*! Move forward */
 #define ACTION_FORWARD   10
-/** Move backwards */
+/*! Move backwards */
 #define ACTION_BACKWARDS 11
-/** Move right */
+/*! Move right */
 #define ACTION_RIGHT     12
-/** Move left */
+/*! Move left */
 #define ACTION_LEFT      13
+/*@}*/
 
-/**
- * Event Constants
- */
-/* Microswitch Events */
-/** Right front microswitch pressed */
+/*!
+ * \defgroup event_constants Event Constants
+/*@{*/
+/*! Right front microswitch pressed */
 #define EVENT_MS_RF_PRESS 0
-/** Left front microswitch pressed */
+/*! Left front microswitch pressed */
 #define EVENT_MS_LF_PRESS 1
-/** Both front microswitches pressed */
+/*! Both front microswitches pressed */
 #define EVENT_MS_BF_PRESS 2
-/** One front microswitch pressed */
+/*! One front microswitch pressed */
 #define EVENT_MS_EF_PRESS 3
 
-/* Light Sensor Events */
-/** Light recognized by CDS cell */
+/*! Light recognized by CDS cell */
 #define EVENT_CDS_LIGHT    10
-/** No light recognized by CDS cell */
+/*! No light recognized by CDS cell */
 #define EVENT_CDS_NO_LIGHT 11
-/** Blue light recognized by CDS cell */
+/*! Blue light recognized by CDS cell */
 #define EVENT_CDS_BLUE     12
-/** Red light recognized by CDS cell */
+/*! Red light recognized by CDS cell */
 #define EVENT_CDS_RED      13
 
-/* Button Events */
-/** Stop button pressed */
+/*! Stop button pressed */
 #define EVENT_BUTTON_STOP_PRESSED  20
-/** Start button pressed */
+/*! Start button pressed */
 #define EVENT_BUTTON_START_PRESSED 21
+/*@}*/
 
-/**
- * Comparison Constants
- *   These are used by compare_values
- */
-/** Greater than */
+/*!
+ * \defgroup comparison_constants Comparison Constants
+ * These are used by compare_values
+/*@{*/
+/*! Greater than */
 #define COMPARISON_GREATER 2
-/** Equal to */
+/*! Equal to */
 #define COMPARISON_EQUAL   1
-/** Less than */
+/*! Less than */
 #define COMPARISON_LESSER  0
+/*@}*/
 
-/**
- * Defines global variables:
- *   int   action_chain[]
- *           The chain of actions that will be taken
- *   int   event_chain[]
- *           The chain of actions that will trigger the corresponding action_chain item
- *   int   chain_index
- *           The current index in event_chain
- *   int   chain_max_index
- *           The index at which execution stops
- *   int   motor_speed_left
- *           The speed of the left motor
- *   int   motor_speed_right
- *           The speed of the right motor
- */
+/*! The chain of actions that will be take */
 int  action_chain[]    = {ACTION_START,               ACTION_FORWARD,  ACTION_NULL,       ACTION_STOP};//,       ACTION_STOP};
+/*! The chain of actions that will trigger the corresponding action_chain item */
 int  event_chain[]     = {EVENT_BUTTON_START_PRESSED, EVENT_CDS_LIGHT, EVENT_MS_EF_PRESS, EVENT_MS_BF_PRESS};//, EVENT_BUTTON_STOP_PRESSED};
+/*! The current index in event_chain */
 int  chain_index       = 0;
+/*! The index at which execution stops */
 int  chain_max_index   = _array_size(action_chain);
+/*! The speed of the left motor */
 int  motor_speed_left  = MOTOR_STOPPED;
+/*! The speed of the right motor */
 int  motor_speed_right = MOTOR_STOPPED;
+/*! The time of the last actions in milliseconds since the robot was turn on. */
 long last_action       = mseconds();
 
-/**
+/*!
  * Compares the values value1 and value2 based on the check.
  *
- * Parameters
- *   int   value1
- *           The first value being compared
- *   int   value2
- *           The second value being compared
- *   int   check
- *           Corresponds to the comparison constants
- *
- * Return
- *   int   1 for true, 0 for false, -1 for invalid check 
+ * \param[in] value1 The first value being compared
+ * \param[in] value2 The second value being compared
+ * \param[in] check Corresponds to a comparison constant
+ * \return 1 for true, 0 for false, -1 for invalid check 
  */
 int compare_values(int value1, int value2, int check) {
     if (check == COMPARISON_LESSER) {
@@ -176,33 +156,26 @@ int compare_values(int value1, int value2, int check) {
     return -1;
 }
 
-/**
+/*!
  * Checks the CDS reading and compares it to be <, ==, or > to a value
  *
- * Parameters
- *   int   CDS_cell
- *           The analog port number of the CDS cell being checked
- *   int   value
- *           The value being compared to the CDS cell analog reading
- *   int   check
- *           Corresponds to the comparison constants
- *
- * Return
- *   int   see compare_values
+ * \param[in] port The analog port number of the CDS cell being checked
+ * \param[in] value The value being compared to the CDS cell analog reading
+ * \param[in] check The type of check being requested corresponding to the
+ * comparison constants
+ * \see compare_values()
+ * \return Output from compare_values
  */
 int event_check_CDS(int port, int value, int check) {
     return compare_values(analog(port), value, check);
 }
 
-/**
+/*!
  * Check to see if the specified event has occurred
  *
- * Parameters
- *   int   event
- *           Corresponds to Event constants
- *
- * Return
- *   int   1 for event has occurred, 0 for event has not occurred
+ * \param[in] event Corresponds to an event constant
+ * \see event_check_cds()
+ * \return 1 for event has occurred, 0 for event has not occurred
  */
 int event_check(int event) {
     switch (event) {
@@ -255,8 +228,14 @@ int event_check(int event) {
     return 0;
 }
 
-/**
+/*!
  * Checks to see if the current chain_index in the event_chain should occur
+ *
+ * \see event_check()
+ * \see event_chain
+ * \see chain_index
+ * \see execute_step()
+ * \return execute_step()'s status code or 1
  */
 int step() {
     if (event_check(event_chain[chain_index]) == 1) {
@@ -266,8 +245,12 @@ int step() {
     return 1;
 }
 
-/**
+/*!
  * Updates the motors to the latest speeds
+ *
+ * \see motor_speed_left
+ * \see motor_speed_right
+ * \return 0 on success
  */
 int update_motors() {
     motor(MOTOR_LEFT, motor_speed_left);
@@ -275,8 +258,13 @@ int update_motors() {
     return 0;
 }
 
-/**
- * Executes the current chain_index in action_chain then increments chain_index by 1
+/*!
+ * Executes the current chain_index in action_chain then increments chain_index
+ * by 1
+ *
+ * \see action_chain
+ * \see chain_index
+ * \return 0 on success
  */
 int execute_step() {
     int action = action_chain[chain_index];
@@ -327,8 +315,12 @@ int execute_step() {
     return 0;
 }
 
-/**
- * Launch the robot and handle startup
+/*!
+ * Handles the logic in switching between the various tasks that the must
+ * undergo during the competition. This function also contains the exact order
+ * of the various tasks that will be completed.
+ *
+ * \return 0 on success
  */
 int main() {
     // Keep the robot stopped
