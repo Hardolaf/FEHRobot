@@ -11,14 +11,18 @@
 #define RIGHT_MOTOR 2
 
 #define SPEED_SLOW 0
-#define SPEED_FAST 30
+#define SPEED_FAST 100
 
 #define RUNTIME 2000
+
+#define INCHES 6
 
 int main() {
     int motor_speed_left = 0;
     int motor_speed_right = 0;
-    long time;
+    float countPerInch = 415.25 / 19.57;
+    float countLimitF = countPerInch * (float)INCHES;
+    int countLimit = (int)countLimitF;
     motor(LEFT_MOTOR, motor_speed_left);
     motor(RIGHT_MOTOR, motor_speed_right);
     
@@ -32,13 +36,14 @@ int main() {
     motor(LEFT_MOTOR, SPEED_FAST);
     motor(RIGHT_MOTOR, SPEED_FAST);
     
-    time = mseconds() + (long)RUNTIME;
-
-    while (time > mseconds()) {
+    while (encoder4_counts < countLimit) {
         printf("%d\n", encoder4_counts);
     }
     
     alloff();
+    
+    sleep(1.0);
+    printf("%d\n", encoder4_counts);
     
     while(!start_button());
     
