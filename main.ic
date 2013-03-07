@@ -77,6 +77,11 @@
 #define ACTION_RIGHT     12
 /*! Move left */
 #define ACTION_LEFT      13
+
+/*! Course action press button */
+#define ACTION_COURSE_PRESS_BUTTON 20
+/*! Course action flip generator switch */
+#define ACTION_COURSE_FLIP_SWITCH 21
 /*@}*/
 
 /*!
@@ -106,6 +111,11 @@
 #define EVENT_BUTTON_STOP_PRESSED  20
 /*! Start button pressed */
 #define EVENT_BUTTON_START_PRESSED 21
+
+/*! Course satellite button pressed */
+#define EVENT_COURSE_SATELLITE_BUTTON_PRESSED 30
+/*! Course generator switch flipped */
+#define EVENT_COURSE_GENERATOR_FLIP_SWITCHED  31
 /*@}*/
 
 /*!
@@ -363,11 +373,13 @@ int execute_step() {
 
 /*!
  * Executes the press button process
+ * Assumes that the robot has already reached the line
  *
  * \return 0 on success
  */
 int execute_press_button() {
     // Move forward to press the button
+    printf("Pressing button\n");
     last_action = mseconds;
     while (last_action + 250 > mseconds) {
         if (execute_follow_line() == 1) {
@@ -379,10 +391,17 @@ int execute_press_button() {
     motor_speed_right = MOTOR_SPEED_LINE_FOLLOWING;
     motor_speed_left  = MOTOR_SPEED_LINE_FOLLOWING;
     update_motors();
+    sleep(0.1);
+    printf("Pressed button\n");
 
     // Back up
+    motor_speed_right = MOTOR_SPEED_STOPPED;
+    motor_speed_left = MOTOR_SPEED_STOPPED;
+    update_motors
+    sleep(0.1);
     motor_speed_right = -1 * MOTOR_SPEED_MAX;
     motor_speed_left  = -1 * MOTOR_SPEED_MAX;
+    update_motors();
     sleep(0.25);
 }
 
