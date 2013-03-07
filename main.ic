@@ -342,6 +342,13 @@ int execute_step() {
         update_motors();
         printf("Left\n");
         break;
+        /* Course Actions */
+        case ACTION_COURSE_PRESS_BUTTON:
+            execute_press_button();
+            break;
+        case ACTION_COURSE_FLIP_SWITCH:
+            execute_flip_switch();
+            break;
     }
     
     chain_index++;
@@ -356,15 +363,16 @@ int execute_step() {
  * \todo Update to use all three sensors
  * \author Joseph Warner
  * \author Miranda McGrothers
+ * \param[in] direction 1 for forward, -1 for backwards
  * \return 0 on success, 1 on line lost
  */
- int execute_follow_line() {
+ int execute_follow_line(int direction) {
     if (analog(OPTOSENSOR_PORT) < OPTOSENSOR_LINE) {
-        motor_speed_left = SPEED_SLOW;
-        motor_speed_right = SPEED_FAST;
+        motor_speed_left = direction * SPEED_SLOW;
+        motor_speed_right = direction * SPEED_FAST;
     } else {
-        motor_speed_left = SPEED_FAST;
-        motor_speed_right = SPEED_SLOW;
+        motor_speed_left = direction * SPEED_FAST;
+        motor_speed_right = direction * SPEED_SLOW;
     }
 
     update_motors();
