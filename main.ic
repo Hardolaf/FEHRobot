@@ -97,6 +97,14 @@
 #define EVENT_MS_BF_PRESS 2
 /*! One front microswitch pressed */
 #define EVENT_MS_EF_PRESS 3
+ /*! Right back microswitch pressed */
+#define EVENT_MS_RB_PRESS 4
+/*! Left back microswitch pressed */
+#define EVENT_MS_LB_PRESS 5
+/*! Both back microswitches pressed */
+#define EVENT_MS_BB_PRESS 6
+/*! One back microswitch pressed */
+#define EVENT_MS_EB_PRESS 7
 
 /*! Light recognized by CDS cell */
 #define EVENT_CDS_LIGHT    10
@@ -116,6 +124,11 @@
 #define EVENT_COURSE_SATELLITE_BUTTON_PRESSED 30
 /*! Course generator switch flipped */
 #define EVENT_COURSE_GENERATOR_FLIP_SWITCHED  31
+
+/*! Optosensor sees line */
+#define EVENT_OPTOSENSOR_SEE_LINE 40
+/*! Optosensor lose line */
+#define EVENT_OPTOSENSOR_LOSE_LINE 41
 /*@}*/
 
 /*!
