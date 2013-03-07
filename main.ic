@@ -6,7 +6,7 @@
  */
 
 /*!
- * /defgroup hardware_constants Hardware Constants
+ * \defgroup hardware_constants Hardware Constants
  * These constants correspond to the hardware ports that each device is
  * connected to. Some of the ports are analog, some are digital.
  @{*/
@@ -25,7 +25,7 @@
 /*@}*/
 
 /*!
- * /defgroup motor_constants Motor Constants
+ * \defgroup motor_constants Motor Constants
  * These constants define different speed settings for the motors.
  @{*/
 /*! The maximum speed that the motors will be run at */
