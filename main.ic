@@ -390,7 +390,7 @@ int execute_press_button() {
     printf("Pressing button\n");
     last_action = mseconds;
     while (last_action + 250 > mseconds) {
-        if (execute_follow_line() == 1) {
+        if (execute_follow_line(1) == 1) {
             break;
         }
     }
@@ -405,7 +405,7 @@ int execute_press_button() {
     // Back up
     motor_speed_right = MOTOR_SPEED_STOPPED;
     motor_speed_left = MOTOR_SPEED_STOPPED;
-    update_motors
+    update_motors();
     sleep(0.1);
     motor_speed_right = -1 * MOTOR_SPEED_MAX;
     motor_speed_left  = -1 * MOTOR_SPEED_MAX;
@@ -416,10 +416,23 @@ int execute_press_button() {
 /*!
  * Executes the flip switch process
  *
+ * \todo Allow flipping switch in either direction
  * \return 0 on success
  */
 int execute_flip_switch() {
+    // Back up into the switch
+    printf("Flipping switch\n");
+    last_action = mseconds;
+    while (last_action + 250 > mseconds) {
+        if (execute_follow_line(1) == 1) {
+            break;
+        }
+    }
 
+    // Stop the vehicle
+    motor_speed_right = MOTOR_SPEED_STOPPED;
+    motor_speed_left = MOTOR_SPEED_STOPPED;
+    update_motors();
 }
 
 /*!
