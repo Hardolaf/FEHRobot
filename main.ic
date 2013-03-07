@@ -10,6 +10,8 @@
  * These constants correspond to the hardware ports that each device is
  * connected to. Some of the ports are analog, some are digital.
  @{*/
+/*! Analog port of the center Optosensor */
+#define OPTOSENSOR_LINE_FOLLOWING_CENTER 4
 /*! Analog port of the CDS Cell  */
 #define CDS_CELL 6
 
@@ -29,9 +31,11 @@
  * These constants define different speed settings for the motors.
  @{*/
 /*! The maximum speed that the motors will be run at */
-#define MOTOR_TOP_SPEED -75
+#define MOTOR_SPEED_MAX -75
 /*! The minimum speed that the motors will be run at */
-#define MOTOR_STOPPED    0
+#define MOTOR_SPEED_STOPPED    0
+/*! The line following speed that the motors will be run at */
+#define MOTOR_SPEED_LINE_FOLLOWING 30
 /*@}*/
 
 /*!
@@ -45,6 +49,9 @@
 #define CDS_LIGHT_RED   0
 /*! The reading from the CDS defined to be an indicator a blue light */
 #define CDS_LIGHT_BLUE  0
+
+/*! The reading from the middle line following optosensor defined as seeing a line */
+#define OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE 150
 /*@}*/
 
 /*!
@@ -126,9 +133,9 @@ int  chain_index       = 0;
 /*! The index at which execution stops */
 int  chain_max_index   = _array_size(action_chain);
 /*! The speed of the left motor */
-int  motor_speed_left  = MOTOR_STOPPED;
+int  motor_speed_left  = MOTOR_SPEED_STOPPED;
 /*! The speed of the right motor */
-int  motor_speed_right = MOTOR_STOPPED;
+int  motor_speed_right = MOTOR_SPEED_STOPPED;
 /*! The time of the last actions in milliseconds since the robot was turn on. */
 long last_action       = mseconds();
 /*@}*/
@@ -210,12 +217,12 @@ int event_check(int event) {
         case EVENT_MS_EF_PRESS:
           if (digital(MICROSWITCH_LEFT_FRONT) || digital(MICROSWITCH_RIGHT_FRONT)) {
             if(digital(MICROSWITCH_LEFT_FRONT) && digital(MICROSWITCH_RIGHT_FRONT)) {
-                motor_speed_left  = MOTOR_STOPPED;
-                motor_speed_right = MOTOR_STOPPED;
+                motor_speed_left  = MOTOR_SPEED_STOPPED;
+                motor_speed_right = MOTOR_SPEED_STOPPED;
             } else if(digital(MICROSWITCH_LEFT_FRONT)) {
-                motor_speed_right  = MOTOR_STOPPED;
+                motor_speed_right  = MOTOR_SPEED_STOPPED;
             } else {
-                motor_speed_left = MOTOR_STOPPED;
+                motor_speed_left = MOTOR_SPEED_STOPPED;
             }
             return 1;
         } else {
@@ -292,8 +299,8 @@ int execute_step() {
           printf("Ready to start run\n");
         break;
         case ACTION_STOP:
-          motor_speed_left  = MOTOR_STOPPED;
-        motor_speed_right = MOTOR_STOPPED;
+          motor_speed_left  = MOTOR_SPEED_STOPPED;
+        motor_speed_right = MOTOR_SPEED_STOPPED;
         update_motors();
         printf("Run Complete\n");
         break;
@@ -302,26 +309,26 @@ int execute_step() {
         break;
         /* Motor Actions */
         case ACTION_FORWARD:
-          motor_speed_left  = MOTOR_TOP_SPEED;
-        motor_speed_right = MOTOR_TOP_SPEED;
+          motor_speed_left  = MOTOR_SPEED_MAX;
+        motor_speed_right = MOTOR_SPEED_MAX;
         update_motors();
         printf("Forward\n");
         break;
         case ACTION_BACKWARDS:
-          motor_speed_left  = -1 * MOTOR_TOP_SPEED;
-        motor_speed_right = -1 * MOTOR_TOP_SPEED;
+          motor_speed_left  = -1 * MOTOR_SPEED_MAX;
+        motor_speed_right = -1 * MOTOR_SPEED_MAX;
         update_motors();
         printf("Backwards\n");
         break;
         case ACTION_RIGHT:
-          motor_speed_left  = -1 * MOTOR_TOP_SPEED;
-        motor_speed_right = MOTOR_TOP_SPEED;
+          motor_speed_left  = -1 * MOTOR_SPEED_MAX;
+        motor_speed_right = MOTOR_SPEED_MAX;
         update_motors();
         printf("Right\n");
         break;
         case ACTION_LEFT:
-          motor_speed_left  = MOTOR_TOP_SPEED;
-        motor_speed_right = -1 * MOTOR_TOP_SPEED;
+          motor_speed_left  = MOTOR_SPEED_MAX;
+        motor_speed_right = -1 * MOTOR_SPEED_MAX;
         update_motors();
         printf("Left\n");
         break;
@@ -331,6 +338,79 @@ int execute_step() {
     last_action = mseconds();
     beep();
     return 0;
+}
+
+/*!
+ * Executes the follow line process
+ *
+ * \todo Update to use all three sensors
+ * \author Joseph Warner
+ * \author Miranda McGrothers
+ * \return 0 on success, 1 on line lost
+ */
+ int execute_follow_line() {
+    if (analog(OPTOSENSOR_PORT) < OPTOSENSOR_LINE) {
+        motor_speed_left = SPEED_SLOW;
+        motor_speed_right = SPEED_FAST;
+    } else {
+        motor_speed_left = SPEED_FAST;
+        motor_speed_right = SPEED_SLOW;
+    }
+
+    update_motors();
+    return 0;
+ }
+
+/*!
+ * Executes the press button process
+ *
+ * \return 0 on success
+ */
+int execute_press_button() {
+    // Move forward to press the button
+    last_action = mseconds;
+    while (last_action + 250 > mseconds) {
+        if (execute_follow_line() == 1) {
+            break;
+        }
+    }
+
+    // Press button
+    motor_speed_right = MOTOR_SPEED_LINE_FOLLOWING;
+    motor_speed_left  = MOTOR_SPEED_LINE_FOLLOWING;
+    update_motors();
+
+    // Back up
+    motor_speed_right = -1 * MOTOR_SPEED_MAX;
+    motor_speed_left  = -1 * MOTOR_SPEED_MAX;
+    sleep(0.25);
+}
+
+/*!
+ * Executes the flip switch process
+ *
+ * \return 0 on success
+ */
+int execute_flip_switch() {
+
+}
+
+/*!
+ * Executes the ascend steps process
+ *
+ * \return 0 on success
+ */
+int execute_ascend_steps() {
+
+}
+
+/*!
+ * Executes the ascend ramp process
+ *
+ * \return 0 on success
+ */
+int execute_ascend_ramp() {
+
 }
 
 /*!
@@ -396,8 +476,8 @@ int main() {
     }
     
     /* Shutdown all motors */
-    motor_speed_left  = MOTOR_STOPPED;
-    motor_speed_right = MOTOR_STOPPED;
+    motor_speed_left  = MOTOR_SPEED_STOPPED;
+    motor_speed_right = MOTOR_SPEED_STOPPED;
     update_motors();
     
     return 0;
