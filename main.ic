@@ -77,6 +77,10 @@
 #define ACTION_RIGHT     12
 /*! Move left */
 #define ACTION_LEFT      13
+/*! Follow line forwards */
+#define ACTION_MOVE_FOLLOW_LINE_FORWARD 14
+/*! Follow line backwards */
+#define ACTION_MOVE_FOLLOW_LINE_BACKWARDS 15
 
 /*! Course action press button */
 #define ACTION_COURSE_PRESS_BUTTON 20
@@ -129,6 +133,9 @@
 #define EVENT_OPTOSENSOR_SEE_LINE 40
 /*! Optosensor lose line */
 #define EVENT_OPTOSENSOR_LOSE_LINE 41
+
+/*! Event Null */
+#define EVENT_NULL 50
 /*@}*/
 
 /*!
@@ -148,9 +155,19 @@
  * All global variables used in the execution of the robot.
  @{*/
 /*! The chain of actions that will be take */
-int  action_chain[]    = {ACTION_START,               ACTION_FORWARD,  ACTION_NULL,       ACTION_STOP};//,       ACTION_STOP};
+int  action_chain[]    = {ACTION_BACKWARDS, ACTION_FORWARD,     ACTION_LEFT,
+    ACTION_COURSE_PRESS_BUTTON, ACTION_MOVE_FOLLOW_LINE_BACKWARDS,  ACTION_RIGHT,
+    ACTION_FORWARD, ACTION_BACKWARDS,  ACTION_LEFT,
+    ACTION_COURSE_FLIP_SWITCH,  ACTION_FORWARD, ACTION_RIGHT,
+    ACTION_FORWARD, ACTION_BACKWARDS,   ACTION_LEFT,    ACTION_FORWARD,
+    ACTION_STOP};
 /*! The chain of actions that will trigger the corresponding action_chain item */
-int  event_chain[]     = {EVENT_BUTTON_START_PRESSED, EVENT_CDS_LIGHT, EVENT_MS_EF_PRESS, EVENT_MS_BF_PRESS};//, EVENT_BUTTON_STOP_PRESSED};
+int  event_chain[]     = {EVENT_CDS_LIGHT,  EVENT_MS_BB_PRESS,  EVENT_OPTOSENSOR_SEE_LINE,
+    EVENT_NULL,                 EVENT_NULL,                         EVENT_NULL,
+    EVENT_NULL,     EVENT_MS_BF_PRESS, EVENT_OPTOSENSOR_SEE_LINE,
+    EVENT_NULL,                 EVENT_NULL,     EVENT_OPTOSENSOR_SEE_LINE, 
+    EVENT_NULL,     EVENT_MS_BF_PRESS,  EVENT_NULL,     EVENT_NULL,
+    EVENT_BUTTON_STOP_PRESSED};
 /*! The current index in event_chain */
 int  chain_index       = 0;
 /*! The index at which execution stops */
@@ -484,54 +501,8 @@ int main() {
     while (chain_index < chain_max_index) {
         step();
     }
-    
-    chain_index = 0;
-    action_chain[chain_index] = ACTION_BACKWARDS;
-    execute_step();
-    sleep(0.75);
-    
-    chain_index = 0;
-    action_chain[chain_index] = ACTION_RIGHT;
-    execute_step();
-    sleep(0.5);
-    
-    // Hit wall on upper level
-    chain_index = 0;
-    action_chain[chain_index] = ACTION_FORWARD;
-    action_chain[chain_index + 1] = ACTION_NULL;
-    event_chain[chain_index + 1] = EVENT_MS_EF_PRESS;
-    action_chain[chain_index + 2] = ACTION_STOP;
-    event_chain[chain_index + 2] = EVENT_MS_BF_PRESS;
-    execute_step();
-    while(chain_index < 3) {
-        step();
-    }
-    
-    chain_index = 0;
-    action_chain[chain_index] = ACTION_BACKWARDS;
-    execute_step();
-    sleep(0.75);
-    
-    chain_index = 0;
-    action_chain[chain_index] = ACTION_LEFT;
-    execute_step();
-    sleep(0.5);
-    
-    chain_index = 0;
-    action_chain[chain_index] = ACTION_FORWARD;
-    action_chain[chain_index + 1] = ACTION_NULL;
-    event_chain[chain_index + 1] = EVENT_MS_EF_PRESS;
-    action_chain[chain_index + 2] = ACTION_STOP;
-    event_chain[chain_index + 2] = EVENT_MS_BF_PRESS;
-    execute_step();
-    while(chain_index < 3) {
-        step();
-    }
-    
-    /* Shutdown all motors */
-    motor_speed_left  = MOTOR_SPEED_STOPPED;
-    motor_speed_right = MOTOR_SPEED_STOPPED;
-    update_motors();
+
+    printf("Run completed\n");
     
     return 0;
 }
