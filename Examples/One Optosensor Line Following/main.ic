@@ -8,7 +8,7 @@
 #define LEFT_MOTOR 0
 #define RIGHT_MOTOR 2
 
-#define OPTOSENSOR_PORT 5
+#define OPTOSENSOR_PORT 4
 
 // Calibration numbers
 #define OPTOSENSOR_LINE 150
@@ -29,16 +29,17 @@ int main() {
     // Assume that we start on the right side of the line
     while (!stop_button()) {
         printf("%d\n", analog(OPTOSENSOR_PORT));
+        sleep(0.05);
         if (analog(OPTOSENSOR_PORT) < OPTOSENSOR_LINE) {
-            motor_speed_left = SPEED_SLOW;
-            motor_speed_right = SPEED_FAST;
+            // motor_speed_left = SPEED_SLOW;
+            // motor_speed_right = SPEED_FAST;
         } else {
-            motor_speed_left = SPEED_FAST;
-            motor_speed_right = SPEED_SLOW;
+            // motor_speed_left = SPEED_FAST;
+            // motor_speed_right = SPEED_SLOW;
         }
         
-        motor(LEFT_MOTOR, motor_speed_left);
-        motor(RIGHT_MOTOR, motor_speed_right);
+        //motor(LEFT_MOTOR, motor_speed_left);
+        //motor(RIGHT_MOTOR, motor_speed_right);
     }
     
     alloff();

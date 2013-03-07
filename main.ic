@@ -19,6 +19,10 @@
 #define MICROSWITCH_RIGHT_FRONT 14
 /*! Digital port of the Microswitch located on the front left */
 #define MICROSWITCH_LEFT_FRONT  15
+/*! Digital port of the Microswitch located on the back right */
+#define MICROSWITCH_RIGHT_BACK 7
+/*! Digital port of the Microswitch located on the back left */
+#define MICROSWITCH_LEFT_BACK 8
 
 /*! Motor port of the left motor */
 #define MOTOR_LEFT  0
@@ -31,11 +35,11 @@
  * These constants define different speed settings for the motors.
  @{*/
 /*! The maximum speed that the motors will be run at */
-#define MOTOR_SPEED_MAX -75
+#define MOTOR_SPEED_MAX -25
 /*! The minimum speed that the motors will be run at */
 #define MOTOR_SPEED_STOPPED    0
 /*! The line following speed that the motors will be run at */
-#define MOTOR_SPEED_LINE_FOLLOWING 30
+#define MOTOR_SPEED_LINE_FOLLOWING -25
 /*@}*/
 
 /*!
@@ -51,7 +55,7 @@
 #define CDS_LIGHT_BLUE  0
 
 /*! The reading from the middle line following optosensor defined as seeing a line */
-#define OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE 150
+#define OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE 20  
 /*@}*/
 
 /*!
@@ -101,7 +105,7 @@
 #define EVENT_MS_BF_PRESS 2
 /*! One front microswitch pressed */
 #define EVENT_MS_EF_PRESS 3
- /*! Right back microswitch pressed */
+/*! Right back microswitch pressed */
 #define EVENT_MS_RB_PRESS 4
 /*! Left back microswitch pressed */
 #define EVENT_MS_LB_PRESS 5
@@ -156,18 +160,18 @@
  @{*/
 /*! The chain of actions that will be take */
 int  action_chain[]    = {ACTION_BACKWARDS, ACTION_FORWARD,     ACTION_LEFT,
-    ACTION_COURSE_PRESS_BUTTON, ACTION_MOVE_FOLLOW_LINE_BACKWARDS,  ACTION_RIGHT,
-    ACTION_FORWARD, ACTION_BACKWARDS,  ACTION_LEFT,
-    ACTION_COURSE_FLIP_SWITCH,  ACTION_FORWARD, ACTION_RIGHT,
-    ACTION_FORWARD, ACTION_BACKWARDS,   ACTION_LEFT,    ACTION_FORWARD,
-    ACTION_STOP};
+      ACTION_COURSE_PRESS_BUTTON, ACTION_MOVE_FOLLOW_LINE_BACKWARDS,  ACTION_RIGHT,
+      ACTION_FORWARD, ACTION_BACKWARDS,  ACTION_LEFT,
+      ACTION_COURSE_FLIP_SWITCH,  ACTION_FORWARD, ACTION_RIGHT,
+      ACTION_FORWARD, ACTION_BACKWARDS,   ACTION_LEFT,    ACTION_FORWARD,
+      ACTION_STOP};
 /*! The chain of actions that will trigger the corresponding action_chain item */
 int  event_chain[]     = {EVENT_CDS_LIGHT,  EVENT_MS_BB_PRESS,  EVENT_OPTOSENSOR_SEE_LINE,
-    EVENT_NULL,                 EVENT_NULL,                         EVENT_NULL,
-    EVENT_NULL,     EVENT_MS_BF_PRESS, EVENT_OPTOSENSOR_SEE_LINE,
-    EVENT_NULL,                 EVENT_NULL,     EVENT_OPTOSENSOR_SEE_LINE, 
-    EVENT_NULL,     EVENT_MS_BF_PRESS,  EVENT_NULL,     EVENT_NULL,
-    EVENT_BUTTON_STOP_PRESSED};
+      EVENT_NULL,                 EVENT_NULL,                         EVENT_NULL,
+      EVENT_NULL,     EVENT_MS_EF_PRESS, EVENT_OPTOSENSOR_SEE_LINE,
+      EVENT_NULL,                 EVENT_NULL,     EVENT_OPTOSENSOR_SEE_LINE, 
+      EVENT_NULL,     EVENT_MS_EF_PRESS,  EVENT_NULL,     EVENT_NULL,
+      EVENT_BUTTON_STOP_PRESSED};
 /*! The current index in event_chain */
 int  chain_index       = 0;
 /*! The index at which execution stops */
@@ -252,14 +256,39 @@ int event_check(int event) {
           return digital(MICROSWITCH_LEFT_FRONT);
         break;
         case EVENT_MS_BF_PRESS:
-          return digital(MICROSWITCH_LEFT_FRONT) && digital(MICROSWITCH_RIGHT_FRONT);
+          return digital(MICROSWITCH_LEFT_FRONT) || digital(MICROSWITCH_RIGHT_FRONT);
+        return digital(MICROSWITCH_LEFT_FRONT) && digital(MICROSWITCH_RIGHT_FRONT);
         break;
         case EVENT_MS_EF_PRESS:
-          if (digital(MICROSWITCH_LEFT_FRONT) || digital(MICROSWITCH_RIGHT_FRONT)) {
+          return digital(MICROSWITCH_LEFT_FRONT) || digital(MICROSWITCH_RIGHT_FRONT);
+        if (digital(MICROSWITCH_LEFT_FRONT) || digital(MICROSWITCH_RIGHT_FRONT)) {
             if(digital(MICROSWITCH_LEFT_FRONT) && digital(MICROSWITCH_RIGHT_FRONT)) {
                 motor_speed_left  = MOTOR_SPEED_STOPPED;
                 motor_speed_right = MOTOR_SPEED_STOPPED;
             } else if(digital(MICROSWITCH_LEFT_FRONT)) {
+                motor_speed_right  = MOTOR_SPEED_STOPPED;
+            } else {
+                motor_speed_left = MOTOR_SPEED_STOPPED;
+            }
+            return 1;
+        } else {
+            return 0;
+        }
+        case EVENT_MS_RB_PRESS:
+          return digital(MICROSWITCH_RIGHT_BACK);
+        break;
+        case EVENT_MS_LB_PRESS:
+          return digital(MICROSWITCH_LEFT_BACK);
+        break;
+        case EVENT_MS_BB_PRESS:
+          return digital(MICROSWITCH_LEFT_BACK) && digital(MICROSWITCH_RIGHT_BACK);
+        break;
+        case EVENT_MS_EB_PRESS:
+          if (digital(MICROSWITCH_LEFT_BACK) || digital(MICROSWITCH_RIGHT_BACK)) {
+            if(digital(MICROSWITCH_LEFT_BACK) && digital(MICROSWITCH_RIGHT_BACK)) {
+                motor_speed_left  = MOTOR_SPEED_STOPPED;
+                motor_speed_right = MOTOR_SPEED_STOPPED;
+            } else if(digital(MICROSWITCH_LEFT_BACK)) {
                 motor_speed_right  = MOTOR_SPEED_STOPPED;
             } else {
                 motor_speed_left = MOTOR_SPEED_STOPPED;
@@ -288,10 +317,16 @@ int event_check(int event) {
         case EVENT_BUTTON_START_PRESSED:
           return start_button();
         break;
+        /* Optosensor Events */
+        case EVENT_OPTOSENSOR_SEE_LINE:
+          return analog(OPTOSENSOR_LINE_FOLLOWING_CENTER) < OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE;
+        break;
+        case EVENT_OPTOSENSOR_LOSE_LINE:
+          return analog(OPTOSENSOR_LINE_FOLLOWING_CENTER) > OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE;
+        break;
         /* Special Events */
         case EVENT_NULL:
-            return 1;
-        case 
+          return 1;
     }
     
     return 0;
@@ -377,18 +412,18 @@ int execute_step() {
         printf("Left\n");
         break;
         case ACTION_MOVE_FOLLOW_LINE_FORWARD:
-            execute_follow_line(1);
-            break;
+          execute_follow_line(1);
+        break;
         case ACTION_MOVE_FOLLOW_LINE_BACKWARDS:
-            execute_follow_line(-1);
-            break;
+          execute_follow_line(-1);
+        break;
         /* Course Actions */
         case ACTION_COURSE_PRESS_BUTTON:
-            execute_press_button();
-            break;
+          execute_press_button();
+        break;
         case ACTION_COURSE_FLIP_SWITCH:
-            execute_flip_switch();
-            break;
+          execute_flip_switch();
+        break;
     }
     
     chain_index++;
@@ -406,18 +441,18 @@ int execute_step() {
  * \param[in] direction 1 for forward, -1 for backwards
  * \return 0 on success, 1 on line lost
  */
- int execute_follow_line(int direction) {
-    if (analog(OPTOSENSOR_PORT) < OPTOSENSOR_LINE) {
-        motor_speed_left = direction * SPEED_SLOW;
-        motor_speed_right = direction * SPEED_FAST;
+int execute_follow_line(int direction) {
+    if (analog(OPTOSENSOR_LINE_FOLLOWING_CENTER) < OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE) {
+        motor_speed_left = direction * MOTOR_SPEED_STOPPED;
+        motor_speed_right = direction * MOTOR_SPEED_LINE_FOLLOWING;
     } else {
-        motor_speed_left = direction * SPEED_FAST;
-        motor_speed_right = direction * SPEED_SLOW;
+        motor_speed_left = direction * MOTOR_SPEED_LINE_FOLLOWING;
+        motor_speed_right = direction * MOTOR_SPEED_STOPPED;
     }
-
+    
     update_motors();
     return 0;
- }
+}
 
 /*!
  * Executes the press button process
@@ -428,13 +463,13 @@ int execute_step() {
 int execute_press_button() {
     // Move forward to press the button
     printf("Pressing button\n");
-    last_action = mseconds;
-    while (last_action + 250 > mseconds) {
+    last_action = mseconds();
+    while (last_action + (long)250 > mseconds()) {
         if (execute_follow_line(1) == 1) {
             break;
         }
     }
-
+    
     // Press button
     motor_speed_right = MOTOR_SPEED_LINE_FOLLOWING;
     motor_speed_left  = MOTOR_SPEED_LINE_FOLLOWING;
@@ -451,13 +486,13 @@ int execute_press_button() {
 int execute_flip_switch() {
     // Back up into the switch
     printf("Flipping switch\n");
-    last_action = mseconds;
-    while (last_action + 250 > mseconds) {
+    last_action = mseconds();
+    while (last_action + (long)250 > mseconds()) {
         if (execute_follow_line(1) == 1) {
             break;
         }
     }
-
+    
     // Stop the vehicle
     motor_speed_right = MOTOR_SPEED_STOPPED;
     motor_speed_left = MOTOR_SPEED_STOPPED;
@@ -470,7 +505,7 @@ int execute_flip_switch() {
  * \return 0 on success
  */
 int execute_ascend_steps() {
-
+    
 }
 
 /*!
@@ -479,7 +514,7 @@ int execute_ascend_steps() {
  * \return 0 on success
  */
 int execute_ascend_ramp() {
-
+    
 }
 
 /*!
@@ -495,44 +530,49 @@ int main() {
     
     // Tell the user to start the run
     printf("Press Start to start run\n");
+    while(!start_button());
+    sleep(0.25);
     
     /* Execute the steps in order until tall steps have been taken */
     while (chain_index < chain_max_index) {
+        if(event_check(event_chain[chain_index])) {
+            
         switch(chain_index) {
             case 3:
-                sleep(0.25);
-                chain_index++;
-                break;
+              sleep(0.25);
+            chain_index++;
+            break;
             case 5:
-                sleep(0.25);
-                chain_index++;
-                break;
+              sleep(0.25);
+            chain_index++;
+            break;
             case 6:
-                sleep(0.25);
-                chain_index++;
-                break;
+              sleep(0.25);
+            chain_index++;
+            break;
             case 9:
-                sleep(0.25);
-                chain_index++;
-                break;
+              sleep(0.25);
+            chain_index++;
+            break;
             case 12:
-                sleep(0.25);
-                chain_index++;
-                break;
+              sleep(0.25);
+            chain_index++;
+            break;
             case 14:
-                sleep(0.25);
-                chain_index++;
-                break;
+              sleep(0.25);
+            chain_index++;
+            break;
             case 15:
-                sleep(0.25);
-                chain_index++;
-                break;
+              sleep(0.25);
+            chain_index++;
+            break;
             default:
-                step();
-                break;
+              step();
+            break;
+            }
         }
     }
-
+    
     printf("Run completed\n");
     
     return 0;
