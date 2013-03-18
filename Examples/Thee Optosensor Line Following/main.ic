@@ -40,6 +40,11 @@ int followLine() {
     motor(RIGHT_MOTOR, motor_speed_right);
 }
 
+int analogReadouts() {
+    // gives readout from each of the analog optosenors with a 0.1 second wait to calibrate
+    printf("L:%d  M:%d  R:%d\n", analog(L_OPTOSENSOR_PORT), analog(M_OPTOSENSOR_PORT), analog(R_OPTOSENSOR_PORT));
+}
+
 int main() {
     motor(LEFT_MOTOR, motor_speed_left);
     motor(RIGHT_MOTOR, motor_speed_right);
@@ -50,7 +55,7 @@ int main() {
     
     // Assume that we start on the right side of the line
     while (!stop_button()) {
-        followLine();
+        analogReadouts();
     }
     
     alloff();
