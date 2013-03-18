@@ -13,12 +13,12 @@
 /*! Analog port of the center Optosensor */
 #define OPTOSENSOR_LINE_FOLLOWING_CENTER 4
 /*! Analog port of the CDS Cell  */
-#define CDS_CELL 6
+#define CDS_CELL 2
 
 /*! Digital port of the Microswitch located on the front right */
 #define MICROSWITCH_RIGHT_FRONT 14
 /*! Digital port of the Microswitch located on the front left */
-#define MICROSWITCH_LEFT_FRONT  15
+#define MICROSWITCH_LEFT_FRONT  14
 /*! Digital port of the Microswitch located on the back right */
 #define MICROSWITCH_RIGHT_BACK 7
 /*! Digital port of the Microswitch located on the back left */
@@ -39,7 +39,7 @@
 /*! The minimum speed that the motors will be run at */
 #define MOTOR_SPEED_STOPPED    0
 /*! The line following speed that the motors will be run at */
-#define MOTOR_SPEED_LINE_FOLLOWING -25
+#define MOTOR_SPEED_LINE_FOLLOWING -15
 /*@}*/
 
 /*!
@@ -55,7 +55,7 @@
 #define CDS_LIGHT_BLUE  0
 
 /*! The reading from the middle line following optosensor defined as seeing a line */
-#define OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE 20  
+#define OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE 30  
 /*@}*/
 
 /*!
@@ -442,12 +442,12 @@ int execute_step() {
  * \return 0 on success, 1 on line lost
  */
 int execute_follow_line(int direction) {
-    if (analog(OPTOSENSOR_LINE_FOLLOWING_CENTER) < OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE) {
-        motor_speed_left = direction * MOTOR_SPEED_STOPPED;
-        motor_speed_right = direction * MOTOR_SPEED_LINE_FOLLOWING;
+    if (analog(OPTOSENSOR_LINE_FOLLOWING_CENTER) > OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE) {
+        motor_speed_left = -1 * direction * -10 ;
+        motor_speed_right = direction * -25;
     } else {
-        motor_speed_left = direction * MOTOR_SPEED_LINE_FOLLOWING;
-        motor_speed_right = direction * MOTOR_SPEED_STOPPED;
+        motor_speed_left = direction * MOTOR_SPEED_LINE_FOLLOWING * 2;
+        motor_speed_right = -1 * direction * MOTOR_SPEED_LINE_FOLLOWING;
     }
     
     update_motors();
@@ -464,7 +464,7 @@ int execute_press_button() {
     // Move forward to press the button
     printf("Pressing button\n");
     last_action = mseconds();
-    while (last_action + (long)250 > mseconds()) {
+    while (last_action + (long)2000 > mseconds()) {
         if (execute_follow_line(1) == 1) {
             break;
         }
@@ -532,9 +532,104 @@ int main() {
     printf("Press Start to start run\n");
     while(!start_button());
     sleep(0.25);
+    printf("1\n");
+    
+    // wait for light to start
+    while(event_check_CDS(CDS_CELL, CDS_LIGHT_START, COMPARISON_LESSER) == 0);
+    printf("2\n");
+    
+    // Head backwards
+    motor_speed_left = -1 * MOTOR_SPEED_MAX;
+    motor_speed_right = -1 * 3 *MOTOR_SPEED_MAX;
+    update_motors();
+    sleep(5.0);
+    
+    motor_speed_right = MOTOR_SPEED_MAX;
+    motor_speed_left = MOTOR_SPEED_MAX;
+    update_motors();
+    sleep(5.0);
+    ao();
+    return 0;
+    
+    while (!(digital(MICROSWITCH_LEFT_BACK) && digital(MICROSWITCH_RIGHT_BACK))) {
+        if (digital(MICROSWITCH_LEFT_BACK)) {
+            motor_speed_right = -1 * MOTOR_SPEED_MAX;
+            motor_speed_left = MOTOR_SPEED_STOPPED;
+        } else if (digital(MICROSWITCH_RIGHT_BACK)) {
+            motor_speed_right = MOTOR_SPEED_STOPPED;
+            motor_speed_left = -1 * MOTOR_SPEED_MAX;
+        } else {
+            motor_speed_left = -1 * MOTOR_SPEED_MAX;
+            motor_speed_right = -1 * MOTOR_SPEED_MAX;
+        }
+        update_motors();
+    }
+    printf("3\n");
+    
+    // Stop against the wall
+    motor_speed_right = MOTOR_SPEED_STOPPED;
+    motor_speed_left = MOTOR_SPEED_STOPPED;
+    update_motors();
+    sleep (0.25);
+    printf("4\n");
+    
+    // Forward a bit
+    motor_speed_left = MOTOR_SPEED_MAX;
+    motor_speed_right = MOTOR_SPEED_MAX;
+    update_motors();
+    sleep(0.1);
+    printf("5\n");
+    
+    // Turn right 45 degrees
+    motor_speed_left = 3 * MOTOR_SPEED_MAX;
+    motor_speed_right = (-3) * MOTOR_SPEED_MAX;
+    update_motors();
+    sleep(0.35);
+    printf("6\n");
+    
+    
+    // Head forwards until we see the line
+    motor_speed_right = MOTOR_SPEED_MAX;
+    motor_speed_left = MOTOR_SPEED_MAX;
+    update_motors();
+    sleep (0.1); // Try to get past the start area before starting to read
+    printf("7\n");
+    
+    while(analog(OPTOSENSOR_LINE_FOLLOWING_CENTER) > OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE) {
+        printf("%d\n", analog(OPTOSENSOR_LINE_FOLLOWING_CENTER));
+    }
+    printf("8\n");
+    
+    // Follow line
+    while (!digital(MICROSWITCH_RIGHT_FRONT)) {
+        execute_follow_line(1);
+    }
+    printf("9\n");
+    
+    // Back up
+    motor_speed_left = -1 * MOTOR_SPEED_MAX;
+    motor_speed_right = -1 * MOTOR_SPEED_MAX;
+    update_motors();
+    printf("10\n");
+    
+    while (!(digital(MICROSWITCH_LEFT_BACK) && digital(MICROSWITCH_RIGHT_BACK))) {
+        if (digital(MICROSWITCH_LEFT_BACK)) {
+            motor_speed_right = -1 * MOTOR_SPEED_MAX;
+            motor_speed_left = MOTOR_SPEED_STOPPED;
+        } else if (digital(MICROSWITCH_RIGHT_BACK)) {
+            motor_speed_right = MOTOR_SPEED_STOPPED;
+            motor_speed_left = -1 * MOTOR_SPEED_MAX;
+        } else {
+            motor_speed_left = -1 * MOTOR_SPEED_MAX;
+            motor_speed_right = -1 * MOTOR_SPEED_MAX;
+        }
+        update_motors();
+    }
+    printf("11\n");
+    ao();
     
     /* Execute the steps in order until tall steps have been taken */
-    while (chain_index < chain_max_index) {
+    /*while (chain_index < chain_max_index) {
         if(event_check(event_chain[chain_index])) {
             
         switch(chain_index) {
@@ -571,7 +666,7 @@ int main() {
             break;
             }
         }
-    }
+    }*/
     
     printf("Run completed\n");
     
