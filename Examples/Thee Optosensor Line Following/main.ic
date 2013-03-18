@@ -18,9 +18,29 @@
 #define SPEED_SLOW 0
 #define SPEED_FAST 30
 
+int motor_speed_left = 0;
+int motor_speed_right = 0;
+
+int followLine() {
+    if (analog(M_OPTOSENSOR_PORT) < OPTOSENSOR_LINE) {
+        // Straight
+        motor_speed_left = SPEED_FAST;
+        motor_speed_right = SPEED_FAST;
+    } else if (analog(L_OPTOSENSOR_PORT) > OPTOSENSOR_LINE) {
+        // Right
+        motor_speed_left = SPEED_FAST;
+        motor_speed_right = SPEED_SLOW;
+    } else {
+        // Left
+        motor_speed_left = SPEED_SLOW;
+        motor_speed_right = SPEED_FAST;
+    }
+    
+    motor(LEFT_MOTOR, motor_speed_left);
+    motor(RIGHT_MOTOR, motor_speed_right);
+}
+
 int main() {
-    int motor_speed_left = 0;
-    int motor_speed_right = 0;
     motor(LEFT_MOTOR, motor_speed_left);
     motor(RIGHT_MOTOR, motor_speed_right);
     
@@ -30,22 +50,7 @@ int main() {
     
     // Assume that we start on the right side of the line
     while (!stop_button()) {
-        if (analog(M_OPTOSENSOR_PORT) < OPTOSENSOR_LINE) {
-            // Straight
-            motor_speed_left = SPEED_FAST;
-            motor_speed_right = SPEED_FAST;
-        } else if (analog(L_OPTOSENSOR_PORT) > OPTOSENSOR_LINE) {
-            // Right
-            motor_speed_left = SPEED_FAST;
-            motor_speed_right = SPEED_SLOW;
-        } else {
-            // Left
-            motor_speed_left = SPEED_SLOW;
-            motor_speed_right = SPEED_FAST;
-        }
-        
-        motor(LEFT_MOTOR, motor_speed_left);
-        motor(RIGHT_MOTOR, motor_speed_right);
+        followLine();
     }
     
     alloff();
