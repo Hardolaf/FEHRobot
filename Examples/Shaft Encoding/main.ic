@@ -18,7 +18,7 @@
 
 #define INCHES 6
 #define RIGHT_TURN_INCHES 9;
-#define LEFT_TURN_INCHES 0;
+#define LEFT_TURN_INCHES 9;
 
 int motor_speed_left = 0;
 int motor_speed_right = 0;
@@ -60,6 +60,23 @@ int turnRight() {
     printf("%d\n", encoder4_counts);
 }
 
+int turnLeft() {
+    // Make the right wheel turn, pivot about the left wheel
+    motor(RIGHT_MOTOR, SPEED_TURN);
+    
+    countLimitF = countPerInch * (float)LEFT_TURN_INCHES;
+    countLimit = (int)countLimitF;
+    
+    while (encoder4_counts < countLimit) {
+        printf("%d\n", encoder4_counts);
+    }
+    
+    alloff();
+    
+    sleep(1.0);
+    printf("%d\n", encoder4_counts);
+}
+
 int main() {
     motor(LEFT_MOTOR, motor_speed_left);
     motor(RIGHT_MOTOR, motor_speed_right);
@@ -73,7 +90,7 @@ int main() {
     printf("Press start to begin\n");
     while(!start_button());
     
-    turnRight();
+    turnLeft();
         
     while(!start_button());
     
