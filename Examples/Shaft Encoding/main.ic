@@ -11,19 +11,25 @@
 #define RIGHT_MOTOR 2
 
 #define SPEED_SLOW 0
-#define SPEED_FAST 100
+#define SPEED_FAST 50
+#define SPEED_TURN 25
 
 #define RUNTIME 2000
 
 #define INCHES 6
+#define RIGHT_TURN_INCHES 0;
+#define LEFT_TURN_INCHES 0;
 
 int motor_speed_left = 0;
 int motor_speed_right = 0;
 float countPerInch = 415.25 / 19.57;
-float countLimitF = countPerInch * (float)INCHES;
-int countLimit = (int)countLimitF;
+float countLimitF;
+int countLimit;
 
 int travelForward() {
+    countLimitF = countPerInch * (float)INCHES;
+    countLimit = (int)countLimitF;
+    
     motor(LEFT_MOTOR, SPEED_FAST);
     motor(RIGHT_MOTOR, SPEED_FAST);
     
@@ -35,7 +41,23 @@ int travelForward() {
     
     sleep(1.0);
     printf("%d\n", encoder4_counts);
+}
 
+int turnRight() {
+    // Make the left wheel turn, pivot about the right wheel
+    motor(LEFT_MOTOR, SPEED_TURN);
+    
+    countLimitF = countPerInch * (float)RIGHT_TURN_INCHES;
+    countLimit = (int)countLimitF;
+    
+    while (encoder4_counters < countLimit) {
+        printf("%d\n", encoder4_counts);
+    }
+    
+    alloff();
+    
+    sleep(1.0);
+    printf("%d\n", encoder4_counts);
 }
 
 int main() {
@@ -45,11 +67,13 @@ int main() {
     encoder4_low_threshold = 30;
     encoder4_high_threshold = 60;
     
+    sleep(1.0);
+    
     // Wait for the start button
     printf("Press start to begin\n");
     while(!start_button());
     
-    travelForward();
+    turnRight();
         
     while(!start_button());
     
