@@ -17,7 +17,7 @@
 #define RUNTIME 2000
 
 #define INCHES 6
-#define RIGHT_TURN_INCHES 0;
+#define RIGHT_TURN_INCHES 9;
 #define LEFT_TURN_INCHES 0;
 
 int motor_speed_left = 0;
@@ -50,7 +50,7 @@ int turnRight() {
     countLimitF = countPerInch * (float)RIGHT_TURN_INCHES;
     countLimit = (int)countLimitF;
     
-    while (encoder4_counters < countLimit) {
+    while (encoder4_counts < countLimit) {
         printf("%d\n", encoder4_counts);
     }
     
