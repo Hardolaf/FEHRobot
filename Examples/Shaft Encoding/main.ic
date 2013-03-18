@@ -17,22 +17,13 @@
 
 #define INCHES 6
 
-int main() {
-    int motor_speed_left = 0;
-    int motor_speed_right = 0;
-    float countPerInch = 415.25 / 19.57;
-    float countLimitF = countPerInch * (float)INCHES;
-    int countLimit = (int)countLimitF;
-    motor(LEFT_MOTOR, motor_speed_left);
-    motor(RIGHT_MOTOR, motor_speed_right);
-    
-    encoder4_low_threshold = 30;
-    encoder4_high_threshold = 60;
-    
-    // Wait for the start button
-    printf("Press start to begin\n");
-    while(!start_button());
-    
+int motor_speed_left = 0;
+int motor_speed_right = 0;
+float countPerInch = 415.25 / 19.57;
+float countLimitF = countPerInch * (float)INCHES;
+int countLimit = (int)countLimitF;
+
+int travelForward() {
     motor(LEFT_MOTOR, SPEED_FAST);
     motor(RIGHT_MOTOR, SPEED_FAST);
     
@@ -44,7 +35,22 @@ int main() {
     
     sleep(1.0);
     printf("%d\n", encoder4_counts);
+
+}
+
+int main() {
+    motor(LEFT_MOTOR, motor_speed_left);
+    motor(RIGHT_MOTOR, motor_speed_right);
     
+    encoder4_low_threshold = 30;
+    encoder4_high_threshold = 60;
+    
+    // Wait for the start button
+    printf("Press start to begin\n");
+    while(!start_button());
+    
+    travelForward();
+        
     while(!start_button());
     
     main();
