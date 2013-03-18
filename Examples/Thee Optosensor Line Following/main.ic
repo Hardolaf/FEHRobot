@@ -12,37 +12,46 @@
 #define M_OPTOSENSOR_PORT 4
 #define R_OPTOSENSOR_PORT 3
 
-// Calibration numbers
-#define OPTOSENSOR_LINE 150
+// Calibration numbers (Optosensor Loction_O_Line)
+#define L_O_L 160
+#define M_O_L 160
+#define R_O_L 160
 
-#define SPEED_SLOW 0
-#define SPEED_FAST 30
+#define SPEED_SLOW 10
+#define SPEED_FAST 25
 
 int motor_speed_left = 0;
 int motor_speed_right = 0;
 
 int followLine() {
-    if (analog(M_OPTOSENSOR_PORT) < OPTOSENSOR_LINE) {
-        // Straight
+    
+    if (analog(M_OPTOSENSOR_PORT) > M_O_L) {
+        // Middle Sees Line, go straight
         motor_speed_left = SPEED_FAST;
         motor_speed_right = SPEED_FAST;
-    } else if (analog(L_OPTOSENSOR_PORT) > OPTOSENSOR_LINE) {
-        // Right
+    } else if(analog(R_OPTOSENSOR_PORT) > R_O_L) {
+        // Right sees line, go left
+        motor_speed_left = SPEED_SLOW;
+        motor_speed_right = SPEED_FAST;
+    } else if(analog(L_OPTOSENSOR_PORT) > L_O_L) {
+        // Left sees line, go right
         motor_speed_left = SPEED_FAST;
         motor_speed_right = SPEED_SLOW;
     } else {
-        // Left
-        motor_speed_left = SPEED_SLOW;
-        motor_speed_right = SPEED_FAST;
+        // Well Jim, we done gone lost the line, let's just shut down
+        ao();
+        return 1;
     }
     
     motor(LEFT_MOTOR, motor_speed_left);
     motor(RIGHT_MOTOR, motor_speed_right);
+    return 0;
 }
 
 int analogReadouts() {
     // gives readout from each of the analog optosenors with a 0.1 second wait to calibrate
     printf("L:%d  M:%d  R:%d\n", analog(L_OPTOSENSOR_PORT), analog(M_OPTOSENSOR_PORT), analog(R_OPTOSENSOR_PORT));
+    sleep(0.1);
 }
 
 int main() {
