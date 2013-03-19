@@ -1,0 +1,80 @@
+/*!
+ * \file   movement.ic
+ * \author Joseph Warner (warner.512@osu.edu)
+ * \date   Spring, 2013
+ * \brief  Controls the robot in the competition
+ */
+
+ /*! Motor port of the left motor */
+#define MOTOR_LEFT  0
+
+/*! Motor port of the right motor */
+#define MOTOR_RIGHT 2
+
+/*! Maximum speed */
+#define MOVEMENT_MAX_SPEED 50
+
+/*! The slowest a motor can be moving */
+#define MOVEMENT_MIN_SPEED 15
+
+/*! The speed of a wheel while turning */
+#define MOVEMENT_TURN_SPEED 20
+
+/*! A stopped motor */
+#define MOVEMENT_STOPPED 0
+
+/*!
+ * \param[in] motor The motor that is to be updated
+ * \param[in] speed The desired speed in the domain of [-100, 100]
+ */
+int movement_motor_update(int motor, int speed) {
+	// Convert speed to actual speed
+	int actualSpeed = speed;//(int)((float)*(MOVEMENT_MAX_SPEED * speed) / 100.0);
+
+	// Set the actual motor speed
+	motor(motor, actualSpeed);
+	return 0;
+}
+
+/*!
+ * \param[in] angle The angle to trun through
+ */
+int movement_turn_right(int angle) {
+	movement_motor_update(MOTOR_LEFT, MOVEMENT_TURN_SPEED);
+	movement_motor_update(MOTOR_RIGHT, -1 * MOVEMENT_TURN_SPEED);
+
+	// TODO: Use shaft encoding for this
+	sleep(); // Time to turn
+
+	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
+	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
+}
+
+/*!
+ * \param[in] angle The angle to trun through
+ */
+int movement_turn_left(int angle) {
+	movement_motor_update(MOTOR_LEFT, -1 * MOVEMENT_TURN_SPEED);
+	movement_motor_update(MOTOR_RIGHT, MOVEMENT_TURN_SPEED);
+
+	// TODO: Use shaft encoding for this
+	sleep(); // Time to turn
+
+	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
+	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
+}
+
+/*!
+ * \param[in] speed    The speed at which it will travel forward within [-100, 100]
+ * \param[in] distance How far the robot will travel forward
+ */
+int movement_straight(int speed, int distance) {
+	movement_motor_update(MOTOR_LEFT,  speed);
+	movement_motor_update(MOTOR_RIGHT, speed);
+
+	// TODO: Use shaft encoding for this
+	sleep(); // Time to turn
+
+	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
+	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
+}
