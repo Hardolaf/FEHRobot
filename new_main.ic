@@ -1,0 +1,18 @@
+/*!
+ * \file   new_main.ic
+ * \author Joseph Warner (warner.512@osu.edu)
+ * \date   Spring, 2013
+ * \brief  Controls the robot in the competition
+ */
+
+// Import the movement library
+#use movement.ic
+
+int performance_test_4() {
+	
+}
+
+int main() {
+	// Execute the current performance test code
+	
+}
