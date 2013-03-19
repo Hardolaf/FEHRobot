@@ -5,9 +5,10 @@
  * \brief  Controls the robot in the competition
  */
 
-#use sensor_cds.ic
-#use sensor_switch.ic
-
 int sensor_analog_read(int port) {
 	return analog(port);
+}
+
+int sensor_digital_read(int port) {
+	return digital(port);
 }

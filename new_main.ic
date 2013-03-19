@@ -9,14 +9,29 @@
 #use movement.ic
 
 // Import sensor libraries
+#use sensor_controller.ic
 #use sensor_cds.ic
 #use sensor_switch.ic
 
 int performance_test_4() {
-
+    
 }
 
 int main() {
-	// Execute the current performance test code
+    // Set all motors to be off
+    movement_all_off();
+    
+    // Wait for start button to be pressed
+    printf("Press button to start run\n");
+    while (sensor_controller_start_button());
+    printf("Run starting...\n");
+    
+    // Wait one second
+    sleep(1.0);
+    
+    // Execute the current performance test code
+    //performance_test_4();
+    movement_turn_left(0);
 
+    printf("Turn completed\n");
 }

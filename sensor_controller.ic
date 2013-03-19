@@ -1,0 +1,20 @@
+/*!
+ * \file   sensor_controller.ic
+ * \author Joseph Warner (warner.512@osu.edu)
+ * \date   Spring, 2013
+ * \brief  Controls the controller sensors
+ */
+
+/*!
+ * \return 0 for not pressed, 1 for pressed
+ */
+int sensor_controller_start_button() {
+	return start_button();
+}
+
+/*!
+ * \return 0 for not pressed, 1 for pressed
+ */
+int sensor_controller_stop_button() {
+	return stop_button();
+}

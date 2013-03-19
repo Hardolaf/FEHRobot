@@ -37,7 +37,7 @@ int movement_motor_update(int motor, int speed) {
 }
 
 /*!
- * \param[in] angle The angle to trun through
+ * \param[in] angle The angle to trun through in (0, 360]
  */
 int movement_turn_right(int angle) {
 	movement_motor_update(MOTOR_LEFT, MOVEMENT_TURN_SPEED);
@@ -51,7 +51,7 @@ int movement_turn_right(int angle) {
 }
 
 /*!
- * \param[in] angle The angle to trun through
+ * \param[in] angle The angle to trun through in (0, 360]
  */
 int movement_turn_left(int angle) {
 	movement_motor_update(MOTOR_LEFT, -1 * MOVEMENT_TURN_SPEED);
@@ -75,6 +75,11 @@ int movement_straight(int speed, int distance) {
 	// TODO: Use shaft encoding for this
 	sleep(); // Time to turn
 
+	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
+	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
+}
+
+int movement_all_off() {
 	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
 	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
 }
