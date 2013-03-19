@@ -7,7 +7,10 @@
 
 // Import the movement library
 #use movement.ic
-#use sensor.ic
+
+// Import sensor libraries
+#use sensor_cds.ic
+#use sensor_switch.ic
 
 int performance_test_4() {
 

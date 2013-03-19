@@ -5,6 +5,8 @@
  * \brief  Controls the microswitch sensors
  */
 
+#use sensor.ic
+
 /*! Digital port of the Microswitch located on the front right */
 #define SENSOR_SWITCH_F_R 14
 

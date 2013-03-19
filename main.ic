@@ -19,13 +19,6 @@
  * These constants all correspond to experimentally determined values used to
  * calibrate the various sensors on the robot.
  @{*/
-/*! The defined point between a light on the ground and no light */
-#define CDS_LIGHT_START 35
-/*! The reading from the CDS defined to be an indicator of a red light */
-#define CDS_LIGHT_RED   0
-/*! The reading from the CDS defined to be an indicator a blue light */
-#define CDS_LIGHT_BLUE  0
-
 /*! The reading from the middle line following optosensor defined as seeing a line */
 #define OPTOSENSOR_LINE_FOLLOWING_CENTER_LINE 30  
 /*@}*/
