@@ -1,0 +1,18 @@
+/*!
+ * \file   sensor_switch.ic
+ * \author Joseph Warner (warner.512@osu.edu)
+ * \date   Spring, 2013
+ * \brief  Controls the microswitch sensors
+ */
+
+/*! Digital port of the Microswitch located on the front right */
+#define SENSOR_SWITCH_F_R 14
+
+/*! Digital port of the Microswitch located on the front left */
+#define SENSOR_SWITCH_F_L 14
+
+/*! Digital port of the Microswitch located on the back right */
+#define SENSOR_SWITCH_B_R 7
+
+/*! Digital port of the Microswitch located on the back left */
+#define SENSOR_SWITCH_B_L 8

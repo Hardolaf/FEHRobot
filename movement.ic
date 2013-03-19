@@ -2,7 +2,7 @@
  * \file   movement.ic
  * \author Joseph Warner (warner.512@osu.edu)
  * \date   Spring, 2013
- * \brief  Controls the robot in the competition
+ * \brief  Controls the movement of the robot
  */
 
  /*! Motor port of the left motor */

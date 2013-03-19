@@ -1,0 +1,9 @@
+/*!
+ * \file   sensor_cds.ic
+ * \author Joseph Warner (warner.512@osu.edu)
+ * \date   Spring, 2013
+ * \brief  Controls the CDS sensor(s)
+ */
+
+/*! Analog port of the CDS Cell  */
+#define SENSOR_CDS_M 2

@@ -12,29 +12,6 @@
  @{*/
 /*! Analog port of the center Optosensor */
 #define OPTOSENSOR_LINE_FOLLOWING_CENTER 4
-/*! Analog port of the CDS Cell  */
-#define CDS_CELL 2
-
-/*! Digital port of the Microswitch located on the front right */
-#define MICROSWITCH_RIGHT_FRONT 14
-/*! Digital port of the Microswitch located on the front left */
-#define MICROSWITCH_LEFT_FRONT  14
-/*! Digital port of the Microswitch located on the back right */
-#define MICROSWITCH_RIGHT_BACK 7
-/*! Digital port of the Microswitch located on the back left */
-#define MICROSWITCH_LEFT_BACK 8
-/*@}*/
-
-/*!
- * \defgroup motor_constants Motor Constants
- * These constants define different speed settings for the motors.
- @{*/
-/*! The maximum speed that the motors will be run at */
-#define MOTOR_SPEED_MAX -25
-/*! The minimum speed that the motors will be run at */
-#define MOTOR_SPEED_STOPPED    0
-/*! The line following speed that the motors will be run at */
-#define MOTOR_SPEED_LINE_FOLLOWING -15
 /*@}*/
 
 /*!

@@ -7,12 +7,13 @@
 
 // Import the movement library
 #use movement.ic
+#use sensor.ic
 
 int performance_test_4() {
-	
+
 }
 
 int main() {
 	// Execute the current performance test code
-	
+
 }
