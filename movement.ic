@@ -5,7 +5,7 @@
  * \brief  Controls the movement of the robot
  */
 
- /*! Motor port of the left motor */
+/*! Motor port of the left motor */
 #define MOTOR_LEFT  0
 
 /*! Motor port of the right motor */
@@ -18,7 +18,7 @@
 #define MOVEMENT_MIN_SPEED 15
 
 /*! The speed of a wheel while turning */
-#define MOVEMENT_TURN_SPEED 20
+#define MOVEMENT_TURN_SPEED 30
 
 /*! A stopped motor */
 #define MOVEMENT_STOPPED 0
@@ -27,41 +27,41 @@
  * \param[in] motor The motor that is to be updated
  * \param[in] speed The desired speed in the domain of [-100, 100]
  */
-int movement_motor_update(int motor, int speed) {
-	// Convert speed to actual speed
-	int actualSpeed = speed;//(int)((float)*(MOVEMENT_MAX_SPEED * speed) / 100.0);
-
-	// Set the actual motor speed
-	motor(motor, actualSpeed);
-	return 0;
+int movement_motor_update(int port, int speed) {
+    // Convert speed to actual speed
+    int actualSpeed = speed;//(int)((float)*(MOVEMENT_MAX_SPEED * speed) / 100.0);
+    
+    // Set the actual motor speed
+    motor(port, actualSpeed);
+    return 0;
 }
 
 /*!
  * \param[in] angle The angle to trun through in (0, 360]
  */
 int movement_turn_right(int angle) {
-	movement_motor_update(MOTOR_LEFT, MOVEMENT_TURN_SPEED);
-	movement_motor_update(MOTOR_RIGHT, -1 * MOVEMENT_TURN_SPEED);
-
-	// TODO: Use shaft encoding for this
-	sleep(); // Time to turn
-
-	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
-	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
+    movement_motor_update(MOTOR_LEFT, MOVEMENT_TURN_SPEED);
+    movement_motor_update(MOTOR_RIGHT, -1 * MOVEMENT_TURN_SPEED);
+    
+    // TODO: Use shaft encoding for this
+    sleep(2.0); // Time to turn
+    
+    movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
+    movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
 }
 
 /*!
  * \param[in] angle The angle to trun through in (0, 360]
  */
 int movement_turn_left(int angle) {
-	movement_motor_update(MOTOR_LEFT, -1 * MOVEMENT_TURN_SPEED);
-	movement_motor_update(MOTOR_RIGHT, MOVEMENT_TURN_SPEED);
-
-	// TODO: Use shaft encoding for this
-	sleep(); // Time to turn
-
-	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
-	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
+    movement_motor_update(MOTOR_LEFT, -1 * MOVEMENT_TURN_SPEED);
+    movement_motor_update(MOTOR_RIGHT, MOVEMENT_TURN_SPEED);
+    
+    // TODO: Use shaft encoding for this
+    sleep(2.0); // Time to turn
+    
+    movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
+    movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
 }
 
 /*!
@@ -69,17 +69,17 @@ int movement_turn_left(int angle) {
  * \param[in] distance How far the robot will travel forward
  */
 int movement_straight(int speed, int distance) {
-	movement_motor_update(MOTOR_LEFT,  speed);
-	movement_motor_update(MOTOR_RIGHT, speed);
-
-	// TODO: Use shaft encoding for this
-	sleep(); // Time to turn
-
-	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
-	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
+    movement_motor_update(MOTOR_LEFT,  speed);
+    movement_motor_update(MOTOR_RIGHT, speed);
+    
+    // TODO: Use shaft encoding for this
+    sleep(1.0); // Time to turn
+    
+    movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
+    movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
 }
 
 int movement_all_off() {
-	movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
-	movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
+    movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
+    movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
 }

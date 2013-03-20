@@ -23,13 +23,6 @@
  * \return 0 is pressed, 1 is not pressed
  */
 int sensor_switch_press_f_r() {
-	return sensor(SENSOR_SWITCH_F_R);
-}
-
-/*!
- * \return 0 is pressed, 1 is not pressed
- */
-int sensor_switch_press_f_r() {
 	if (sensor_digital_read(SENSOR_SWITCH_F_R)) {
 		return 0;
 	} else {

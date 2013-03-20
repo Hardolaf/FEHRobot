@@ -23,7 +23,7 @@ int main() {
     
     // Wait for start button to be pressed
     printf("Press button to start run\n");
-    while (sensor_controller_start_button());
+    while (!sensor_controller_start_button());
     printf("Run starting...\n");
     
     // Wait one second
@@ -31,7 +31,7 @@ int main() {
     
     // Execute the current performance test code
     //performance_test_4();
-    movement_turn_left(0);
-
+    movement_straight(50, 0);
+    
     printf("Turn completed\n");
 }
