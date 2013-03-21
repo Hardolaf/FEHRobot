@@ -13,9 +13,12 @@
 #use sensor_cds.ic
 #use sensor_switch.ic
 
-// Analog optosensor libraries
-#use fencdr2.icb
-#use fencdr3.icb
+// Import the elevator library
+#use elevator.ic
+
+/*! Analog optosensor libraries */
+#use fencdr2.icb // Right
+#use fencdr3.icb // Left
 
 int performance_test_4() {
     
@@ -32,6 +35,10 @@ int main() {
     // Encoder 3 thresholds
     encoder3_low_threshold = 210;
     encoder3_high_threshold = 220;
+    
+    // Set servo motor calibrations
+    exp_servo_min[1] = 647;
+    exp_servo_max[1] = 3313;
     
     // Set all motors to be off
     movement_all_off();

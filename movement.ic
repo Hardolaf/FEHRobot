@@ -59,16 +59,16 @@ int movement_motor_update(int port, int speed) {
  * \param[in] angle The angle to trun through in (0, 360]
  */
 int movement_turn_right(int angle) {
+    int encoder_left_counts = MOVEMENT_MARKS_PER_DEGREE_FORWARD * angle;
+    int encoder_right_counts = MOVEMENT_MARKS_PER_DEGREE_REVERSE * angle;
+    
     movement_motor_update(MOTOR_LEFT, MOVEMENT_TURN_SPEED);
     movement_motor_update(MOTOR_RIGHT, -1 * MOVEMENT_TURN_SPEED);
     
-    // Shaft encoding
-    int encoder_left_counts = MOVEMENT_MARKS_PER_DEGREE_FORWARD * angle;
-    int encoder_right_counts = MOVEMENT_MARKS_PER_DEGREE_REVERSE * angle;
-
+    // Shaft encoding    
     encoder2_counts = 0;
     encoder3_counts = 0;
-
+    
     while (encoder_right_counts > encoder2_counts && encoder_left_counts > encoder3_counts);
     
     movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
@@ -79,18 +79,18 @@ int movement_turn_right(int angle) {
  * \param[in] angle The angle to trun through in (0, 360]
  */
 int movement_turn_left(int angle) {
+    int encoder_left_counts = MOVEMENT_MARKS_PER_DEGREE_REVERSE * angle;
+    int encoder_right_counts = MOVEMENT_MARKS_PER_DEGREE_FORWARD * angle;
+    
     movement_motor_update(MOTOR_LEFT, -1 * MOVEMENT_TURN_SPEED);
     movement_motor_update(MOTOR_RIGHT, MOVEMENT_TURN_SPEED);
     
-    // Shaft encoding
-    int encoder_left_counts = MOVEMENT_MARKS_PER_DEGREE_REVERSE * angle;
-    int encoder_right_counts = MOVEMENT_MARKS_PER_DEGREE_FORWARD * angle;
-
+    // Shaft encoding    
     encoder2_counts = 0;
     encoder3_counts = 0;
-
+    
     while (encoder_right_counts > encoder2_counts && encoder_left_counts > encoder3_counts);
-
+    
     movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
     movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
 }
@@ -100,16 +100,16 @@ int movement_turn_left(int angle) {
  * \param[in] distance How far the robot will travel forward
  */
 int movement_straight(int speed, float distance) {
+    int encoder_left_counts = marks_per_inch * distance;
+    int encoder_right_counts = marks_per_inch * distance;
+    
     movement_motor_update(MOTOR_LEFT,  speed);
     movement_motor_update(MOTOR_RIGHT, speed);
     
     // Shaft encoding
-    int encoder_left_counts = marks_per_inch * distance;
-    int encoder_right_counts = marks_per_inch * distance;
-
     encoder2_counts = 0;
     encoder3_counts = 0;
-
+    
     while (encoder_right_counts > encoder2_counts && encoder_left_counts > encoder3_counts);
     
     movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);

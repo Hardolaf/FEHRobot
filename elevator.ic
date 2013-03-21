@@ -7,3 +7,11 @@
 
 // Import servo libraries
 #use exp_servo_lib.ic
+
+int elevator_enable() {
+	exp_servo_enable();
+}
+
+int elevator_disable() {
+	exp_servo_disable();
+}
