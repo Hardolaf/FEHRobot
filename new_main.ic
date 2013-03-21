@@ -17,8 +17,8 @@
 #use elevator.ic
 
 /*! Analog optosensor libraries */
-#use fencdr2.icb // Right
-#use fencdr3.icb // Left
+#use fencdr2.icb
+#use fencdr3.icb
 
 int performance_test_4() {
     
@@ -28,13 +28,13 @@ int main() {
     int min = 255;
     int max = 0;
     
-    // Encoder 2 thresholds
-    encoder2_low_threshold = 210;
-    encoder2_high_threshold = 220;
+    // Encoder 2 thresholds (right)
+    encoder2_low_threshold = 90;
+    encoder2_high_threshold = 120;
     
-    // Encoder 3 thresholds
-    encoder3_low_threshold = 210;
-    encoder3_high_threshold = 220;
+    // Encoder 3 thresholds (left)
+    encoder3_low_threshold = 160;
+    encoder3_high_threshold = 200;
     
     // Set servo motor calibrations
     exp_servo_min[1] = 647;
@@ -50,19 +50,19 @@ int main() {
     
     // Wait one second
     sleep(1.0);
-    motor(0, 100);
+    motor(2, 100);
     // Execute the current performance test code
     //performance_test_4();
     //movement_straight(50, 0);
     encoder2_counts = 0;
     while(!sensor_controller_stop_button()) {
-        if (min > analog(2)) {
-            min = analog(2);
+        if (min > analog(3)) {
+            min = analog(3);
         }
-        if (max < analog(2)) {
-            max = analog(2);
+        if (max < analog(3)) {
+            max = analog(3);
         }
-        printf("min:%d max:%d counts:%d\n", min, max, encoder2_counts);
+        printf("min:%d max:%d counts:%d\n", min, max, encoder3_counts);
     }
     
     printf("Turn completed\n");
