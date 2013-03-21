@@ -22,7 +22,7 @@
 #define MOVEMENT_MIN_SPEED 15
 
 /*! The speed of a wheel while turning */
-#define MOVEMENT_TURN_SPEED 58
+#define MOVEMENT_TURN_SPEED 50
 
 /*! A stopped motor */
 #define MOVEMENT_STOPPED 0
