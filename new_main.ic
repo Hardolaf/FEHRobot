@@ -6,12 +6,12 @@
  */
 
 // Import the movement library
-//#use movement.ic
+#use movement.ic
 
 // Import sensor libraries
 #use sensor_controller.ic
-//#use sensor_cds.ic
-//#use sensor_switch.ic
+#use sensor_cds.ic
+#use sensor_switch.ic
 
 #use fencdr2.icb
 
