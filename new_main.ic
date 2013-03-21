@@ -13,7 +13,9 @@
 #use sensor_cds.ic
 #use sensor_switch.ic
 
+// Analog optosensor libraries
 #use fencdr2.icb
+#use fencdr3.icb
 
 int performance_test_4() {
     
@@ -23,11 +25,17 @@ int main() {
     int min = 255;
     int max = 0;
     
+    // Encoder 2 thresholds
     encoder2_low_threshold = 210;
     encoder2_high_threshold = 220;
+    
+    // Encoder 3 thresholds
+    encoder3_low_threshold = 210;
+    encoder3_high_threshold = 220;
+    
     // Set all motors to be off
-    //movement_all_off();
-    ao();
+    movement_all_off();
+    
     // Wait for start button to be pressed
     printf("Press button to start run\n");
     while (!sensor_controller_start_button());
