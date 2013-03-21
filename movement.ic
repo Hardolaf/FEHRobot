@@ -5,6 +5,10 @@
  * \brief  Controls the movement of the robot
  */
 
+/*! Analog optosensor libraries */
+#use fencdr2.icb // Right
+#use fencdr3.icb // Left
+
 /*! Motor port of the left motor */
 #define MOTOR_LEFT  0
 
@@ -22,6 +26,21 @@
 
 /*! A stopped motor */
 #define MOVEMENT_STOPPED 0
+
+/*! Number of marks in one rotation of the wheel */
+#define MOVEMENT_MARKS_PER_TURN 28
+
+/*! Diameter of the wheel */
+#define MOVEMENT_WHEEL_DIAMETER 2.6875
+
+/*! Marks per degree reversed */
+#define MOVEMENT_MARKS_PER_DEGREE_REVERSE 1
+
+/*! Marks per degree forward */
+#define MOVEMENT_MARKS_PER_DEGREE_FORWARD 1
+
+/*! Marks per inch */
+float marks_per_inch = (float)MOVEMENT_MARKS_PER_TURN / MOVEMENT_WHEEL_DIAMETER;
 
 /*!
  * \param[in] motor The motor that is to be updated
@@ -43,8 +62,14 @@ int movement_turn_right(int angle) {
     movement_motor_update(MOTOR_LEFT, MOVEMENT_TURN_SPEED);
     movement_motor_update(MOTOR_RIGHT, -1 * MOVEMENT_TURN_SPEED);
     
-    // TODO: Use shaft encoding for this
-    sleep(2.0); // Time to turn
+    // Shaft encoding
+    int encoder_left_counts = MOVEMENT_MARKS_PER_DEGREE_FORWARD * angle;
+    int encoder_right_counts = MOVEMENT_MARKS_PER_DEGREE_REVERSE * angle;
+
+    encoder2_counts = 0;
+    encoder3_counts = 0;
+
+    while (encoder_right_counts > encoder2_counts && encoder_left_counts > encoder3_counts);
     
     movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
     movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
@@ -57,9 +82,15 @@ int movement_turn_left(int angle) {
     movement_motor_update(MOTOR_LEFT, -1 * MOVEMENT_TURN_SPEED);
     movement_motor_update(MOTOR_RIGHT, MOVEMENT_TURN_SPEED);
     
-    // TODO: Use shaft encoding for this
-    sleep(2.0); // Time to turn
-    
+    // Shaft encoding
+    int encoder_left_counts = MOVEMENT_MARKS_PER_DEGREE_REVERSE * angle;
+    int encoder_right_counts = MOVEMENT_MARKS_PER_DEGREE_FORWARD * angle;
+
+    encoder2_counts = 0;
+    encoder3_counts = 0;
+
+    while (encoder_right_counts > encoder2_counts && encoder_left_counts > encoder3_counts);
+
     movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
     movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
 }
@@ -68,12 +99,18 @@ int movement_turn_left(int angle) {
  * \param[in] speed    The speed at which it will travel forward within [-100, 100]
  * \param[in] distance How far the robot will travel forward
  */
-int movement_straight(int speed, int distance) {
+int movement_straight(int speed, float distance) {
     movement_motor_update(MOTOR_LEFT,  speed);
     movement_motor_update(MOTOR_RIGHT, speed);
     
-    // TODO: Use shaft encoding for this
-    sleep(1.0); // Time to turn
+    // Shaft encoding
+    int encoder_left_counts = marks_per_inch * distance;
+    int encoder_right_counts = marks_per_inch * distance;
+
+    encoder2_counts = 0;
+    encoder3_counts = 0;
+
+    while (encoder_right_counts > encoder2_counts && encoder_left_counts > encoder3_counts);
     
     movement_motor_update(MOTOR_LEFT, MOVEMENT_STOPPED);
     movement_motor_update(MOTOR_RIGHT, MOVEMENT_STOPPED);
