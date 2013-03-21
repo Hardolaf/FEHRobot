@@ -1,0 +1,19 @@
+/*!
+ * \file   sensor_optosensor.ic
+ * \author Joseph Warner (warner.512@osu.edu)
+ * \date   Spring, 2013
+ * \brief  Controls the controller sensors
+ */
+
+/*! Port of the middle optosensor */
+#define SENSOR_OPTOSENSOR_M 5
+
+/*! Calibration value of the middle optosensor */
+#define SENSOR_OPTOSENSOR_M_LINE 30
+
+/*!
+ * \return 1 for sees line, 0 for no line
+ */
+int sensor_optosensor_see_line() {
+	return analog(SENSOR_OPTOSENSOR_M) < SENSOR_OPTOSENSOR_M_LINE;
+}
