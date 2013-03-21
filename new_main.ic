@@ -6,21 +6,28 @@
  */
 
 // Import the movement library
-#use movement.ic
+//#use movement.ic
 
 // Import sensor libraries
 #use sensor_controller.ic
-#use sensor_cds.ic
-#use sensor_switch.ic
+//#use sensor_cds.ic
+//#use sensor_switch.ic
+
+#use fencdr2.icb
 
 int performance_test_4() {
     
 }
 
 int main() {
-    // Set all motors to be off
-    movement_all_off();
+    int min = 255;
+    int max = 0;
     
+    encoder2_low_threshold = 210;
+    encoder2_high_threshold = 220;
+    // Set all motors to be off
+    //movement_all_off();
+    ao();
     // Wait for start button to be pressed
     printf("Press button to start run\n");
     while (!sensor_controller_start_button());
@@ -28,10 +35,20 @@ int main() {
     
     // Wait one second
     sleep(1.0);
-    
+    motor(0, 100);
     // Execute the current performance test code
     //performance_test_4();
-    movement_straight(50, 0);
+    //movement_straight(50, 0);
+    encoder2_counts = 0;
+    while(!sensor_controller_stop_button()) {
+        if (min > analog(2)) {
+            min = analog(2);
+        }
+        if (max < analog(2)) {
+            max = analog(2);
+        }
+        printf("min:%d max:%d counts:%d\n", min, max, encoder2_counts);
+    }
     
     printf("Turn completed\n");
 }
