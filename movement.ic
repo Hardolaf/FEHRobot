@@ -22,7 +22,7 @@
 #define MOVEMENT_MIN_SPEED 15
 
 /*! The speed of a wheel while turning */
-#define MOVEMENT_TURN_SPEED 30
+#define MOVEMENT_TURN_SPEED 58
 
 /*! A stopped motor */
 #define MOVEMENT_STOPPED 0
@@ -34,13 +34,13 @@
 #define MOVEMENT_WHEEL_DIAMETER 2.6875
 
 /*! Marks per degree reversed */
-#define MOVEMENT_MARKS_PER_DEGREE_REVERSE 1
+#define MOVEMENT_MARKS_PER_DEGREE_REVERSE 0.23
 
 /*! Marks per degree forward */
-#define MOVEMENT_MARKS_PER_DEGREE_FORWARD 1
+#define MOVEMENT_MARKS_PER_DEGREE_FORWARD 0.23
 
 /*! Marks per inch */
-float marks_per_inch = (float)MOVEMENT_MARKS_PER_TURN / MOVEMENT_WHEEL_DIAMETER;
+float marks_per_inch = (float)MOVEMENT_MARKS_PER_TURN / (MOVEMENT_WHEEL_DIAMETER * 3.14159267);
 
 /*!
  * \param[in] motor The motor that is to be updated
@@ -59,11 +59,11 @@ int movement_motor_update(int port, int speed) {
  * \param[in] angle The angle to trun through in (0, 360]
  */
 int movement_turn_right(int angle) {
-    int encoder_left_counts = (int)(MOVEMENT_MARKS_PER_DEGREE_FORWARD * angle);
-    int encoder_right_counts = (int)(MOVEMENT_MARKS_PER_DEGREE_REVERSE * angle);
+    int encoder_left_counts = (int)(MOVEMENT_MARKS_PER_DEGREE_FORWARD * (float)angle);
+    int encoder_right_counts = (int)(MOVEMENT_MARKS_PER_DEGREE_REVERSE * (float)angle);
     
-    movement_motor_update(MOTOR_LEFT, MOVEMENT_TURN_SPEED);
-    movement_motor_update(MOTOR_RIGHT, -1 * MOVEMENT_TURN_SPEED);
+    movement_motor_update(MOTOR_LEFT, -1 * MOVEMENT_TURN_SPEED);
+    movement_motor_update(MOTOR_RIGHT, MOVEMENT_TURN_SPEED);
     
     // Shaft encoding    
     encoder2_counts = 0;
@@ -79,11 +79,11 @@ int movement_turn_right(int angle) {
  * \param[in] angle The angle to trun through in (0, 360]
  */
 int movement_turn_left(int angle) {
-    int encoder_left_counts = (int)(MOVEMENT_MARKS_PER_DEGREE_REVERSE * angle);
-    int encoder_right_counts = (int)(MOVEMENT_MARKS_PER_DEGREE_FORWARD * angle);
+    int encoder_left_counts = (int)(MOVEMENT_MARKS_PER_DEGREE_REVERSE * (float)angle);
+    int encoder_right_counts = (int)(MOVEMENT_MARKS_PER_DEGREE_FORWARD * (float)angle);
     
-    movement_motor_update(MOTOR_LEFT, -1 * MOVEMENT_TURN_SPEED);
-    movement_motor_update(MOTOR_RIGHT, MOVEMENT_TURN_SPEED);
+    movement_motor_update(MOTOR_LEFT, MOVEMENT_TURN_SPEED);
+    movement_motor_update(MOTOR_RIGHT, -1 * MOVEMENT_TURN_SPEED);
     
     // Shaft encoding    
     encoder2_counts = 0;

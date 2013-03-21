@@ -29,12 +29,12 @@ int main() {
     int max = 0;
     
     // Encoder 2 thresholds (right)
-    encoder2_low_threshold = 90;
-    encoder2_high_threshold = 120;
+    encoder2_low_threshold = 102;
+    encoder2_high_threshold = 104;
     
     // Encoder 3 thresholds (left)
-    encoder3_low_threshold = 160;
-    encoder3_high_threshold = 200;
+    encoder3_low_threshold = 175;
+    encoder3_high_threshold = 185;
     
     // Set servo motor calibrations
     exp_servo_min[1] = 647;
@@ -50,20 +50,12 @@ int main() {
     
     // Wait one second
     sleep(1.0);
-    motor(2, 100);
+    
     // Execute the current performance test code
-    //performance_test_4();
-    //movement_straight(50, 0);
-    encoder2_counts = 0;
-    while(!sensor_controller_stop_button()) {
-        if (min > analog(3)) {
-            min = analog(3);
-        }
-        if (max < analog(3)) {
-            max = analog(3);
-        }
-        printf("min:%d max:%d counts:%d\n", min, max, encoder3_counts);
-    }
+    performance_test_4();
+    
+    
+    sleep(1.0);
     
     printf("Turn completed\n");
 }
