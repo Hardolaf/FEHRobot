@@ -8,7 +8,7 @@
 #use sensor.ic
 
 /*! Analog port of the CDS Cell  */
-#define SENSOR_CDS_M 2
+#define SENSOR_CDS_M 4
 
 /*! The defined point between a light on the ground and no light */
 #define SENSOR_CDS_LIGHT_START 35
@@ -25,6 +25,19 @@
 int sensor_cds_sees_start_light() {
 	if (sensor_analog_read(SENSOR_CDS_M) < SENSOR_CDS_LIGHT_START) {
 		return 0;
+	} else {
+		return 1;
+	}
+}
+
+/*!
+ * \return 0 on sees red light, -1 on sees blue light, 1 on does not see light
+ */
+int sensor_cds_sees_colored_light() {
+	if(sensor_analog_read(SENSOR_CDS_M) < SENSOR_CDS_LIGHT_RED) {
+		return 0;
+	} else if (sensor_analog_read(SENSOR_CDS_M)) {
+		return -1;
 	} else {
 		return 1;
 	}
