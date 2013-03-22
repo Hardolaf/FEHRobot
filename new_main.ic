@@ -36,7 +36,10 @@ int performance_test_4() {
     
     // Up the stairs
     printf("Up stairs\n");
-    movement_straight(100, 43.0);
+    movement_motor_update(MOTOR_LEFT, 20);
+    movement_motor_update(MOTOR_RIGHT, 20);
+    sleep(0.1);
+    movement_straight(100, 42.0);
     sleep(2.00);
     
     // Get to the first line
@@ -51,11 +54,11 @@ int performance_test_4() {
     
     // Right 90
     printf("Turn 1\n");
-    movement_turn_right(80);
+    movement_turn_right(140);
     sleep(1.0);
     
     // Go to the next line
-    printf("Next line plz\n");
+    /*printf("Next line plz\n");
     movement_straight(50, 4.0);
     sleep(0.5);
     
@@ -70,7 +73,7 @@ int performance_test_4() {
     
     // Back into the WALL!
     printf("Turn back\n");
-    movement_turn_right(90);
+    movement_turn_right(45);
     sleep(1.0);
     
     printf("Into the wall\n");
@@ -78,11 +81,11 @@ int performance_test_4() {
     sleep(1.0);
     
     movement_all_off();
-    sleep(1.0);
+    sleep(1.0);*/
     
     // Forward to glory!
     printf("To glory!\n");
-    movement_straight(50, 23.0);
+    movement_straight(50, 40.0);
     sleep(1.0);
 }
 
@@ -115,6 +118,7 @@ int main() {
     
     // Set all motors to be off
     movement_all_off();
+    elevator_up();
     
     // Wait for start button to be pressed
     printf("Press button to start run\n");

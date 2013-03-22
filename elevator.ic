@@ -8,10 +8,20 @@
 // Import servo libraries
 #use exp_servo_lib.ic
 
+#define ELEVATOR_PORT 1
+
 int elevator_enable() {
 	exp_servo_enable();
 }
 
 int elevator_disable() {
 	exp_servo_disable();
+}
+
+int elevator_up() {
+	exp_servo_deg(ELEVATOR_PORT, 180);
+}
+
+int elevator_down() {
+	exp_servo_deg(ELEVATOR_PORT, 0);
 }
