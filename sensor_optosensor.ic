@@ -9,7 +9,7 @@
 #define SENSOR_OPTOSENSOR_M 5
 
 /*! Calibration value of the middle optosensor */
-#define SENSOR_OPTOSENSOR_M_LINE 30
+#define SENSOR_OPTOSENSOR_M_LINE 195
 
 /*!
  * \return 1 for sees line, 0 for no line

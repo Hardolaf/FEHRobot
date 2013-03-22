@@ -12,6 +12,7 @@
 #use sensor_controller.ic
 #use sensor_cds.ic
 #use sensor_switch.ic
+#use sensor_optosensor.ic
 
 // Import the elevator library
 #use elevator.ic
@@ -26,26 +27,63 @@ int performance_test_4() {
     while(sensor_cds_sees_start_light());
     sleep(0.25);
     
-    // Forward 22 inches
-    movement_straight(50, 21.0);
-    movement_straight(-30, 0.5);
-    sleep(1.00);
+    // Backwards!
+    printf("Backwards\n");
+    start_process(movement_straight(-50, 20.0), 4000);
+    sleep(2.0);
+    movement_all_off();
+    sleep(2.0);
     
-    // Left 90
-    movement_turn_left(75);
-    sleep(1.00);
+    // Up the stairs
+    printf("Up stairs\n");
+    movement_straight(100, 43.0);
+    sleep(2.00);
     
-    // Forward 32
-    movement_straight(75, 28.0);
-    sleep(1.00);
+    // Get to the first line
+    printf("First line\n");
+    movement_motor_update(MOTOR_LEFT, 50);
+    movement_motor_update(MOTOR_RIGHT, 50);
+    
+    while (!sensor_optosensor_see_line());
+    
+    movement_all_off();
+    sleep(1.0);
     
     // Right 90
-    movement_turn_right(90);
-    sleep(1.00);
+    printf("Turn 1\n");
+    movement_turn_right(80);
+    sleep(1.0);
     
-    // Forward 5
-    movement_straight(50, 5.0);
-    sleep(1.00);
+    // Go to the next line
+    printf("Next line plz\n");
+    movement_straight(50, 4.0);
+    sleep(0.5);
+    
+    printf("Wait for line\n");
+    movement_motor_update(MOTOR_LEFT, 50);
+    movement_motor_update(MOTOR_RIGHT, 50);
+    
+    while (!sensor_optosensor_see_line());
+    
+    movement_all_off();
+    sleep(1.0);
+    
+    // Back into the WALL!
+    printf("Turn back\n");
+    movement_turn_right(90);
+    sleep(1.0);
+    
+    printf("Into the wall\n");
+    start_process(movement_straight(-50, 13.0), 3000);
+    sleep(1.0);
+    
+    movement_all_off();
+    sleep(1.0);
+    
+    // Forward to glory!
+    printf("To glory!\n");
+    movement_straight(50, 23.0);
+    sleep(1.0);
 }
 
 int calibrate() {
@@ -53,6 +91,12 @@ int calibrate() {
     printf("r:%d l:%d", encoder2_counts, encoder3_counts);
 }
 
+int calibrate_optosensors() {
+    while(1) {
+        printf("%d\n", analog(5));
+        sleep(0.1);
+    }
+}
 int main() {
     int min = 255;
     int max = 0;
@@ -83,6 +127,7 @@ int main() {
     // Execute the current performance test code
     performance_test_4();
     //calibrate();
+    //calibrate_optosensors();
     
     sleep(1.0);
     

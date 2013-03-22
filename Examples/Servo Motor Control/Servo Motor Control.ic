@@ -26,7 +26,7 @@ int main() {
     
     /* Experimental Calibration for Servo Motos */
     exp_servo_enable();
-    exp_servo_min[SERVO] = 200;
+    exp_servo_min[SERVO] = 647;
     exp_servo_max[SERVO] = 3194;
     
     /* wait for the user to press the button to start */

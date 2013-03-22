@@ -1,0 +1,5 @@
+#use "exp_servo_lib.ic" 
+#use "exp_servo_calibrate.ic"
+int main() {
+    exp_servo_enable(); exp_servo_calibrate(1);
+}
