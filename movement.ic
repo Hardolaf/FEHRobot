@@ -46,14 +46,14 @@ float marks_per_inch = (float)MOVEMENT_MARKS_PER_TURN / (MOVEMENT_WHEEL_DIAMETER
  * \param[in] motor The motor that is to be updated
  * \param[in] speed The desired speed in the domain of [-100, 100]
  */
-int movement_motor_update(int port, int speed) {
+/*int movement_motor_update(int port, int speed) {
     // Convert speed to actual speed
     int actualSpeed = speed;//(int)((float)*(MOVEMENT_MAX_SPEED * speed) / 100.0);
     
     // Set the actual motor speed
     motor(port, actualSpeed);
     return 0;
-}
+}*/
 
 /*!
  * \param[in] angle The angle to trun through in (0, 360]

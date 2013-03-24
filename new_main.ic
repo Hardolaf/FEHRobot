@@ -9,13 +9,13 @@
 #use movement.ic
 
 // Import sensor libraries
-#use sensor_controller.ic
+//#use sensor_controller.ic
 #use sensor_cds.ic
-#use sensor_switch.ic
+//#use sensor_switch.ic
 #use sensor_optosensor.ic
 
 // Import the elevator library
-#use elevator.ic
+//#use elevator.ic
 
 /*! Analog optosensor libraries */
 #use fencdr2.icb
@@ -27,7 +27,7 @@ int performance_test_4() {
     while(sensor_cds_sees_start_light());
     sleep(0.25);
     
-    // Backwards!
+    /*// Backwards!
     printf("Backwards\n");
     start_process(movement_straight(-50, 20.0), 4000);
     sleep(2.0);
@@ -36,16 +36,16 @@ int performance_test_4() {
     
     // Up the stairs
     printf("Up stairs\n");
-    movement_motor_update(MOTOR_LEFT, 20);
-    movement_motor_update(MOTOR_RIGHT, 20);
+    motor(MOTOR_LEFT, 20);
+    motor(MOTOR_RIGHT, 20);
     sleep(0.1);
     movement_straight(100, 42.0);
     sleep(2.00);
     
     // Get to the first line
     printf("First line\n");
-    movement_motor_update(MOTOR_LEFT, 50);
-    movement_motor_update(MOTOR_RIGHT, 50);
+    motor(MOTOR_LEFT, 50);
+    motor(MOTOR_RIGHT, 50);
     
     while (!sensor_optosensor_see_line());
     
@@ -54,7 +54,7 @@ int performance_test_4() {
     
     // Right 90
     printf("Turn 1\n");
-    movement_turn_right(140);
+    movement_turn_right(90);
     sleep(1.0);
     
     // Go to the next line
@@ -85,8 +85,20 @@ int performance_test_4() {
     
     // Forward to glory!
     printf("To glory!\n");
-    movement_straight(50, 40.0);
+    movement_straight(100, 33.0);
     sleep(1.0);
+    
+    movement_turn_right(90);
+    sleep(1.0);
+    movement_straight(50, 30.0);
+    sleep(1.0);
+    
+    while(1) {
+        movement_straight(-50, 5.0);
+        sleep(1.0);
+        movement_straight(50, 10.0);
+        sleep(1.0);
+    }
 }
 
 int calibrate() {
@@ -113,16 +125,16 @@ int main() {
     encoder3_high_threshold = 185;
     
     // Set servo motor calibrations
-    exp_servo_min[1] = 647;
-    exp_servo_max[1] = 3313;
+    //exp_servo_min[1] = 647;
+    //exp_servo_max[1] = 3313;
     
     // Set all motors to be off
     movement_all_off();
-    elevator_up();
+    //elevator_up();
     
     // Wait for start button to be pressed
     printf("Press button to start run\n");
-    while (!sensor_controller_start_button());
+    while (!start_button());
     printf("Run starting...\n");
     
     // Wait one second
