@@ -5,3 +5,5 @@ robotfactory.cpp
 robotsingleton.h
 robotsingleton.cpp
 robot.h
+robotnormal.h
+robotnormal.cpp

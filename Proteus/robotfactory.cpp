@@ -1,4 +1,5 @@
 #include "robotfactory.h"
+#include "robot.h"
 
 RobotFactory::RobotFactory()
 {
