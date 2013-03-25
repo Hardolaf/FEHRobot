@@ -2,3 +2,5 @@ main.cpp
 
 robotfactory.h
 robotfactory.cpp
+robotsingleton.h
+robotsingleton.cpp
