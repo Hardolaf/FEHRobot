@@ -4,3 +4,4 @@ robotfactory.h
 robotfactory.cpp
 robotsingleton.h
 robotsingleton.cpp
+robot.h
