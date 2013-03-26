@@ -9,3 +9,15 @@ RobotDebug::RobotDebug(bool calibrate)
 {
     RobotNormal::setup(calibrate);
 }
+
+void calibrateEncoders() {
+
+}
+
+void calibrateOptosensors() {
+
+}
+
+void calibrateLightSensor() {
+
+}
