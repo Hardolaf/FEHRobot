@@ -21,6 +21,17 @@ void RobotNormal::setup(bool calibrate) {
     // Set up elevator servo
     elevator =  new FEHServo( FEHServo::Servo0 );
 
+    // Set up light sensor (CDS cell)
+    lightSensor = new AnalogInputPin( FEHIO::P1_7 );
+
+    // Set up analog optosenors
+    leftOptosenor = new AnalogInputPin( FEHIO::P1_6 );
+    leftOptosenor = new AnalogInputPin( FEHIO::P1_5 );
+    leftOptosenor = new AnalogInputPin( FEHIO::P1_4 );
+
+    // Set up buttons
+    buttons = new ButtonBoard( FEHIO::Bank3 );
+
     // Calibrate the robot if we need to
     if (calibrate) {
         RobotNormal::calibrate();
