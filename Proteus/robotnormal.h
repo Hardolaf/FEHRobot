@@ -1,5 +1,7 @@
 #include "robot.h"
 #include <FEHMotor.h>
+#include <FEHIO.h>
+#include <FEHServo.h>
 
 #ifndef ROBOTNORMAL_H
 #define ROBOTNORMAL_H
@@ -15,11 +17,15 @@ protected:
     void setup();
 
     /*! Left motor */
-    FEHMotor leftMotor;
+    FEHMotor* leftMotor;
     /*! Right motor */
-    FEHMotor rightMotor;
+    FEHMotor* rightMotor;
+    /*! Left Encoder */
+    FEHEncoder* leftEncoder;
+    /*! Right encoder */
+    FEHEncoder* rightEncoder;
     /*! Elevator servo motor */
-    int elevatorServoMotor;
+    FEHServo* elevator;
 
 };
 
