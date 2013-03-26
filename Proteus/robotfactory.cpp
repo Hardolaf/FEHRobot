@@ -1,18 +1,17 @@
 #include "robotfactory.h"
 #include "robot.h"
+#include "robotsingleton.h"
+#include "robotnormal.h"
+#include "robotdebug.h"
 
 RobotFactory::RobotFactory()
 {
 }
 
 Robot* RobotFactory::Create(int mode) {
-    switch (mode) {
-    case RUN_MODE_DEBUG:
-        // Create debug robot
-        break;
-    case RUN_MODE_NORMAL:
-    default:
-        // Create normal operation robot
-        break;
+    if (mode == RobotFactory::RUN_MODE_DEBUG) {
+        return new RobotDebug();
+    } else {
+        return new RobotNormal();
     }
 }

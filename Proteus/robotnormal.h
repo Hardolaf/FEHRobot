@@ -6,7 +6,7 @@
 #ifndef ROBOTNORMAL_H
 #define ROBOTNORMAL_H
 
-class RobotNormal : public Robot
+class RobotNormal : virtual public Robot
 {
 public:
     RobotNormal();
@@ -14,7 +14,8 @@ public:
     void movementLeft(int);
     void movementRight(int);
 protected:
-    void setup();
+    void setup(bool);
+    void calibrate();
 
     /*! Left motor */
     FEHMotor* leftMotor;

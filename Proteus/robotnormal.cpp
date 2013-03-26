@@ -6,27 +6,36 @@
 
 RobotNormal::RobotNormal()
 {
-    setup();
+    setup(true);
 }
 
-void RobotNormal::setup() {
+void RobotNormal::setup(bool calibrate) {
     // Set up motors
     leftMotor = new FEHMotor( FEHMotor::Motor0 );
     rightMotor = new FEHMotor( FEHMotor::Motor1 );
 
     // Set up  left and right encoders
     leftEncoder = new FEHEncoder( FEHIO::P0_2 );
+    rightEncoder = new FEHEncoder( FEHIO::P0_3);
+
+    // Set up elevator servo
+    elevator =  new FEHServo( FEHServo::Servo0 );
+
+    // Calibrate the robot if we need to
+    if (calibrate) {
+        RobotNormal::calibrate();
+    }
+}
+
+void RobotNormal::calibrate() {
     float leftLowThreshold = 0.388;
     float leftHighThreshold = 1.547;
     leftEncoder->SetThresholds( leftLowThreshold, leftHighThreshold );
 
-    rightEncoder = new FEHEncoder( FEHIO::P0_3);
     float rightLowThreshold = 0.388;
     float rightHighThreshold = 1.547;
     rightEncoder->SetThresholds( rightLowThreshold, rightHighThreshold );
 
-    // Set up elevator servo
-    elevator =  new FEHServo( FEHServo::Servo0 );
     elevator->SetMin( 411 );
     elevator->SetMax( 3823 );
 }

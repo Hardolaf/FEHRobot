@@ -1,4 +1,5 @@
 #include "robot.h"
+#include "robotsingleton.h"
 #ifndef ROBOTFACTORY_H
 #define ROBOTFACTORY_H
 
