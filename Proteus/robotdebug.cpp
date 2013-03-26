@@ -37,6 +37,7 @@ void RobotDebug::calibrateEncoders() {
         LCD.Clear( FEHLCD::Black );
         LCD.WriteLine("Encoder Calibration");
         LCD.WriteLine("  Press middle button to stop.");
+        LCD.WriteLine("");
         LCD.WriteLine("Right:");
         LCD.Write("Min: ");
         LCD.Write(rightMin);
@@ -47,6 +48,12 @@ void RobotDebug::calibrateEncoders() {
         LCD.Write(leftMin);
         LCD.Write("   Max: ");
         LCD.WriteLine(leftMax);
+        LCD.WriteLine("");
+        LCD.WriteLine("Current:");
+        LCD.Write("Left: ");
+        LCD.Write(leftEncoder->Value());
+        LCD.Write("   Right: ");
+        LCD.WriteLine(rightEncoder->Value());
     }
 }
 

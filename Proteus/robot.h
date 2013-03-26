@@ -1,9 +1,7 @@
-#include "robotsingleton.h"
-
 #ifndef ROBOT_H
 #define ROBOT_H
 
-class Robot : public RobotSingleton
+class Robot
 {
 public:
     virtual void movementStraight(int, float) = 0;
