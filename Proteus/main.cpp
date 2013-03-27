@@ -1,6 +1,7 @@
 #include "robot.h"
 #include "robotdebug.h"
 #include "robotnormal.h"
+#include "robotfactory.h"
 #include <FEHLCD.h>
 #include <FEHIO.h>
 #include <FEHUtility.h>
@@ -16,6 +17,9 @@ int main(void)
     LCD.WriteLine("Left: Normal");
     LCD.WriteLine("Right: Debug");
 
+
+
+    int runTimeMode = -1;
     
     while( true )
     {
@@ -23,23 +27,28 @@ int main(void)
             LCD.WriteLine( "Not implemented." );
             Sleep( 100 );
         } else if ( buttons.RightPressed()) {
-            LCD.Clear( FEHLCD::Black );
-            Sleep( 300 );
-            while ( true ) {
-                LCD.Clear( FEHLCD::Black );
-                LCD.WriteLine("DEBUG MODE");
-                LCD.WriteLine("Left: Calibrate Encoders");
-                RobotDebug robot = new RobotDebug();
-
-                if (buttons.LeftPressed()) {
-                    robot.calibrateEncoders();
-                    Sleep ( 100 );
-                }
-
-                Sleep( 100 );
-            }
+            runTimeMode = RobotFactory::RUN_MODE_DEBUG;
+            break;
         }
     }
+
+    if (runTimeMode == RobotFactory::RUN_MODE_NORMAL) {
+        RobotNormal robot;
+    } else if (runTimeMode == RobotFactory::RUN_MODE_DEBUG) {
+        RobotDebug robot;
+        LCD.Clear( FEHLCD::Black );
+        LCD.WriteLine("DEBUG MODE");
+        LCD.WriteLine("Left: Calibrate Encoders");
+        Sleep( 300 );
+        while ( true ) {
+            if (buttons.LeftPressed()) {
+                robot.calibrateEncoders();
+            }
+
+            Sleep( 100 );
+        }
+    }
+
     return 0;
 }
 

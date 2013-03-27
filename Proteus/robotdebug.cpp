@@ -16,8 +16,8 @@ void RobotDebug::calibrateEncoders() {
     LCD.Clear( FEHLCD::Black );
     LCD.SetFontColor( FEHLCD::White );
 
-    int leftMin = 65535, rightMin = 65535;
-    int leftMax = 0, rightMax = 0;
+    float leftMin = 10.0, rightMin = 10.0;
+    float leftMax = 0.0, rightMax = 0.0;
 
     while (!buttons->MiddlePressed()) {
         if (leftMin > leftEncoder->Value()) {
@@ -29,7 +29,7 @@ void RobotDebug::calibrateEncoders() {
         if (rightMin > rightEncoder->Value()) {
             rightMin = rightEncoder->Value();
         }
-        if (rightMax > rightEncoder->Value()) {
+        if (rightMax < rightEncoder->Value()) {
             rightMax = rightEncoder->Value();
         }
 
