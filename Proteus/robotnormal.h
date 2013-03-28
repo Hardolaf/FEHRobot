@@ -14,6 +14,7 @@ public:
     void movementLeft(int);
     void movementRight(int);
     bool lightSensorSeeStart();
+    bool bumpSwitch
 protected:
     void setup(bool);
     void calibrate();
@@ -34,14 +35,23 @@ protected:
     /*! Light sensor (CDS cell) */
     AnalogInputPin* lightSensor;
     /*! Left analog optosensor */
-    AnalogInputPin* leftOptosenor;
+    AnalogInputPin* optosensorLeft;
     /*! Middle analog optosensor */
-    AnalogInputPin* middleOptosenor;
+    AnalogInputPin* optosensorMiddle;
     /*! Right analog optosensor */
-    AnalogInputPin* rightOptosenor;
+    AnalogInputPin* optosensorRight;
 
     /*! Buttons */
     ButtonBoard* buttons;
+
+    /*! Front right bump switch */
+    DigitalInputPin bumpSwitchFrontRight;
+    /*! Front left bump switch */
+    DigitalInputPin bumpSwitchFrontLeft;
+    /*! Back right bump switch */
+    DigitalInputPin bumpSwitchBackRight;
+    /*! Back left bump switch */
+    DigitalInputPin bumpSwitchBackLeft;
 };
 
 #endif // ROBOTNORMAL_H

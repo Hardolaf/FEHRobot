@@ -26,11 +26,17 @@ void RobotNormal::setup(bool calibrate) {
 
     // Set up analog optosenors
     leftOptosenor = new AnalogInputPin( FEHIO::P1_6 );
-    leftOptosenor = new AnalogInputPin( FEHIO::P1_5 );
-    leftOptosenor = new AnalogInputPin( FEHIO::P1_4 );
+    middleOptosenor = new AnalogInputPin( FEHIO::P1_5 );
+    rightOptosenor = new AnalogInputPin( FEHIO::P1_4 );
 
     // Set up buttons
     buttons = new ButtonBoard( FEHIO::Bank3 );
+
+    // Set up bump switches
+    bumpSwitchFrontRight = new DigitalInputPin( FEHIO::P2_0 );
+    bumpSwitchFrontLeft = new DigitalInputPin( FEHIO::P2_1 );
+    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_2 );
+    bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P2_3 );
 
     // Calibrate the robot if we need to
     if (calibrate) {
@@ -117,4 +123,5 @@ void RobotNormal::movementRight(int angle) {
 bool RobotNormal::lightSensorSeeStart() {
     return lightSensor->Value() < LIGHT_SENSOR_MAX_LIGHT_VALUE;
 }
+
 
