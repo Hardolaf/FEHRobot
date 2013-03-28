@@ -76,10 +76,56 @@ void debug_menu() {
 }
 
 /**
+ * @brief startup_sequence
+ * @param robot A RobotNormal with RobotNormal::setup() and
+ * RobotNormal::calibrate()run
+ */
+void startup_sequence(RobotNormal robot) {
+    // Ask the user to press the middle button to prime it for waiting for the
+    // light.
+    LCD.Clear( FEHLCD::Scarlet );
+    LCD.SetFontColor( FEHLCD::Gray );
+    LCD.WriteLine("NORMAL MODE");
+    LCD.WriteLine("");
+    LCD.WriteLine("Press middle button to robot start.");
+    Sleep(100);
+
+    // Wait for the middle button to be pressed.
+    while(!robot.buttonMiddlePressed());
+
+    LCD.WriteLine("Ready in 1 second.");
+    Sleep(1000);
+    LCD.Clear( FEHLCD::Scarlet );
+    LCD.WriteLine("Waiting for line.");
+
+    // Wait for line
+    while(!robot.lightSensorSeeStart());
+    LCD.WriteLine("Run started.");
+}
+
+/**
  * @brief performance_test_5
  * @param robot A RobotNormal with RobotNormal::setup() and
  * RobotNormal::calibrate()run
  */
 void performance_test_5(RobotNormal robot) {
+    startup_sequence(robot);
 
+    // Go up the stairs
+
+    // Move until we see the line
+
+    // Turn 45 degress towards wall
+
+    // Square up against the wall
+
+    // Turn 90 towards pryramid (front facing)
+
+    // Move straight forward for ___ inches or _ seconds
+
+    // Move backwards for ___ inches or _ seconds
+
+    // Drop SAM in the hole.
+
+    // Close SAM enclosure.
 }
