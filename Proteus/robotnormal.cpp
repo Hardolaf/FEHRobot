@@ -23,6 +23,7 @@ void RobotNormal::setup(bool calibrate) {
     // Set up motors
     motorLeft = new FEHMotor( FEHMotor::Motor0 );
     motorRight = new FEHMotor( FEHMotor::Motor1 );
+    motorSAM = new FEHMotor( FEHMotor::Motor2);
 
     // Set up  left and right encoders
     encoderLeft = new FEHEncoder( FEHIO::P0_5 );
@@ -159,6 +160,22 @@ void RobotNormal::movementRight(int angle) {
     // Stop the motors
     motorLeft->Stop();
     motorRight->Stop();
+}
+
+/**
+ * @brief RobotNormal::motorSAMOpen Opens the SAM enclosure
+ */
+void RobotNormal::motorSAMOpen() {
+    motorSAM->SetPower(126/2);
+    Sleep(0.5);
+}
+
+/**
+ * @brief RobotNormal::motorSAMClose Closes the SAM enclosure
+ */
+void RobotNormal::motorSAMClose() {
+    motorSAM->SetPower(-126/2);
+    Sleep(0.5)
 }
 
 /**

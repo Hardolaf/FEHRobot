@@ -16,6 +16,9 @@ public:
     void movementLeft(int angle);
     void movementRight(int angle);
 
+    void motorSAMOpen();
+    void motorSAMClose();
+
     bool lightSensorSeeStart();
 
     bool bumpSwitchFrontEitherPressed();
