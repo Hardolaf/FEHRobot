@@ -44,3 +44,7 @@ desktop.ini
 # dOxygen #
 ###########
 doxygen
+
+# Proteus #
+###########
+*.autosave

@@ -25,9 +25,9 @@ void RobotNormal::setup(bool calibrate) {
     lightSensor = new AnalogInputPin( FEHIO::P1_7 );
 
     // Set up analog optosenors
-    leftOptosenor = new AnalogInputPin( FEHIO::P1_6 );
-    middleOptosenor = new AnalogInputPin( FEHIO::P1_5 );
-    rightOptosenor = new AnalogInputPin( FEHIO::P1_4 );
+    optosensorLeft = new AnalogInputPin( FEHIO::P1_6 );
+    optosensorMiddle = new AnalogInputPin( FEHIO::P1_5 );
+    optosensorRight = new AnalogInputPin( FEHIO::P1_4 );
 
     // Set up buttons
     buttons = new ButtonBoard( FEHIO::Bank3 );
@@ -55,6 +55,11 @@ void RobotNormal::calibrate() {
 
     elevator->SetMin( 411 );
     elevator->SetMax( 3823 );
+}
+
+void RobotNormal::movementMotorManualSet(int speedLeft, int speedRight) {
+    leftMotor->SetPower(speedLeft);
+    leftMotor->SetPower(speedRight);
 }
 
 void RobotNormal::movementStraight(int speed, float distance) {
@@ -124,4 +129,34 @@ bool RobotNormal::lightSensorSeeStart() {
     return lightSensor->Value() < LIGHT_SENSOR_MAX_LIGHT_VALUE;
 }
 
+bool RobotNormal::bumpSwitchFrontEitherPressed() {
+    return bumpSwitchFrontLeftPressed() || bumpSwitchFrontRightPressed();
+}
 
+bool RobotNormal::bumpSwitchFrontLeftPressed() {
+    return bumpSwitchFrontLeft->Value() == 0;
+}
+
+bool RobotNormal::bumpSwitchFrontRightPressed() {
+    return bumpSwitchFrontRight == 0;
+}
+
+bool RobotNormal::bumpSwitchFrontBothPressed() {
+    return bumpSwitchFrontLeftPressed() && bumpSwitchFrontRightPressed();
+}
+
+bool RobotNormal::bumpSwitchBackEitherPressed() {
+    return bumpSwitchBackLeftPressed() || bumpSwitchBackRightPressed();
+}
+
+bool RobotNormal::bumpSwitchBackLeftPressed() {
+    return bumpSwitchBackLeft->Value() == 0;
+}
+
+bool RobotNormal::bumpSwitchBackRightPressed() {
+    return bumpSwitchBackRight->Value() ==0;
+}
+
+bool RobotNormal::bumpSwitchBackBothPressed() {
+    return bumpSwitchBackLeftPressed() && bumpSwitchBackRightPressed();
+}

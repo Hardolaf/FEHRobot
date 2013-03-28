@@ -10,11 +10,19 @@ class RobotNormal : virtual public Robot
 {
 public:
     RobotNormal();
-    void movementStraight(int, float);
-    void movementLeft(int);
-    void movementRight(int);
+    void movementMotorManualSet(int speedLeft, int speedRight);
+    void movementStraight(int speed, float distance);
+    void movementLeft(int angle);
+    void movementRight(int angle);
     bool lightSensorSeeStart();
-    bool bumpSwitch
+    bool bumpSwitchFrontEitherPressed();
+    bool bumpSwitchFrontLeftPressed();
+    bool bumpSwitchFrontRightPressed();
+    bool bumpSwitchFrontBothPressed();
+    bool bumpSwitchBackEitherPressed();
+    bool bumpSwitchBackLeftPressed();
+    bool bumpSwitchBackRightPressed();
+    bool bumpSwitchBackBothPressed();
 protected:
     void setup(bool);
     void calibrate();
@@ -45,13 +53,13 @@ protected:
     ButtonBoard* buttons;
 
     /*! Front right bump switch */
-    DigitalInputPin bumpSwitchFrontRight;
+    DigitalInputPin* bumpSwitchFrontRight;
     /*! Front left bump switch */
-    DigitalInputPin bumpSwitchFrontLeft;
+    DigitalInputPin* bumpSwitchFrontLeft;
     /*! Back right bump switch */
-    DigitalInputPin bumpSwitchBackRight;
+    DigitalInputPin* bumpSwitchBackRight;
     /*! Back left bump switch */
-    DigitalInputPin bumpSwitchBackLeft;
+    DigitalInputPin* bumpSwitchBackLeft;
 };
 
 #endif // ROBOTNORMAL_H
