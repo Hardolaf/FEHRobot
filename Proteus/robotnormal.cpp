@@ -172,3 +172,33 @@ bool RobotNormal::buttonMiddlePressed() {
 bool RobotNormal::buttonLeftPressed() {
     return buttons->LeftPressed();
 }
+
+int RobotNormal::optosensorLeftSeesLine() {
+    if (optosensorLeft->Value() > OPTOSENSOR_LEFT_HIGH_THRESHOLD) {
+        return 1;
+    } else if (optosensorLeft->Value() < OPTOSENSOR_LEFT_LOW_THRESHOLD) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+int RobotNormal::optosensorMiddleSeesLine() {
+    if (optosensorMiddle->Value() > OPTOSENSOR_MIDDLE_HIGH_THRESHOLD) {
+        return 1;
+    } else if (optosensorMiddle->Value() < OPTOSENSOR_MIDDLE_LOW_THRESHOLD) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+int RobotNormal::optosensorRightSeesLine() {
+    if (optosensorRight->Value() > OPTOSENSOR_RIGHT_HIGH_THRESHOLD) {
+        return 1;
+    } else if (optosensorRight->Value() < OPTOSENSOR_RIGHT_LOW_THRESHOLD) {
+        return -1;
+    } else {
+        return 0;
+    }
+}

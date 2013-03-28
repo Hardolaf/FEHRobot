@@ -31,6 +31,10 @@ public:
     bool buttonRightPressed();
     bool buttonMiddlePressed();
     bool buttonLeftPressed();
+
+    int optosensorLeftSeesLine();
+    int optosensorMiddleSeesLine();
+    int optosensorRightSeesLine();
 protected:
     void setup(bool);
     void calibrate();
