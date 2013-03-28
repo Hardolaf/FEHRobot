@@ -113,3 +113,8 @@ void RobotNormal::movementRight(int angle) {
     leftMotor->Stop();
     rightMotor->Stop();
 }
+
+bool RobotNormal::lightSensorSeeStart() {
+    return lightSensor->Value() < LIGHT_SENSOR_MAX_LIGHT_VALUE;
+}
+

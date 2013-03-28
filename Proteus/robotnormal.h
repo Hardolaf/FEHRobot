@@ -13,6 +13,7 @@ public:
     void movementStraight(int, float);
     void movementLeft(int);
     void movementRight(int);
+    bool lightSensorSeeStart();
 protected:
     void setup(bool);
     void calibrate();
