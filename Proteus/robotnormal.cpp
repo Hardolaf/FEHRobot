@@ -21,12 +21,12 @@ RobotNormal::RobotNormal()
  */
 void RobotNormal::setup(bool calibrate) {
     // Set up motors
-    leftMotor = new FEHMotor( FEHMotor::Motor0 );
-    rightMotor = new FEHMotor( FEHMotor::Motor1 );
+    motorLeft = new FEHMotor( FEHMotor::Motor0 );
+    motorRight = new FEHMotor( FEHMotor::Motor1 );
 
     // Set up  left and right encoders
-    leftEncoder = new FEHEncoder( FEHIO::P0_5 );
-    rightEncoder = new FEHEncoder( FEHIO::P0_7);
+    encoderLeft = new FEHEncoder( FEHIO::P0_5 );
+    encoderRight = new FEHEncoder( FEHIO::P0_7);
 
     // Set up elevator servo
     elevator =  new FEHServo( FEHServo::Servo0 ); // not set
@@ -60,11 +60,11 @@ void RobotNormal::setup(bool calibrate) {
 void RobotNormal::calibrate() {
     float leftLowThreshold = 3.050;
     float leftHighThreshold = 3.200;
-    leftEncoder->SetThresholds( leftLowThreshold, leftHighThreshold );
+    encoderLeft->SetThresholds( leftLowThreshold, leftHighThreshold );
 
     float rightLowThreshold = 3.050;
     float rightHighThreshold = 3.130;
-    rightEncoder->SetThresholds( rightLowThreshold, rightHighThreshold );
+    encoderRight->SetThresholds( rightLowThreshold, rightHighThreshold );
 
     elevator->SetMin( 411 );
     elevator->SetMax( 3823 );
@@ -77,8 +77,8 @@ void RobotNormal::calibrate() {
  * @param speedRight [-127, 127] where 0 is stopped, 127 is max speed.
  */
 void RobotNormal::movementMotorManualSet(int speedLeft, int speedRight) {
-    leftMotor->SetPower(speedLeft);
-    leftMotor->SetPower(speedRight);
+    motorLeft->SetPower(speedLeft);
+    motorLeft->SetPower(speedRight);
 }
 
 /**
@@ -93,20 +93,20 @@ void RobotNormal::movementStraight(int speed, float distance) {
     int encoderCounts = Robot::ENCODER_COUNTS_PER_INCH * distance;
 
     // Reset encoder counters
-    leftEncoder->ResetCounts();
-    rightEncoder->ResetCounts();
+    encoderLeft->ResetCounts();
+    encoderRight->ResetCounts();
 
     // Set the motor speed
-    leftMotor->SetPower(speed);
-    rightMotor->SetPower(speed);
+    motorLeft->SetPower(speed);
+    motorRight->SetPower(speed);
 
     // Wait for the encoder to travel the specified distance
-    while (leftEncoder->Counts() < encoderCounts
-           && rightEncoder->Counts() < encoderCounts);
+    while (encoderLeft->Counts() < encoderCounts
+           && encoderRight->Counts() < encoderCounts);
 
     // Stop the motors
-    leftMotor->Stop();
-    rightMotor->Stop();
+    motorLeft->Stop();
+    motorRight->Stop();
 }
 
 /**
@@ -119,20 +119,20 @@ void RobotNormal::movementLeft(int angle) {
     int encoderCounts = Robot::ENCODER_COUNTS_PER_DEGREE_TURN * angle;
 
     // Reset encoder counters
-    leftEncoder->ResetCounts();
-    rightEncoder->ResetCounts();
+    encoderLeft->ResetCounts();
+    encoderRight->ResetCounts();
 
     // Set the motor speed
-    leftMotor->SetPower(-1 * Robot::MOVEMENT_MOTOR_TURN_SPEED);
-    rightMotor->SetPower(Robot::MOVEMENT_MOTOR_TURN_SPEED);
+    motorLeft->SetPower(-1 * Robot::MOVEMENT_MOTOR_TURN_SPEED);
+    motorRight->SetPower(Robot::MOVEMENT_MOTOR_TURN_SPEED);
 
     // Wait for the encoder to travel the specified distance
-    while (leftEncoder->Counts() < encoderCounts
-           && rightEncoder->Counts() < encoderCounts);
+    while (encoderLeft->Counts() < encoderCounts
+           && encoderRight->Counts() < encoderCounts);
 
     // Stop the motors
-    leftMotor->Stop();
-    rightMotor->Stop();
+    motorLeft->Stop();
+    motorRight->Stop();
 }
 
 /**
@@ -145,20 +145,20 @@ void RobotNormal::movementRight(int angle) {
     int encoderCounts = Robot::ENCODER_COUNTS_PER_DEGREE_TURN * angle;
 
     // Reset encoder counters
-    leftEncoder->ResetCounts();
-    rightEncoder->ResetCounts();
+    encoderLeft->ResetCounts();
+    encoderRight->ResetCounts();
 
     // Set the motor speed
-    leftMotor->SetPower(Robot::MOVEMENT_MOTOR_TURN_SPEED);
-    rightMotor->SetPower(-1 * Robot::MOVEMENT_MOTOR_TURN_SPEED);
+    motorLeft->SetPower(Robot::MOVEMENT_MOTOR_TURN_SPEED);
+    motorRight->SetPower(-1 * Robot::MOVEMENT_MOTOR_TURN_SPEED);
 
     // Wait for the encoder to travel the specified distance
-    while (leftEncoder->Counts() < encoderCounts
-           && rightEncoder->Counts() < encoderCounts);
+    while (encoderLeft->Counts() < encoderCounts
+           && encoderRight->Counts() < encoderCounts);
 
     // Stop the motors
-    leftMotor->Stop();
-    rightMotor->Stop();
+    motorLeft->Stop();
+    motorRight->Stop();
 }
 
 /**

@@ -40,16 +40,16 @@ protected:
     void calibrate();
 
     /*! Left motor */
-    FEHMotor* leftMotor;
+    FEHMotor* motorLeft;
     /*! Right motor */
-    FEHMotor* rightMotor;
+    FEHMotor* motorRight;
     /*! SAM motor */
-    FEHMotor* SAMMotor;
+    FEHMotor* motorSAM;
 
     /*! Left Encoder */
-    FEHEncoder* leftEncoder;
+    FEHEncoder* encoderLeft;
     /*! Right encoder */
-    FEHEncoder* rightEncoder;
+    FEHEncoder* encoderRight;
 
     /*! Elevator servo motor */
     FEHServo* elevator;

@@ -37,17 +37,17 @@ void RobotDebug::calibrateEncoders() {
     float leftMax = 0.0, rightMax = 0.0;
 
     while (!buttons->MiddlePressed()) {
-        if (leftMin > leftEncoder->Value()) {
-            leftMin = leftEncoder->Value();
+        if (leftMin > encoderLeft->Value()) {
+            leftMin = encoderLeft->Value();
         }
-        if (leftMax < leftEncoder->Value()) {
-            leftMax = leftEncoder->Value();
+        if (leftMax < encoderLeft->Value()) {
+            leftMax = encoderLeft->Value();
         }
-        if (rightMin > rightEncoder->Value()) {
-            rightMin = rightEncoder->Value();
+        if (rightMin > encoderRight->Value()) {
+            rightMin = encoderRight->Value();
         }
-        if (rightMax < rightEncoder->Value()) {
-            rightMax = rightEncoder->Value();
+        if (rightMax < encoderRight->Value()) {
+            rightMax = encoderRight->Value();
         }
 
         // Print
@@ -68,9 +68,9 @@ void RobotDebug::calibrateEncoders() {
         LCD.WriteLine("");
         LCD.WriteLine("Current:");
         LCD.Write("Left: ");
-        LCD.Write(leftEncoder->Value());
+        LCD.Write(encoderLeft->Value());
         LCD.Write("   Right: ");
-        LCD.WriteLine(rightEncoder->Value());
+        LCD.WriteLine(encoderRight->Value());
     }
 }
 
@@ -137,10 +137,10 @@ void RobotDebug::testMovementForward() {
 
     LCD.WriteLine("");
     LCD.Write("Right Encoder: ");
-    LCD.WriteLine(rightEncoder->Counts());
+    LCD.WriteLine(encoderRight->Counts());
     LCD.WriteLine("");
     LCD.Write("Left Encoder: ");
-    LCD.WriteLine(leftEncoder->Counts());
+    LCD.WriteLine(encoderLeft->Counts());
     LCD.WriteLine("");
     LCD.WriteLine("Press middle button to return to menu.");
 
