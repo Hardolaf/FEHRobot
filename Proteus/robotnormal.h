@@ -10,19 +10,24 @@ class RobotNormal : virtual public Robot
 {
 public:
     RobotNormal();
+
     void movementMotorManualSet(int speedLeft, int speedRight);
     void movementStraight(int speed, float distance);
     void movementLeft(int angle);
     void movementRight(int angle);
+
     bool lightSensorSeeStart();
+
     bool bumpSwitchFrontEitherPressed();
     bool bumpSwitchFrontLeftPressed();
     bool bumpSwitchFrontRightPressed();
     bool bumpSwitchFrontBothPressed();
+
     bool bumpSwitchBackEitherPressed();
     bool bumpSwitchBackLeftPressed();
     bool bumpSwitchBackRightPressed();
     bool bumpSwitchBackBothPressed();
+
     bool buttonRightPressed();
     bool buttonMiddlePressed();
     bool buttonLeftPressed();
