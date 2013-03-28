@@ -4,11 +4,21 @@
 #include <FEHIO.h>
 #include <FEHServo.h>
 
+/**
+ * @brief RobotNormal::RobotNormal This function is a default constructor for
+ * the robot normal class. It calls RobotNormal::setup() with the arugment true.
+ * @see RobotNormal::setup()
+ */
 RobotNormal::RobotNormal()
 {
     setup(true);
 }
 
+/**
+ * @brief RobotNormal::setup Initalizes all objects on the robot.
+ * @param calibrate True will calibrate the encoders and the servo motors.
+ * @see RobotNormal::calibrate()
+ */
 void RobotNormal::setup(bool calibrate) {
     // Set up motors
     leftMotor = new FEHMotor( FEHMotor::Motor0 );
@@ -44,6 +54,9 @@ void RobotNormal::setup(bool calibrate) {
     }
 }
 
+/**
+ * @brief RobotNormal::calibrate Calibrates encoders and the elevator servo.
+ */
 void RobotNormal::calibrate() {
     float leftLowThreshold = 3.050;
     float leftHighThreshold = 3.200;
@@ -57,11 +70,24 @@ void RobotNormal::calibrate() {
     elevator->SetMax( 3823 );
 }
 
+/**
+ * @brief RobotNormal::movementMotorManualSet Sets the speeds of the tow motors
+ * manually.
+ * @param speedLeft [0, 127] where 0 is stopped, 127 is max speed.
+ * @param speedRight [0, 127] where 0 is stopped, 127 is max speed.
+ */
 void RobotNormal::movementMotorManualSet(int speedLeft, int speedRight) {
     leftMotor->SetPower(speedLeft);
     leftMotor->SetPower(speedRight);
 }
 
+/**
+ * @brief RobotNormal::movementStraight Moves the robot forwards or backwards
+ * a given distance at a given speed. This is not exact motion due to error
+ * inherent in shaft encoding.
+ * @param speed [0, 127] where 0 is stopped, 127 is max speed.
+ * @param distance (0, FLOAT_MAX] the distance the robot will travel.
+ */
 void RobotNormal::movementStraight(int speed, float distance) {
     // Declare number of encoder counts needed to travel
     int encoderCounts = Robot::ENCODER_COUNTS_PER_INCH * distance;
@@ -83,6 +109,11 @@ void RobotNormal::movementStraight(int speed, float distance) {
     rightMotor->Stop();
 }
 
+/**
+ * @brief RobotNormal::movementLeft The robot will turn a given angle left using
+ * shaft encoding. Error does exist.
+ * @param angle [0, INT_MAX] the angle the robot will turn
+ */
 void RobotNormal::movementLeft(int angle) {
     // Declare number of encoder counts needed to travel
     int encoderCounts = Robot::ENCODER_COUNTS_PER_DEGREE_TURN * angle;
@@ -104,6 +135,11 @@ void RobotNormal::movementLeft(int angle) {
     rightMotor->Stop();
 }
 
+/**
+ * @brief RobotNormal::movementRight The robot will turn a given angle left using
+ * shaft encoding. Error does exist.
+ * @param angle [0, INT_MAX] the angle the robot will turn
+ */
 void RobotNormal::movementRight(int angle) {
     // Declare number of encoder counts needed to travel
     int encoderCounts = Robot::ENCODER_COUNTS_PER_DEGREE_TURN * angle;
