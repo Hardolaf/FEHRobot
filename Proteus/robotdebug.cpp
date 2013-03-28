@@ -3,16 +3,32 @@
 #include <FEHLCD.h>
 #include <FEHUtility.h>
 
+/**
+ * @brief RobotDebug::RobotDebug Sets up the new robot for running without
+ * calibrating.
+ * @see RobotNormal::setup()
+ */
 RobotDebug::RobotDebug()
 {
     RobotNormal::setup(false);
 }
 
+/**
+ * @brief RobotDebug::RobotDebug Sets up the new robot for running with or
+ * withour calibration.
+ * @param calibrate Passed to RobotNormal::setup()
+ * @see RobotNormal::setup()
+ */
 RobotDebug::RobotDebug(bool calibrate)
 {
     RobotNormal::setup(calibrate);
 }
 
+/**
+ * @brief RobotDebug::calibrateEncoders Helps the user determine calibration
+ * values for the shaft encoders by outputting their current values, their mins,
+ * and their maxes during the course of the function.
+ */
 void RobotDebug::calibrateEncoders() {
     LCD.Clear( FEHLCD::Black );
     LCD.SetFontColor( FEHLCD::White );
@@ -58,10 +74,20 @@ void RobotDebug::calibrateEncoders() {
     }
 }
 
+/**
+ * @brief RobotDebug::calibrateOptosensors Helps the user determine calibration
+ * values for the line following optosensors by outputting their current values,
+ * their mins, and their maxes during the course of the function.
+ */
 void RobotDebug::calibrateOptosensors() {
 
 }
 
+/**
+ * @brief RobotDebug::calibrateLightSensor Helps the user determine calibration
+ * values for the light sensor (CDS cell) by outputting its current value, its
+ * min, and its max during the course of the function.
+ */
 void RobotDebug::calibrateLightSensor() {
     LCD.Clear( FEHLCD::Black );
     LCD.SetFontColor( FEHLCD::White );
@@ -92,6 +118,14 @@ void RobotDebug::calibrateLightSensor() {
     }
 }
 
+/**
+ * @brief RobotDebug::testMovementForward Tests to see if forward motion is
+ * working with shaft encoding. It moves the robot forward ~6.0 inches and then
+ * outputs the number of encoder counts for each encoder 500 milliseconds after
+ * the motors have been killed. This function is best used in conjunction with a
+ * distance measuring tool.
+ * @see RobotNormal::movementStraight()
+ */
 void RobotDebug::testMovementForward() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("Test Forward Movement");
@@ -100,9 +134,6 @@ void RobotDebug::testMovementForward() {
 
     movementStraight(127, 6.0);
     Sleep(500);
-
-    movementLeft(90);
-    movementRight(90);
 
     LCD.WriteLine("");
     LCD.Write("Right Encoder: ");

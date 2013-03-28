@@ -8,6 +8,11 @@ RobotFactory::RobotFactory()
 {
 }
 
+/**
+ * @brief RobotFactory::Create
+ * @param mode The run time mode of the robot (normal or debug)
+ * @return Robot a new robot
+ */
 Robot* RobotFactory::Create(int mode) {
     if (mode == RobotFactory::RUN_MODE_DEBUG) {
         return new RobotDebug();

@@ -60,6 +60,9 @@ int main(void)
     return 0;
 }
 
+/**
+ * @brief debug_menu Outputs the debug option menu after clearing the LCD.
+ */
 void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
