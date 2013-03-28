@@ -46,7 +46,7 @@ void RobotNormal::setup(bool calibrate) {
     // Set up bump switches
     bumpSwitchFrontRight = new DigitalInputPin( FEHIO::P1_2 );
     bumpSwitchFrontLeft = new DigitalInputPin( FEHIO::P1_4 );
-    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P1_6 ); // not set
+    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_7 );
     bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P2_0 ); // not set
 
     // Calibrate the robot if we need to

@@ -156,17 +156,22 @@ void performance_test_5(RobotNormal robot) {
     robot.movementRight(90);
     Sleep(100);
 
-    // Move straight forward for 11.0? inches or 5.0? seconds
-    for (int i = 0; i < 2; i++) {
+    // Charge the stone like a madman
+    bool hitStone = false;
+    while(!hitStone) {
         float end_time = TimeNow() + 5.0;
         int encoder_count_limit = 11.0 * Robot::ENCODER_COUNTS_PER_INCH;
 
-        // Move the robot forward
+        // Move straight forward for 11.0? inches or 5.0? seconds
         robot.movementEncoderCountReset();
         robot.movementStraight(80, 80);
         while (end_time > TimeNow()
                || encoder_count_limit > robot.movementEncoderCountLeft()
-               || encoder_count_limit > robot.movementEncoderCountRight());
+               || encoder_count_limit > robot.movementEncoderCountRight()) {
+            if (robot.bumpSwitchBackRightPressed()) {
+                hitStone = true;
+            }
+        }
         Sleep(100);
 
         // Move it backwards
