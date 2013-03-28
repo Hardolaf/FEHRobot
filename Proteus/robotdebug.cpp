@@ -80,7 +80,33 @@ void RobotDebug::calibrateEncoders() {
  * their mins, and their maxes during the course of the function.
  */
 void RobotDebug::calibrateOptosensors() {
+    LCD.Clear( FEHLCD::Black );
+    LCD.SetFontColor( FEHLCD::White );
 
+    float min = 4.0, max = 0.0;
+
+    while (!buttons->MiddlePressed()) {
+        if (optosensorMiddle->Value() > max) {
+            max = optosensorMiddle->Value();
+        }
+        if (optosensorMiddle->Value() < min) {
+            min = optosensorMiddle->Value();
+        }
+
+        // Print
+        LCD.Clear( FEHLCD::Black );
+        LCD.WriteLine("Optosensor Calibration");
+        LCD.WriteLine("  Press middle button to stop.");
+        LCD.WriteLine("");
+        LCD.Write("Min: ");
+        LCD.Write(min);
+        LCD.Write("   Max: ");
+        LCD.WriteLine(max);
+        LCD.WriteLine("");
+        LCD.Write("Current: ");
+        LCD.WriteLine(optosensorMiddle->Value());
+        Sleep(50);
+    }
 }
 
 /**

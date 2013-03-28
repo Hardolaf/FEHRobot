@@ -3,6 +3,7 @@
 #include <FEHMotor.h>
 #include <FEHIO.h>
 #include <FEHServo.h>
+#include <FEHUtility.h>
 
 /**
  * @brief RobotNormal::RobotNormal This function is a default constructor for
@@ -198,7 +199,7 @@ void RobotNormal::motorSAMOpen() {
  */
 void RobotNormal::motorSAMClose() {
     motorSAM->SetPower(-126/2);
-    Sleep(0.5)
+    Sleep(0.5);
 }
 
 /**

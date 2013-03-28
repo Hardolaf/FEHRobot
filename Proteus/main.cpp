@@ -46,7 +46,7 @@ int main(void)
 
         while ( true ) {
             if (buttons.LeftPressed()) {
-                robot.calibrateEncoders();
+                robot.calibrateOptosensors();
                 debug_menu();
             } else if (buttons.MiddlePressed()) {
                 robot.testMovementForward();
@@ -69,7 +69,7 @@ int main(void)
 void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
-    LCD.WriteLine("Left: Calibrate Encoders");
+    LCD.WriteLine("Left: Calibrate Optosensors");
     LCD.WriteLine("Middle: Test Forward Movement");
     LCD.WriteLine("Right: Calibrate Light Sensor");
     Sleep( 300 );
