@@ -15,6 +15,9 @@ public:
     void movementStraight(int speed, float distance);
     void movementLeft(int angle);
     void movementRight(int angle);
+    int movementEncoderCountLeft();
+    int movementEncoderCountRight();
+    void movementEncoderCountReset();
 
     void motorSAMOpen();
     void motorSAMClose();

@@ -27,8 +27,8 @@ int main(void)
     while( true )
     {
         if( buttons.LeftPressed() ) {
-            LCD.WriteLine( "Not implemented." );
-            Sleep( 100 );
+            runTimeMode = RobotFactory::RUN_MODE_NORMAL;
+            break;
         } else if ( buttons.RightPressed()) {
             runTimeMode = RobotFactory::RUN_MODE_DEBUG;
             break;
@@ -112,16 +112,72 @@ void performance_test_5(RobotNormal robot) {
     startup_sequence(robot);
 
     // Go up the stairs
+    robot.movementStraight(127, 22.0);
+    Sleep(100);
 
     // Move until we see the line
+    robot.movementMotorManualSet(126/2, 126/2);
+    while(robot.optosensorMiddleSeesLine() != 1);
+    robot.movementMotorManualSet(0, 0);
+    Sleep(100);
 
     // Turn 45 degress towards wall
+    robot.movementLeft(45);
+    Sleep(100);
 
-    // Square up against the wall
+    // Square up against the wall (turn into a function)
+    int last = -1;
+    while(!robot.bumpSwitchFrontBothPressed()) {
+        if (robot.bumpSwitchFrontEitherPressed()) {
+            if (robot.bumpSwitchFrontLeftPressed()) {
+                if (last != 1) {
+                    last = 1;
+                    robot.movementMotorManualSet(63, 127);
+                }
+            } else {
+                if (last != 2) {
+                    last = 2;
+                    robot.movementMotorManualSet(127, 63);
+                }
+            }
+        } else {
+            if (last != 0) {
+                last = 0;
+                robot.movementMotorManualSet(63, 63);
+            }
+        }
+    }
+    Sleep(50);
+    robot.movementMotorManualSet(0, 0);
 
     // Turn 90 towards pryramid (front facing)
+    robot.movementStraight(-63, 0.5);
+    Sleep(50);
+    robot.movementRight(90);
+    Sleep(100);
 
-    // Move straight forward for ___ inches or _ seconds
+    // Move straight forward for 11.0? inches or 5.0? seconds
+    for (int i = 0; i < 2; i++) {
+        float end_time = TimeNow() + 5.0;
+        int encoder_count_limit = 11.0 * Robot::ENCODER_COUNTS_PER_INCH;
+
+        // Move the robot forward
+        robot.movementEncoderCountReset();
+        robot.movementStraight(80, 80);
+        while (end_time > TimeNow()
+               || encoder_count_limit > robot.movementEncoderCountLeft()
+               || encoder_count_limit > robot.movementEncoderCountRight());
+        Sleep(100);
+
+        // Move it backwards
+        robot.movementEncoderCountReset();
+        end_time = TimeNow() + 5.0;
+        robot.movementStraight(-80, -80);
+        while (end_time > TimeNow()
+               || encoder_count_limit > robot.movementEncoderCountLeft()
+               || encoder_count_limit > robot.movementEncoderCountRight());
+        Sleep(100);
+    }
 
     // Move backwards for ___ inches or _ seconds
 

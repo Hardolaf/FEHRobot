@@ -146,8 +146,7 @@ void RobotNormal::movementRight(int angle) {
     int encoderCounts = Robot::ENCODER_COUNTS_PER_DEGREE_TURN * angle;
 
     // Reset encoder counters
-    encoderLeft->ResetCounts();
-    encoderRight->ResetCounts();
+    movementEncoderCountReset();
 
     // Set the motor speed
     motorLeft->SetPower(Robot::MOVEMENT_MOTOR_TURN_SPEED);
@@ -160,6 +159,30 @@ void RobotNormal::movementRight(int angle) {
     // Stop the motors
     motorLeft->Stop();
     motorRight->Stop();
+}
+
+/**
+ * @brief RobotNormal::movementEncoderCountLeft
+ * @return Left encoder counts
+ */
+int RobotNormal::movementEncoderCountLeft() {
+    return encoderLeft->Counts();
+}
+
+/**
+ * @brief RobotNormal::movementEncoderCountRight
+ * @return Right encoder counts
+ */
+int RobotNormal::movementEncoderCountRight() {
+    return encoderRight->Counts();
+}
+
+/**
+ * @brief RobotNormal::movementEncoderCountReset
+ */
+void RobotNormal::movementEncoderCountReset() {
+    encoderLeft->ResetCounts();
+    encoderRight->ResetCounts();
 }
 
 /**

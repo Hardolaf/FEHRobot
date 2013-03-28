@@ -13,7 +13,7 @@ public:
 
     static const int MOVEMENT_MOTOR_TURN_SPEED = 80;
 
-    static const float LIGHT_SENSOR_MAX_LIGHT_VALUE = 1.200;
+    static const float LIGHT_SENSOR_MAX_LIGHT_VALUE = 2.000;
 
     static const float OPTOSENSOR_LEFT_LOW_THRESHOLD = 2.000;
     static const float OPTOSENSOR_LEFT_HIGH_THRESHOLD = 2.100;
