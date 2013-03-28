@@ -38,7 +38,7 @@ void RobotNormal::setup(bool calibrate) {
 
     // Set up analog optosenors
     optosensorLeft = new AnalogInputPin( FEHIO::P1_6 ); // not set
-    optosensorMiddle = new AnalogInputPin( FEHIO::P1_5 ); // not set
+    optosensorMiddle = new AnalogInputPin( FEHIO::P2_5 );
     optosensorRight = new AnalogInputPin( FEHIO::P1_4 ); // not set
 
     // Set up buttons
@@ -305,9 +305,9 @@ bool RobotNormal::buttonLeftPressed() {
  */
 int RobotNormal::optosensorLeftSeesLine() {
     if (optosensorLeft->Value() > OPTOSENSOR_LEFT_HIGH_THRESHOLD) {
-        return 1;
-    } else if (optosensorLeft->Value() < OPTOSENSOR_LEFT_LOW_THRESHOLD) {
         return -1;
+    } else if (optosensorLeft->Value() < OPTOSENSOR_LEFT_LOW_THRESHOLD) {
+        return 1;
     } else {
         return 0;
     }
@@ -319,9 +319,9 @@ int RobotNormal::optosensorLeftSeesLine() {
  */
 int RobotNormal::optosensorMiddleSeesLine() {
     if (optosensorMiddle->Value() > OPTOSENSOR_MIDDLE_HIGH_THRESHOLD) {
-        return 1;
-    } else if (optosensorMiddle->Value() < OPTOSENSOR_MIDDLE_LOW_THRESHOLD) {
         return -1;
+    } else if (optosensorMiddle->Value() < OPTOSENSOR_MIDDLE_LOW_THRESHOLD) {
+        return 1;
     } else {
         return 0;
     }
@@ -333,9 +333,9 @@ int RobotNormal::optosensorMiddleSeesLine() {
  */
 int RobotNormal::optosensorRightSeesLine() {
     if (optosensorRight->Value() > OPTOSENSOR_RIGHT_HIGH_THRESHOLD) {
-        return 1;
-    } else if (optosensorRight->Value() < OPTOSENSOR_RIGHT_LOW_THRESHOLD) {
         return -1;
+    } else if (optosensorRight->Value() < OPTOSENSOR_RIGHT_LOW_THRESHOLD) {
+        return 1;
     } else {
         return 0;
     }
