@@ -39,12 +39,12 @@ void RobotNormal::setup(bool calibrate) {
 }
 
 void RobotNormal::calibrate() {
-    float leftLowThreshold = 0.388;
-    float leftHighThreshold = 1.547;
+    float leftLowThreshold = 3.050;
+    float leftHighThreshold = 3.200;
     leftEncoder->SetThresholds( leftLowThreshold, leftHighThreshold );
 
-    float rightLowThreshold = 0.388;
-    float rightHighThreshold = 1.547;
+    float rightLowThreshold = 3.050;
+    float rightHighThreshold = 3.130;
     rightEncoder->SetThresholds( rightLowThreshold, rightHighThreshold );
 
     elevator->SetMin( 411 );
@@ -64,8 +64,8 @@ void RobotNormal::movementStraight(int speed, float distance) {
     rightMotor->SetPower(speed);
 
     // Wait for the encoder to travel the specified distance
-    while (leftEncoder->Counts() > encoderCounts
-           && rightEncoder->Counts() > encoderCounts);
+    while (leftEncoder->Counts() < encoderCounts
+           && rightEncoder->Counts() < encoderCounts);
 
     // Stop the motors
     leftMotor->Stop();
@@ -85,8 +85,8 @@ void RobotNormal::movementLeft(int angle) {
     rightMotor->SetPower(Robot::MOVEMENT_MOTOR_TURN_SPEED);
 
     // Wait for the encoder to travel the specified distance
-    while (leftEncoder->Counts() > encoderCounts
-           && rightEncoder->Counts() > encoderCounts);
+    while (leftEncoder->Counts() < encoderCounts
+           && rightEncoder->Counts() < encoderCounts);
 
     // Stop the motors
     leftMotor->Stop();
@@ -106,8 +106,8 @@ void RobotNormal::movementRight(int angle) {
     rightMotor->SetPower(-1 * Robot::MOVEMENT_MOTOR_TURN_SPEED);
 
     // Wait for the encoder to travel the specified distance
-    while (leftEncoder->Counts() > encoderCounts
-           && rightEncoder->Counts() > encoderCounts);
+    while (leftEncoder->Counts() < encoderCounts
+           && rightEncoder->Counts() < encoderCounts);
 
     // Stop the motors
     leftMotor->Stop();

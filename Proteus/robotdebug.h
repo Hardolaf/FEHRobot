@@ -11,6 +11,8 @@ public:
     void calibrateEncoders();
     void calibrateOptosensors();
     void calibrateLightSensor();
+
+    void testMovementForward();
 };
 
 #endif // ROBOTDEBUG_H

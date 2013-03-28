@@ -9,7 +9,7 @@ public:
     virtual void movementRight(int) = 0;
     static const float ENCODER_COUNTS_PER_INCH = 3.316344860705540019742322139111;
     static const float ENCODER_COUNTS_PER_DEGREE_TURN = 0.23;
-    static const int MOVEMENT_MOTOR_TURN_SPEED = 50;
+    static const int MOVEMENT_MOTOR_TURN_SPEED = 80;
 };
 
 #endif // ROBOT_H
