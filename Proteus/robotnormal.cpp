@@ -161,54 +161,107 @@ void RobotNormal::movementRight(int angle) {
     rightMotor->Stop();
 }
 
+/**
+ * @brief RobotNormal::lightSensorSeeStart Checks to see if CDS cell "sees" a
+ * light of any color.
+ * @return True on sees like, false on does not see light
+ */
 bool RobotNormal::lightSensorSeeStart() {
     return lightSensor->Value() < LIGHT_SENSOR_MAX_LIGHT_VALUE;
 }
 
+/**
+ * @brief RobotNormal::bumpSwitchFrontEitherPressed
+ * @return True for either pressed, false for neither pressed.
+ */
 bool RobotNormal::bumpSwitchFrontEitherPressed() {
     return bumpSwitchFrontLeftPressed() || bumpSwitchFrontRightPressed();
 }
 
+/**
+ * @brief RobotNormal::bumpSwitchFrontLeftPressed
+ * @return True for pressed, false for not pressed.
+ */
 bool RobotNormal::bumpSwitchFrontLeftPressed() {
     return bumpSwitchFrontLeft->Value() == 0;
 }
 
+/**
+ * @brief RobotNormal::bumpSwitchFrontRightPressed
+ * @return True for pressed, false for not pressed.
+ */
 bool RobotNormal::bumpSwitchFrontRightPressed() {
     return bumpSwitchFrontRight == 0;
 }
 
+/**
+ * @brief RobotNormal::bumpSwitchFrontBothPressed
+ * @return True for both pressed, false for all other cases.
+ */
 bool RobotNormal::bumpSwitchFrontBothPressed() {
     return bumpSwitchFrontLeftPressed() && bumpSwitchFrontRightPressed();
 }
 
+/**
+ * @brief RobotNormal::bumpSwitchBackEitherPressed
+ * @return True for either pressed, false for neither pressed.
+ */
 bool RobotNormal::bumpSwitchBackEitherPressed() {
     return bumpSwitchBackLeftPressed() || bumpSwitchBackRightPressed();
 }
 
+/**
+ * @brief RobotNormal::bumpSwitchBackLeftPressed
+ * @return True for pressed, false for not pressed.
+ */
 bool RobotNormal::bumpSwitchBackLeftPressed() {
     return bumpSwitchBackLeft->Value() == 0;
 }
 
+/**
+ * @brief RobotNormal::bumpSwitchBackRightPressed
+ * @return True for pressed, false for not pressed.
+ */
 bool RobotNormal::bumpSwitchBackRightPressed() {
     return bumpSwitchBackRight->Value() ==0;
 }
 
+/**
+ * @brief RobotNormal::bumpSwitchBackBothPressed
+ * @return True for both pressed, false for all other cases.
+ */
 bool RobotNormal::bumpSwitchBackBothPressed() {
     return bumpSwitchBackLeftPressed() && bumpSwitchBackRightPressed();
 }
 
+/**
+ * @brief RobotNormal::buttonRightPressed
+ * @return True for pressed, false for not pressed.
+ */
 bool RobotNormal::buttonRightPressed() {
     return buttons->RightPressed();
 }
 
+/**
+ * @brief RobotNormal::buttonMiddlePressed
+ * @return True for pressed, false for not pressed.
+ */
 bool RobotNormal::buttonMiddlePressed() {
     return buttons->MiddlePressed();
 }
 
+/**
+ * @brief RobotNormal::buttonLeftPressed
+ * @return True for pressed, false for not pressed.
+ */
 bool RobotNormal::buttonLeftPressed() {
     return buttons->LeftPressed();
 }
 
+/**
+ * @brief RobotNormal::optosensorLeftSeesLine
+ * @return 1 for sees line, -1 for does not see line, 0 for indeterminate.
+ */
 int RobotNormal::optosensorLeftSeesLine() {
     if (optosensorLeft->Value() > OPTOSENSOR_LEFT_HIGH_THRESHOLD) {
         return 1;
@@ -219,6 +272,10 @@ int RobotNormal::optosensorLeftSeesLine() {
     }
 }
 
+/**
+ * @brief RobotNormal::optosensorMiddleSeesLine
+ * @return 1 for sees line, -1 for does not see line, 0 for indeterminate.
+ */
 int RobotNormal::optosensorMiddleSeesLine() {
     if (optosensorMiddle->Value() > OPTOSENSOR_MIDDLE_HIGH_THRESHOLD) {
         return 1;
@@ -229,6 +286,10 @@ int RobotNormal::optosensorMiddleSeesLine() {
     }
 }
 
+/**
+ * @brief RobotNormal::optosensorRightSeesLine
+ * @return 1 for sees line, -1 for does not see line, 0 for indeterminate.
+ */
 int RobotNormal::optosensorRightSeesLine() {
     if (optosensorRight->Value() > OPTOSENSOR_RIGHT_HIGH_THRESHOLD) {
         return 1;
