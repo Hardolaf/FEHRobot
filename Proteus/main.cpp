@@ -7,6 +7,7 @@
 #include <FEHUtility.h>
 
 void debug_menu();
+void performance_test_5(RobotNormal robot);
 
 int main(void)
 {
@@ -36,6 +37,8 @@ int main(void)
 
     if (runTimeMode == RobotFactory::RUN_MODE_NORMAL) {
         RobotNormal robot;
+
+        performance_test_5(robot);
     } else if (runTimeMode == RobotFactory::RUN_MODE_DEBUG) {
         RobotDebug robot;
 
@@ -70,4 +73,13 @@ void debug_menu() {
     LCD.WriteLine("Middle: Test Forward Movement");
     LCD.WriteLine("Right: Calibrate Light Sensor");
     Sleep( 300 );
+}
+
+/**
+ * @brief performance_test_5
+ * @param robot A RobotNormal with RobotNormal::setup() and
+ * RobotNormal::calibrate()run
+ */
+void performance_test_5(RobotNormal robot) {
+
 }

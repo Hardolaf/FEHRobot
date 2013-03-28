@@ -43,6 +43,8 @@ protected:
     FEHMotor* leftMotor;
     /*! Right motor */
     FEHMotor* rightMotor;
+    /*! SAM motor */
+    FEHMotor* SAMMotor;
 
     /*! Left Encoder */
     FEHEncoder* leftEncoder;

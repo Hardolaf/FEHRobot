@@ -73,8 +73,8 @@ void RobotNormal::calibrate() {
 /**
  * @brief RobotNormal::movementMotorManualSet Sets the speeds of the tow motors
  * manually.
- * @param speedLeft [0, 127] where 0 is stopped, 127 is max speed.
- * @param speedRight [0, 127] where 0 is stopped, 127 is max speed.
+ * @param speedLeft [-127, 127] where 0 is stopped, 127 is max speed.
+ * @param speedRight [-127, 127] where 0 is stopped, 127 is max speed.
  */
 void RobotNormal::movementMotorManualSet(int speedLeft, int speedRight) {
     leftMotor->SetPower(speedLeft);
@@ -85,7 +85,7 @@ void RobotNormal::movementMotorManualSet(int speedLeft, int speedRight) {
  * @brief RobotNormal::movementStraight Moves the robot forwards or backwards
  * a given distance at a given speed. This is not exact motion due to error
  * inherent in shaft encoding.
- * @param speed [0, 127] where 0 is stopped, 127 is max speed.
+ * @param speed [-127, 127] where 0 is stopped, 127 is max speed.
  * @param distance (0, FLOAT_MAX] the distance the robot will travel.
  */
 void RobotNormal::movementStraight(int speed, float distance) {
@@ -164,7 +164,7 @@ void RobotNormal::movementRight(int angle) {
 /**
  * @brief RobotNormal::lightSensorSeeStart Checks to see if CDS cell "sees" a
  * light of any color.
- * @return True on sees like, false on does not see light
+ * @return True on sees light, false on does not see light
  */
 bool RobotNormal::lightSensorSeeStart() {
     return lightSensor->Value() < LIGHT_SENSOR_MAX_LIGHT_VALUE;
@@ -223,7 +223,7 @@ bool RobotNormal::bumpSwitchBackLeftPressed() {
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchBackRightPressed() {
-    return bumpSwitchBackRight->Value() ==0;
+    return bumpSwitchBackRight->Value() == 0;
 }
 
 /**
