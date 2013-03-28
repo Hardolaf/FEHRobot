@@ -160,3 +160,15 @@ bool RobotNormal::bumpSwitchBackRightPressed() {
 bool RobotNormal::bumpSwitchBackBothPressed() {
     return bumpSwitchBackLeftPressed() && bumpSwitchBackRightPressed();
 }
+
+bool RobotNormal::buttonRightPressed() {
+    return buttons->RightPressed();
+}
+
+bool RobotNormal::buttonMiddlePressed() {
+    return buttons->MiddlePressed();
+}
+
+bool RobotNormal::buttonLeftPressed() {
+    return buttons->LeftPressed();
+}

@@ -23,6 +23,9 @@ public:
     bool bumpSwitchBackLeftPressed();
     bool bumpSwitchBackRightPressed();
     bool bumpSwitchBackBothPressed();
+    bool buttonRightPressed();
+    bool buttonMiddlePressed();
+    bool buttonLeftPressed();
 protected:
     void setup(bool);
     void calibrate();

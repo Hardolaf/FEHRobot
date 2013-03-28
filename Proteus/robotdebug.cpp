@@ -88,7 +88,7 @@ void RobotDebug::calibrateLightSensor() {
         LCD.WriteLine("");
         LCD.Write("Current: ");
         LCD.WriteLine(lightSensor->Value());
-        sleep(50);
+        Sleep(50);
     }
 }
 
