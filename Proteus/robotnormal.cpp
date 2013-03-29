@@ -61,12 +61,12 @@ void RobotNormal::setup(bool calibrate) {
  * @brief RobotNormal::calibrate Calibrates encoders and the elevator servo.
  */
 void RobotNormal::calibrate() {
-    float leftLowThreshold = 3.050;
-    float leftHighThreshold = 3.250;
+    float leftLowThreshold = 3.100;
+    float leftHighThreshold = 3.200;
     encoderLeft->SetThresholds( leftLowThreshold, leftHighThreshold );
 
     float rightLowThreshold = 3.100;
-    float rightHighThreshold = 3.240;
+    float rightHighThreshold = 3.200;
     encoderRight->SetThresholds( rightLowThreshold, rightHighThreshold );
 
     elevator->SetMin( 411 );

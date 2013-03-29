@@ -170,7 +170,7 @@ void performance_test_5(RobotNormal robot) {
 
     // Turn 90 towards pryramid (front facing)
     LCD.WriteLine("Back up 0.25 inches");
-    robot.movementStraight(-63, 0.20);
+    robot.movementStraight(-63, 0.30);
     Sleep(50);
     LCD.WriteLine("Turning right");
     robot.movementRight(80);
@@ -179,6 +179,7 @@ void performance_test_5(RobotNormal robot) {
     // Charge the stone like a madman
     bool hitStone = false;
     int charges = 0;
+    bool hfr = false;
     while(!hitStone || charges < 2) {
         LCD.WriteLine("Charge STONE");
         double end_time = TimeNow() + 2.0;
@@ -191,12 +192,21 @@ void performance_test_5(RobotNormal robot) {
                 hitStone = true;
                 LCD.WriteLine("Hit STONE");
             }
+            if (robot.bumpSwitchFrontRightPressed()) {
+                hfr = true;
+            }
         }
         Sleep(100);
         LCD.WriteLine("Move backwards");
 
         // Move it backwards
-        robot.movementStraight(-100, 4.0);
+        if (hfr || hitStone) {
+            robot.movementStraight(-100, 4.0);
+        } else {
+            robot.movementMotorManualSet(-80, -100);
+            Sleep(250);
+            robot.movementMotorManualSet(0, 0);
+        }
         Sleep(100);
         charges++;
     }
@@ -219,12 +229,12 @@ void performance_test_5(RobotNormal robot) {
 
     // Forward 10.0 inches
     LCD.WriteLine("Go forward");
-    robot.movementStraight(80, 5.0);
+    robot.movementStraight(80, 10.0);
     Sleep(100);
 
     // Turn right 135
     LCD.WriteLine("Turn right 135");
-    robot.movementRight(145);
+    robot.movementRight(120);
     Sleep(100);
 
     // Go down to basecamp
