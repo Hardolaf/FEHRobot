@@ -183,9 +183,9 @@ void performance_test_5(RobotNormal robot) {
         double end_time = TimeNow() + 2.0;
 
         // Move straight forward for 2.0 seconds
-        robot.movementEncoderCountReset();
-        robot.movementStraight(80, 80);
+        robot.movementMotorManualSet(80, 80);
         while (end_time > TimeNow()) {
+            LCD.WriteLine(robot.bumpSwitchBackRightPressed());
             if (robot.bumpSwitchBackRightPressed()) {
                 hitStone = true;
                 LCD.WriteLine("Hit STONE");
@@ -195,10 +195,7 @@ void performance_test_5(RobotNormal robot) {
         LCD.WriteLine("Move backwards");
 
         // Move it backwards
-        robot.movementEncoderCountReset();
-        end_time = TimeNow() + 5.0;
-        robot.movementStraight(-100, -100);
-        while (end_time > TimeNow());
+        robot.movementStraight(-100, 4.0);
         Sleep(100);
     }
 
