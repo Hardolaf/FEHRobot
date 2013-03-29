@@ -200,8 +200,59 @@ void performance_test_5(RobotNormal robot) {
     }
 
     // Move backwards for ___ inches or _ seconds
+    LCD.WriteLine("Performing SAM drop");
+    robot.movementMotorManualSet(-80, -80);
+    while(!robot.bumpSwitchBackLeftPressed());
+    Sleep(100);
+    robot.movementMotorManualSet(0, 0);
+    Sleep(100);
 
     // Drop SAM in the hole.
+    //robot.motorSAMOpen();
+    //Sleep(100);
 
     // Close SAM enclosure.
+    //robot.motorSAMClose();
+    //Sleep(100);
+
+    // Forward 10.0 inches
+    LCD.WriteLine("Go forward");
+    robot.movementMotorManualSet(80, 10.0);
+    Sleep(100);
+
+    // Turn right 135
+    LCD.WriteLine("Turn right 135");
+    robot.movementRight(135);
+    Sleep(100);
+
+    // Go down to basecamp
+    LCD.WriteLine("Returning to basecamp");
+    last = -1;
+    while(!robot.bumpSwitchFrontBothPressed()) {
+        if (robot.bumpSwitchFrontEitherPressed()) {
+            if (robot.bumpSwitchFrontLeftPressed()) {
+                if (last != 1) {
+                    LCD.WriteLine("Left front pressed");
+                    last = 1;
+                    robot.movementMotorManualSet(63, 127);
+                }
+            } else {
+                if (last != 2) {
+                    last = 2;
+                    LCD.WriteLine("Right front pressed");
+                    robot.movementMotorManualSet(127, 63);
+                }
+            }
+        } else {
+            if (last != 0) {
+                last = 0;
+                robot.movementMotorManualSet(127, 127);
+                LCD.WriteLine("Neither front pressed");
+            }
+        }
+    }
+
+    // End run
+    robot.movementMotorManualSet(0, 0);
+    LCD.WriteLine("Run complete");
 }
