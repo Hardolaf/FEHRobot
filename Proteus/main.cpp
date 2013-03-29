@@ -46,7 +46,7 @@ int main(void)
 
         while ( true ) {
             if (buttons.LeftPressed()) {
-                robot.calibrateOptosensors();
+                robot.calibrateEncoders();
                 debug_menu();
             } else if (buttons.MiddlePressed()) {
                 robot.testMovementForward();
@@ -69,7 +69,7 @@ int main(void)
 void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
-    LCD.WriteLine("Left: Calibrate Optosensors");
+    LCD.WriteLine("Left: Calibrate Encoders");
     LCD.WriteLine("Middle: Test Forward Movement");
     LCD.WriteLine("Right: Calibrate Light Sensor");
     Sleep( 300 );
@@ -170,7 +170,7 @@ void performance_test_5(RobotNormal robot) {
 
     // Turn 90 towards pryramid (front facing)
     LCD.WriteLine("Back up 0.25 inches");
-    robot.movementStraight(-63, 0.15);
+    robot.movementStraight(-63, 0.20);
     Sleep(50);
     LCD.WriteLine("Turning right");
     robot.movementRight(80);
@@ -178,7 +178,8 @@ void performance_test_5(RobotNormal robot) {
 
     // Charge the stone like a madman
     bool hitStone = false;
-    while(!hitStone) {
+    int charges = 0;
+    while(!hitStone || charges < 2) {
         LCD.WriteLine("Charge STONE");
         double end_time = TimeNow() + 2.0;
 
@@ -197,6 +198,7 @@ void performance_test_5(RobotNormal robot) {
         // Move it backwards
         robot.movementStraight(-100, 4.0);
         Sleep(100);
+        charges++;
     }
 
     // Move backwards for ___ inches or _ seconds
@@ -217,12 +219,12 @@ void performance_test_5(RobotNormal robot) {
 
     // Forward 10.0 inches
     LCD.WriteLine("Go forward");
-    robot.movementMotorManualSet(80, 10.0);
+    robot.movementStraight(80, 5.0);
     Sleep(100);
 
     // Turn right 135
     LCD.WriteLine("Turn right 135");
-    robot.movementRight(135);
+    robot.movementRight(145);
     Sleep(100);
 
     // Go down to basecamp
