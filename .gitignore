@@ -48,3 +48,6 @@ doxygen
 # Proteus #
 ###########
 *.autosave
+*.user.*
+*.user
+
