@@ -23,7 +23,7 @@ int main(void)
 
 
     int runTimeMode = -1;
-    
+
     while( true )
     {
         if( buttons.LeftPressed() ) {
@@ -96,7 +96,7 @@ void startup_sequence(RobotNormal robot) {
     LCD.WriteLine("Ready in 1 second.");
     Sleep(1000);
     LCD.Clear( FEHLCD::Scarlet );
-    LCD.WriteLine("Waiting for line.");
+    LCD.WriteLine("Waiting for light.");
 
     // Wait for line
     while(!robot.lightSensorSeeStart());
@@ -112,18 +112,30 @@ void performance_test_5(RobotNormal robot) {
     startup_sequence(robot);
 
     // Go up the stairs
-    robot.movementStraight(127, 22.0);
+    robot.movementStraight(127, 30.0);
+        LCD.WriteLine("I went 30 inches");
     Sleep(100);
+    LCD.WriteLine("I slept for a while");
 
     // Move until we see the line
-    robot.movementMotorManualSet(126/2, 126/2);
-    while(robot.optosensorMiddleSeesLine() != 1);
-    robot.movementMotorManualSet(0, 0);
-    Sleep(100);
+    LCD.WriteLine("I am trying to move slowly ");
+    //robot.movementMotorManualSet(126/2, 126/2);
+
+    //while(robot.optosensorMiddleSeesLine() != 1)
+    //{
+
+
+    //}
+      //  ;
+    //LCD.WriteLine("I found the line");
+    //robot.movementMotorManualSet(0, 0);
+    //Sleep(100);
+    //LCD.WriteLine("I'm trying to turn left.");
 
     // Turn 45 degress towards wall
     robot.movementLeft(45);
     Sleep(100);
+    LCD.WriteLine("I turned left.");
 
     // Square up against the wall (turn into a function)
     int last = -1;
@@ -131,56 +143,62 @@ void performance_test_5(RobotNormal robot) {
         if (robot.bumpSwitchFrontEitherPressed()) {
             if (robot.bumpSwitchFrontLeftPressed()) {
                 if (last != 1) {
+                    LCD.WriteLine("The left is pressed.");
                     last = 1;
                     robot.movementMotorManualSet(63, 127);
+                    LCD.WriteLine("The left power is 63.");
                 }
             } else {
                 if (last != 2) {
                     last = 2;
+                    LCD.WriteLine("The right is pressed.");
                     robot.movementMotorManualSet(127, 63);
+                    LCD.WriteLine("The right power is 63.");
                 }
             }
         } else {
             if (last != 0) {
                 last = 0;
-                robot.movementMotorManualSet(63, 63);
+                robot.movementMotorManualSet(127, 127);
+                LCD.WriteLine("Neither are pressed");
             }
         }
     }
+
     Sleep(50);
     robot.movementMotorManualSet(0, 0);
 
     // Turn 90 towards pryramid (front facing)
-    robot.movementStraight(-63, 0.5);
+    LCD.WriteLine("Back up 0.25 inches");
+    robot.movementStraight(-63, 0.15);
     Sleep(50);
-    robot.movementRight(90);
+    LCD.WriteLine("Turning right");
+    robot.movementRight(80);
     Sleep(100);
 
     // Charge the stone like a madman
     bool hitStone = false;
     while(!hitStone) {
-        float end_time = TimeNow() + 5.0;
-        int encoder_count_limit = 11.0 * Robot::ENCODER_COUNTS_PER_INCH;
+        LCD.WriteLine("Charge STONE");
+        double end_time = TimeNow() + 2.0;
 
-        // Move straight forward for 11.0? inches or 5.0? seconds
+        // Move straight forward for 2.0 seconds
         robot.movementEncoderCountReset();
         robot.movementStraight(80, 80);
-        while (end_time > TimeNow()
-               || encoder_count_limit > robot.movementEncoderCountLeft()
-               || encoder_count_limit > robot.movementEncoderCountRight()) {
+        while (end_time > TimeNow()) {
             if (robot.bumpSwitchBackRightPressed()) {
                 hitStone = true;
+                LCD.WriteLine("Hit STONE");
             }
         }
         Sleep(100);
+        LCD.WriteLine("Move backwards");
 
         // Move it backwards
         robot.movementEncoderCountReset();
         end_time = TimeNow() + 5.0;
-        robot.movementStraight(-80, -80);
-        while (end_time > TimeNow()
-               || encoder_count_limit > robot.movementEncoderCountLeft()
-               || encoder_count_limit > robot.movementEncoderCountRight());
+        robot.movementStraight(-100, -100);
+        while (end_time > TimeNow());
         Sleep(100);
     }
 

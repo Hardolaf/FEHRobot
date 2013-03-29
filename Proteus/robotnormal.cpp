@@ -4,6 +4,7 @@
 #include <FEHIO.h>
 #include <FEHServo.h>
 #include <FEHUtility.h>
+#include <FEHLCD.h>
 
 /**
  * @brief RobotNormal::RobotNormal This function is a default constructor for
@@ -47,7 +48,7 @@ void RobotNormal::setup(bool calibrate) {
     // Set up bump switches
     bumpSwitchFrontRight = new DigitalInputPin( FEHIO::P1_2 );
     bumpSwitchFrontLeft = new DigitalInputPin( FEHIO::P1_4 );
-    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_7 );
+    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_6 );
     bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P2_0 ); // not set
 
     // Calibrate the robot if we need to
@@ -80,7 +81,7 @@ void RobotNormal::calibrate() {
  */
 void RobotNormal::movementMotorManualSet(int speedLeft, int speedRight) {
     motorLeft->SetPower(speedLeft);
-    motorLeft->SetPower(speedRight);
+    motorRight->SetPower(speedRight);
 }
 
 /**
@@ -109,6 +110,7 @@ void RobotNormal::movementStraight(int speed, float distance) {
     // Stop the motors
     motorLeft->Stop();
     motorRight->Stop();
+
 }
 
 /**
@@ -216,7 +218,7 @@ bool RobotNormal::lightSensorSeeStart() {
  * @return True for either pressed, false for neither pressed.
  */
 bool RobotNormal::bumpSwitchFrontEitherPressed() {
-    return bumpSwitchFrontLeftPressed() || bumpSwitchFrontRightPressed();
+    return (bumpSwitchFrontLeftPressed() || bumpSwitchFrontRightPressed());
 }
 
 /**
@@ -232,7 +234,7 @@ bool RobotNormal::bumpSwitchFrontLeftPressed() {
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchFrontRightPressed() {
-    return bumpSwitchFrontRight == 0;
+    return bumpSwitchFrontRight->Value() == 0;
 }
 
 /**
@@ -240,7 +242,7 @@ bool RobotNormal::bumpSwitchFrontRightPressed() {
  * @return True for both pressed, false for all other cases.
  */
 bool RobotNormal::bumpSwitchFrontBothPressed() {
-    return bumpSwitchFrontLeftPressed() && bumpSwitchFrontRightPressed();
+    return (bumpSwitchFrontLeftPressed() && bumpSwitchFrontRightPressed());
 }
 
 /**
@@ -248,7 +250,7 @@ bool RobotNormal::bumpSwitchFrontBothPressed() {
  * @return True for either pressed, false for neither pressed.
  */
 bool RobotNormal::bumpSwitchBackEitherPressed() {
-    return bumpSwitchBackLeftPressed() || bumpSwitchBackRightPressed();
+    return (bumpSwitchBackLeftPressed() || bumpSwitchBackRightPressed());
 }
 
 /**
@@ -264,7 +266,7 @@ bool RobotNormal::bumpSwitchBackLeftPressed() {
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchBackRightPressed() {
-    return bumpSwitchBackRight->Value() == 0;
+    return (bumpSwitchBackRight->Value() == 0);
 }
 
 /**
@@ -272,7 +274,7 @@ bool RobotNormal::bumpSwitchBackRightPressed() {
  * @return True for both pressed, false for all other cases.
  */
 bool RobotNormal::bumpSwitchBackBothPressed() {
-    return bumpSwitchBackLeftPressed() && bumpSwitchBackRightPressed();
+    return (bumpSwitchBackLeftPressed() && bumpSwitchBackRightPressed());
 }
 
 /**
@@ -319,8 +321,12 @@ int RobotNormal::optosensorLeftSeesLine() {
  */
 int RobotNormal::optosensorMiddleSeesLine() {
     if (optosensorMiddle->Value() > OPTOSENSOR_MIDDLE_HIGH_THRESHOLD) {
+        LCD.Write(optosensorMiddle->Value());
+        Sleep(100);
         return -1;
-    } else if (optosensorMiddle->Value() < OPTOSENSOR_MIDDLE_LOW_THRESHOLD) {
+    } else if (optosensorMiddle->Value() < OPTOSENSOR_MIDDLE_HIGH_THRESHOLD) {
+        LCD.Write(optosensorMiddle->Value());
+        Sleep(100);
         return 1;
     } else {
         return 0;
