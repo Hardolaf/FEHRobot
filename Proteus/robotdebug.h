@@ -17,8 +17,6 @@ public:
 
     void testMovementForward();
     void testMotorSAM();
-protected:
-    void calibrateServo(FEHServo servo);
 };
 
 #endif // ROBOTDEBUG_H

@@ -33,7 +33,7 @@ void RobotNormal::setup(bool calibrate) {
 
     // Set up servos
     servoElevator =  new FEHServo( FEHServo::Servo0 ); // not set
-    servoArm = new FEHServo( FEHServo::Servo1 ) // not set
+    servoArm = new FEHServo( FEHServo::Servo1 ); // not set
 
     // Set up light sensor (CDS cell)
     lightSensor = new AnalogInputPin( FEHIO::P0_1 );
@@ -197,7 +197,7 @@ void RobotNormal::movementEncoderCountReset() {
  * to the wall in front of it.
  */
 void RobotNormal::movementFrontSquareToWall() {
-    last = -1;
+    int last = -1;
     while(!bumpSwitchFrontBothPressed()) {
         if (bumpSwitchFrontEitherPressed()) {
             if (bumpSwitchFrontLeftPressed()) {
@@ -223,7 +223,7 @@ void RobotNormal::movementFrontSquareToWall() {
     }
 
     Sleep(50);
-    robot.movementMotorManualSet(0, 0);
+    movementMotorManualSet(0, 0);
 }
 
 /**
@@ -247,7 +247,7 @@ void RobotNormal::motorSAMClose() {
  * @param power The power settig of the motor [-127, 127]
  */
 void RobotNormal::motorSAMsetManualPower(int8 power) {
-    motorSAM->setPower(power);
+    motorSAM->SetPower(power);
 }
 
 /**
