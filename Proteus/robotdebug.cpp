@@ -193,3 +193,31 @@ void RobotDebug::testMotorSAM() {
         }
     }
 }
+
+/**
+ * @brief RobotDebug::calibrateServoElevator Calibrates the elevator servo using
+ * the built in calibration function.
+ */
+void RobotDebug::calibrateServoElevator() {
+    LCD.Clear( FEHLCD::Black );
+
+    servoElevator->Calibrate();
+
+    LCD.WriteLine("");
+    LCD.WriteLine("Press middle button to return to menu.");
+    while (!buttonMiddlePressed());
+}
+
+/**
+ * @brief RobotDebug::calibrateServoArm Calibrates the arm servo using the built
+ * in calibration function.
+ */
+void RobotDebug::calibrateServoArm() {
+    LCD.Clear( FEHLCD::Black );
+
+    servoArm->Calibrate();
+
+    LCD.WriteLine("");
+    LCD.WriteLine("Press middle button to return to menu.");
+    while (!buttonMiddlePressed());
+}
