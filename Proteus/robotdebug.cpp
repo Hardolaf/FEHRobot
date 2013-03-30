@@ -36,7 +36,7 @@ void RobotDebug::calibrateEncoders() {
     float leftMin = 10.0, rightMin = 10.0;
     float leftMax = 0.0, rightMax = 0.0;
 
-    while (!buttons->MiddlePressed()) {
+    while (!buttonMiddlePressed()) {
         if (leftMin > encoderLeft->Value()) {
             leftMin = encoderLeft->Value();
         }
@@ -85,7 +85,7 @@ void RobotDebug::calibrateOptosensors() {
 
     float min = 4.0, max = 0.0;
 
-    while (!buttons->MiddlePressed()) {
+    while (!buttonMiddlePressed()) {
         if (optosensorMiddle->Value() > max) {
             max = optosensorMiddle->Value();
         }
@@ -120,7 +120,7 @@ void RobotDebug::calibrateLightSensor() {
 
     float min = 4.0, max = 0.0;
 
-    while (!buttons->MiddlePressed()) {
+    while (!buttonMiddlePressed()) {
         if (lightSensor->Value() > max) {
             max = lightSensor->Value();
         }
@@ -170,7 +170,7 @@ void RobotDebug::testMovementForward() {
     LCD.WriteLine("");
     LCD.WriteLine("Press middle button to return to menu.");
 
-    while (!buttons->MiddlePressed());
+    while (!buttonMiddlePressed());
 }
 
 /**
