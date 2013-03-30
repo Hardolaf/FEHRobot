@@ -31,8 +31,9 @@ void RobotNormal::setup(bool calibrate) {
     encoderLeft = new FEHEncoder( FEHIO::P0_5 );
     encoderRight = new FEHEncoder( FEHIO::P0_7);
 
-    // Set up elevator servo
-    elevator =  new FEHServo( FEHServo::Servo0 ); // not set
+    // Set up servos
+    servoElevator =  new FEHServo( FEHServo::Servo0 ); // not set
+    servoArm = new FEHServo( FEHServo::Servo1 ) // not set
 
     // Set up light sensor (CDS cell)
     lightSensor = new AnalogInputPin( FEHIO::P0_1 );
@@ -58,7 +59,7 @@ void RobotNormal::setup(bool calibrate) {
 }
 
 /**
- * @brief RobotNormal::calibrate Calibrates encoders and the elevator servo.
+ * @brief RobotNormal::calibrate Calibrates encoders and the servos servo.
  */
 void RobotNormal::calibrate() {
     float leftLowThreshold = 3.100;
@@ -69,8 +70,11 @@ void RobotNormal::calibrate() {
     float rightHighThreshold = 3.200;
     encoderRight->SetThresholds( rightLowThreshold, rightHighThreshold );
 
-    elevator->SetMin( 411 );
-    elevator->SetMax( 3823 );
+    servoElevator->SetMin( 411 );
+    servoElevator->SetMax( 3823 );
+
+    servoArm->SetMin( 411 );
+    servoArm->SetMax( 3823 );
 }
 
 /**

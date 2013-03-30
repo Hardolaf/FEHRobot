@@ -61,6 +61,8 @@ protected:
 
     /*! Elevator servo motor */
     FEHServo* elevator;
+    /*! Arm servo */
+    FEHServo* arm;
 
     /*! Light sensor (CDS cell) */
     AnalogInputPin* lightSensor;
