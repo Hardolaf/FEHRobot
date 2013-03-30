@@ -13,6 +13,7 @@ public:
     void calibrateLightSensor();
 
     void testMovementForward();
+    void testMotorSAM();
 };
 
 #endif // ROBOTDEBUG_H

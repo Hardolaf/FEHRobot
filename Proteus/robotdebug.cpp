@@ -172,3 +172,24 @@ void RobotDebug::testMovementForward() {
 
     while (!buttons->MiddlePressed());
 }
+
+/**
+ * @brief RobotDebug::testMotorSAM Tests the SAM motor ot enusre that it is
+ * infact powered properly.
+ * @see RobotNormal::motorSAMsetManualPower()
+ */
+void RobotDebug::testMotorSAM() {
+    LCD.Clear( FEHLCD::Black );
+    LCD.WriteLine("Test SAM motor");
+    LCD.WriteLine("  Press left button to power");
+    LCD.WriteLine("  Press middle button to return to menu");
+
+    while(!buttonMiddlePressed()) {
+        if (buttonLeftPressed()) {
+            motorSAMsetManualPower(63);
+            Sleep(100);
+            motorSAMsetManualPower(0);
+            Sleep(100);
+        }
+    }
+}
