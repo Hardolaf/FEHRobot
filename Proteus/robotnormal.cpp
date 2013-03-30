@@ -189,6 +189,40 @@ void RobotNormal::movementEncoderCountReset() {
 }
 
 /**
+ * @brief RobotNormal::movementFrontSquareToWall Squares the robot up
+ * to the wall in front of it.
+ */
+void RobotNormal::movementFrontSquareToWall() {
+    last = -1;
+    while(!bumpSwitchFrontBothPressed()) {
+        if (bumpSwitchFrontEitherPressed()) {
+            if (bumpSwitchFrontLeftPressed()) {
+                if (last != 1) {
+                    LCD.WriteLine("Left front pressed");
+                    last = 1;
+                    movementMotorManualSet(63, 127);
+                }
+            } else {
+                if (last != 2) {
+                    last = 2;
+                    LCD.WriteLine("Right front pressed");
+                    movementMotorManualSet(127, 63);
+                }
+            }
+        } else {
+            if (last != 0) {
+                last = 0;
+                movementMotorManualSet(127, 127);
+                LCD.WriteLine("Neither front pressed");
+            }
+        }
+    }
+
+    Sleep(50);
+    robot.movementMotorManualSet(0, 0);
+}
+
+/**
  * @brief RobotNormal::motorSAMOpen Opens the SAM enclosure
  */
 void RobotNormal::motorSAMOpen() {
@@ -202,6 +236,14 @@ void RobotNormal::motorSAMOpen() {
 void RobotNormal::motorSAMClose() {
     motorSAM->SetPower(-126/2);
     Sleep(0.5);
+}
+
+/**
+ * @brief Robot::motorSAMsetManualPower
+ * @param power The power
+ */
+void Robot::motorSAMsetManualPower(int8 power) {
+    motorSAM->setPower(power);
 }
 
 /**

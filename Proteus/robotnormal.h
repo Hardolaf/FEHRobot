@@ -18,9 +18,11 @@ public:
     int movementEncoderCountLeft();
     int movementEncoderCountRight();
     void movementEncoderCountReset();
+    void movementFrontSquareToWall();
 
     void motorSAMOpen();
     void motorSAMClose();
+    void motorSAMsetManualPower(int8 power);
 
     bool lightSensorSeeStart();
 

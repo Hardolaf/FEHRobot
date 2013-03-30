@@ -112,61 +112,17 @@ void performance_test_5(RobotNormal robot) {
     startup_sequence(robot);
 
     // Go up the stairs
+    LCD.WriteLine("Forward 30 inches");
     robot.movementStraight(127, 30.0);
-        LCD.WriteLine("I went 30 inches");
     Sleep(100);
-    LCD.WriteLine("I slept for a while");
-
-    // Move until we see the line
-    LCD.WriteLine("I am trying to move slowly ");
-    //robot.movementMotorManualSet(126/2, 126/2);
-
-    //while(robot.optosensorMiddleSeesLine() != 1)
-    //{
-
-
-    //}
-      //  ;
-    //LCD.WriteLine("I found the line");
-    //robot.movementMotorManualSet(0, 0);
-    //Sleep(100);
-    //LCD.WriteLine("I'm trying to turn left.");
 
     // Turn 45 degress towards wall
+    LCD.WriteLine("Left 45 degrees");
     robot.movementLeft(45);
     Sleep(100);
-    LCD.WriteLine("I turned left.");
 
     // Square up against the wall (turn into a function)
-    int last = -1;
-    while(!robot.bumpSwitchFrontBothPressed()) {
-        if (robot.bumpSwitchFrontEitherPressed()) {
-            if (robot.bumpSwitchFrontLeftPressed()) {
-                if (last != 1) {
-                    LCD.WriteLine("The left is pressed.");
-                    last = 1;
-                    robot.movementMotorManualSet(63, 127);
-                    LCD.WriteLine("The left power is 63.");
-                }
-            } else {
-                if (last != 2) {
-                    last = 2;
-                    LCD.WriteLine("The right is pressed.");
-                    robot.movementMotorManualSet(127, 63);
-                    LCD.WriteLine("The right power is 63.");
-                }
-            }
-        } else {
-            if (last != 0) {
-                last = 0;
-                robot.movementMotorManualSet(127, 127);
-                LCD.WriteLine("Neither are pressed");
-            }
-        }
-    }
-
-    Sleep(50);
-    robot.movementMotorManualSet(0, 0);
+    robot.movementFrontSquareToWall();
 
     // Turn 90 towards pryramid (front facing)
     LCD.WriteLine("Back up 0.25 inches");
@@ -239,30 +195,7 @@ void performance_test_5(RobotNormal robot) {
 
     // Go down to basecamp
     LCD.WriteLine("Returning to basecamp");
-    last = -1;
-    while(!robot.bumpSwitchFrontBothPressed()) {
-        if (robot.bumpSwitchFrontEitherPressed()) {
-            if (robot.bumpSwitchFrontLeftPressed()) {
-                if (last != 1) {
-                    LCD.WriteLine("Left front pressed");
-                    last = 1;
-                    robot.movementMotorManualSet(63, 127);
-                }
-            } else {
-                if (last != 2) {
-                    last = 2;
-                    LCD.WriteLine("Right front pressed");
-                    robot.movementMotorManualSet(127, 63);
-                }
-            }
-        } else {
-            if (last != 0) {
-                last = 0;
-                robot.movementMotorManualSet(127, 127);
-                LCD.WriteLine("Neither front pressed");
-            }
-        }
-    }
+    robot.movementFrontSquareToWall();
 
     // End run
     robot.movementMotorManualSet(0, 0);
