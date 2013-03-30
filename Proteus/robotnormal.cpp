@@ -240,9 +240,9 @@ void RobotNormal::motorSAMClose() {
 
 /**
  * @brief Robot::motorSAMsetManualPower
- * @param power The power
+ * @param power The power settig of the motor [-127, 127]
  */
-void Robot::motorSAMsetManualPower(int8 power) {
+void RobotNormal::motorSAMsetManualPower(int8 power) {
     motorSAM->setPower(power);
 }
 
