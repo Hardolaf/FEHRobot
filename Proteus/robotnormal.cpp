@@ -70,11 +70,11 @@ void RobotNormal::calibrate() {
     float rightHighThreshold = 3.200;
     encoderRight->SetThresholds( rightLowThreshold, rightHighThreshold );
 
-    servoElevator->SetMin( 411 );
-    servoElevator->SetMax( 3823 );
+    servoElevator->SetMin( 530 );
+    servoElevator->SetMax( 2300 );
 
-    servoArm->SetMin( 411 );
-    servoArm->SetMax( 3823 );
+    servoArm->SetMin( 500 );
+    servoArm->SetMax( 2414 );
 }
 
 /**

@@ -202,6 +202,7 @@ void RobotDebug::calibrateServoElevator() {
     LCD.Clear( FEHLCD::Black );
 
     servoElevator->Calibrate();
+    Sleep(1000);
 
     LCD.WriteLine("");
     LCD.WriteLine("Press middle button to return to menu.");
@@ -216,6 +217,7 @@ void RobotDebug::calibrateServoArm() {
     LCD.Clear( FEHLCD::Black );
 
     servoArm->Calibrate();
+    Sleep(1000);
 
     LCD.WriteLine("");
     LCD.WriteLine("Press middle button to return to menu.");
