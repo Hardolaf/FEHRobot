@@ -232,7 +232,7 @@ void RobotDebug::testServoElevator() {
     LCD.WriteLine("Test Elevator Servo");
     LCD.WriteLine("Press middle button to return to menu.");
     LCD.WriteLine("Press left button to decrease angle.");
-    LCd.WriteLine("Press right button to increase angle.");
+    LCD.WriteLine("Press right button to increase angle.");
 
     int angle = 0;
     while (!buttonMiddlePressed()) {
@@ -262,7 +262,7 @@ void RobotDebug::testServoArm() {
     LCD.WriteLine("Test Arm Servo");
     LCD.WriteLine("Press middle button to return to menu.");
     LCD.WriteLine("Press left button to decrease angle.");
-    LCd.WriteLine("Press right button to increase angle.");
+    LCD.WriteLine("Press right button to increase angle.");
 
     int angle = 0;
     while (!buttonMiddlePressed()) {
