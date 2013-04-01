@@ -46,10 +46,10 @@ int main(void)
 
         while ( true ) {
             if (buttons.LeftPressed()) {
-                robot.calibrateServoArm();
+                robot.testServoArm();
                 debug_menu();
             } else if (buttons.MiddlePressed()) {
-                robot.calibrateServoElevator();
+                robot.testServoElevator();
                 debug_menu();
             } else if (buttons.RightPressed()) {
                 robot.testMotorSAM();
@@ -69,8 +69,8 @@ int main(void)
 void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
-    LCD.WriteLine("Left: Calibrate Arm Servo");
-    LCD.WriteLine("Middle: Calibrate Elevator Servo");
+    LCD.WriteLine("Left: Test Arm Servo");
+    LCD.WriteLine("Middle: Test Elevator Servo");
     LCD.WriteLine("Right: Test SAM Motor");
     Sleep( 300 );
 }
