@@ -251,6 +251,22 @@ void RobotNormal::motorSAMsetManualPower(int8 power) {
 }
 
 /**
+ * @brief servoElevatorSetAngle
+ * @param angle The angle that the servo will bet set to [0, 180]
+ */
+void RobotNormal::servoElevatorSetAngle(int angle) {
+    servoElevator->SetDegree(angle);
+}
+
+/**
+ * @brief servoElevatorSetAngle
+ * @param angle The angle that the servo will be set to [0, 180]
+ */
+void RobotNormal::servoArmSetAngle(int angle) {
+    servoElevator->SetDegree(angle);
+}
+
+/**
  * @brief RobotNormal::lightSensorSeeStart Checks to see if CDS cell "sees" a
  * light of any color.
  * @return True on sees light, false on does not see light

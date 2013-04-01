@@ -223,3 +223,63 @@ void RobotDebug::calibrateServoArm() {
     LCD.WriteLine("Press middle button to return to menu.");
     while (!buttonMiddlePressed());
 }
+
+/**
+ * @brief RobotDebug::testServoElevator
+ */
+void RobotDebug::testServoElevator() {
+    LCD.Clear( FEHLCD::Black );
+    LCD.WriteLine("Test Elevator Servo");
+    LCD.WriteLine("Press middle button to return to menu.");
+    LCD.WriteLine("Press left button to decrease angle.");
+    LCd.WriteLine("Press right button to increase angle.");
+
+    int angle = 0;
+    while (!buttonMiddlePressed()) {
+        if (buttonLeftPressed()) {
+            angle -=1;
+        } else if (buttonRightPressed()) {
+            angle +=1;
+        }
+
+        if (angle < 0) {
+            angle = 0;
+        } else if (angle > 180) {
+            angle = 180;
+        }
+
+        servoElevatorSetAngle(angle);
+        LCD.WriteLine(angle);
+        Sleep(50);
+    }
+}
+
+/**
+ * @brief RobotDebug::testServoArm
+ */
+void RobotDebug::testServoArm() {
+    LCD.Clear( FEHLCD::Black );
+    LCD.WriteLine("Test Arm Servo");
+    LCD.WriteLine("Press middle button to return to menu.");
+    LCD.WriteLine("Press left button to decrease angle.");
+    LCd.WriteLine("Press right button to increase angle.");
+
+    int angle = 0;
+    while (!buttonMiddlePressed()) {
+        if (buttonLeftPressed()) {
+            angle -=1;
+        } else if (buttonRightPressed()) {
+            angle +=1;
+        }
+
+        if (angle < 0) {
+            angle = 0;
+        } else if (angle > 180) {
+            angle = 180;
+        }
+
+        servoElevatorSetAngle(angle);
+        LCD.WriteLine(angle);
+        Sleep(50);
+    }
+}

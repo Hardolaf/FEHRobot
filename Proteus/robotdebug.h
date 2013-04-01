@@ -17,6 +17,8 @@ public:
 
     void testMovementForward();
     void testMotorSAM();
+    void testServoElevator();
+    void testServoArm();
 };
 
 #endif // ROBOTDEBUG_H

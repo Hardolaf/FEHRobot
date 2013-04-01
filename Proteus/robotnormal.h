@@ -24,6 +24,9 @@ public:
     void motorSAMClose();
     void motorSAMsetManualPower(int8 power);
 
+    void servoElevatorSetAngle(int angle);
+    void servoArmSetAngle(int angle);
+
     bool lightSensorSeeStart();
 
     bool bumpSwitchFrontEitherPressed();
