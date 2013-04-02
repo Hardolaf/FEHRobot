@@ -71,7 +71,7 @@ void debug_menu() {
     LCD.WriteLine("DEBUG MODE");
     LCD.WriteLine("Left: Test Arm Servo");
     LCD.WriteLine("Middle: Test Elevator Servo");
-    LCD.WriteLine("Right: Test SAM Motor");
+    LCD.WriteLine("Right: Test SAM");
     Sleep( 300 );
 }
 

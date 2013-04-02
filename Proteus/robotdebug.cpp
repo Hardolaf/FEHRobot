@@ -187,9 +187,9 @@ void RobotDebug::testMotorSAM() {
     while(!buttonMiddlePressed()) {
         if (buttonLeftPressed()) {
             motorSAMsetManualPower(63);
-            Sleep(100);
+            Sleep(50);
             motorSAMsetManualPower(0);
-            Sleep(100);
+            Sleep(50);
         }
     }
 }
@@ -228,6 +228,7 @@ void RobotDebug::calibrateServoArm() {
  * @brief RobotDebug::testServoElevator
  */
 void RobotDebug::testServoElevator() {
+    this->calibrate();
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("Test Elevator Servo");
     LCD.WriteLine("Press middle button to return to menu.");
@@ -258,6 +259,7 @@ void RobotDebug::testServoElevator() {
  * @brief RobotDebug::testServoArm
  */
 void RobotDebug::testServoArm() {
+    this->calibrate();
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("Test Arm Servo");
     LCD.WriteLine("Press middle button to return to menu.");
@@ -278,7 +280,7 @@ void RobotDebug::testServoArm() {
             angle = 180;
         }
 
-        servoElevatorSetAngle(angle);
+        servoArmSetAngle(angle);
         LCD.WriteLine(angle);
         Sleep(50);
     }

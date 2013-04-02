@@ -28,20 +28,20 @@ void RobotNormal::setup(bool calibrate) {
     motorSAM = new FEHMotor( FEHMotor::Motor2);
 
     // Set up  left and right encoders
-    encoderLeft = new FEHEncoder( FEHIO::P0_5 );
+    encoderLeft = new FEHEncoder( FEHIO::P0_6 );
     encoderRight = new FEHEncoder( FEHIO::P0_7);
 
     // Set up servos
-    servoElevator =  new FEHServo( FEHServo::Servo0 ); // not set
-    servoArm = new FEHServo( FEHServo::Servo1 ); // not set
+    servoElevator =  new FEHServo( FEHServo::Servo0 );
+    servoArm = new FEHServo( FEHServo::Servo1 );
 
     // Set up light sensor (CDS cell)
     lightSensor = new AnalogInputPin( FEHIO::P0_1 );
 
     // Set up analog optosenors
-    optosensorLeft = new AnalogInputPin( FEHIO::P1_7 ); // not set
-    optosensorMiddle = new AnalogInputPin( FEHIO::P2_5 );
-    optosensorRight = new AnalogInputPin( FEHIO::P1_5 ); // not set
+    optosensorLeft = new AnalogInputPin( FEHIO::P0_3 );
+    optosensorMiddle = new AnalogInputPin( FEHIO::P0_4 );
+    optosensorRight = new AnalogInputPin( FEHIO::P0_5 );
 
     // Set up buttons
     buttons = new ButtonBoard( FEHIO::Bank3 );
@@ -231,7 +231,8 @@ void RobotNormal::movementFrontSquareToWall() {
  */
 void RobotNormal::motorSAMOpen() {
     motorSAM->SetPower(126/2);
-    Sleep(0.5);
+    Sleep(50);
+    motorSAM->SetPower(0);
 }
 
 /**
@@ -239,7 +240,8 @@ void RobotNormal::motorSAMOpen() {
  */
 void RobotNormal::motorSAMClose() {
     motorSAM->SetPower(-126/2);
-    Sleep(0.5);
+    Sleep(50);
+    motorSAM->SetPower(0);
 }
 
 /**
@@ -263,7 +265,7 @@ void RobotNormal::servoElevatorSetAngle(int angle) {
  * @param angle The angle that the servo will be set to [0, 180]
  */
 void RobotNormal::servoArmSetAngle(int angle) {
-    servoElevator->SetDegree(angle);
+    servoArm->SetDegree(angle);
 }
 
 /**
