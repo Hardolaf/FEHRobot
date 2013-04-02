@@ -186,12 +186,17 @@ void RobotDebug::testMotorSAM() {
 
     while(!buttonMiddlePressed()) {
         if (buttonLeftPressed()) {
-            motorSAMsetManualPower(63);
-            Sleep(50);
+            motorSAMsetManualPower(127);
+            Sleep(500);
             motorSAMsetManualPower(0);
-            Sleep(50);
+            Sleep(200);
+            //motorSAMsetManualPower(-127);
+            //Sleep(500);
+            //motorSAMsetManualPower(0);
+            //Sleep(200);
         }
     }
+    motorSAMsetManualPower(0);
 }
 
 /**

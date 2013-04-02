@@ -25,7 +25,13 @@ public:
     void motorSAMsetManualPower(int8 power);
 
     void servoElevatorSetAngle(int angle);
+    void servoElevatorHighest();
+    void servoElevatorLowest();
+    void serverElevatorSetHeight(float height);
+
     void servoArmSetAngle(int angle);
+    void servoArmHighest();
+    void servoArmLowest();
 
     bool lightSensorSeeStart();
 

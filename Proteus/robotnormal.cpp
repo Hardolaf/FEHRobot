@@ -231,7 +231,7 @@ void RobotNormal::movementFrontSquareToWall() {
  */
 void RobotNormal::motorSAMOpen() {
     motorSAM->SetPower(126/2);
-    Sleep(50);
+    Sleep(100);
     motorSAM->SetPower(0);
 }
 
@@ -240,7 +240,7 @@ void RobotNormal::motorSAMOpen() {
  */
 void RobotNormal::motorSAMClose() {
     motorSAM->SetPower(-126/2);
-    Sleep(50);
+    Sleep(100);
     motorSAM->SetPower(0);
 }
 
@@ -254,17 +254,27 @@ void RobotNormal::motorSAMsetManualPower(int8 power) {
 
 /**
  * @brief servoElevatorSetAngle
- * @param angle The angle that the servo will bet set to [0, 180]
+ * @param angle The angle that the servo will bet set to [29, 133]
  */
 void RobotNormal::servoElevatorSetAngle(int angle) {
+    // Correct for out of bounds angles
+    if (angle < 29)
+        angle = 29;
+    if (angle > 133)
+        angle = 133;
+
     servoElevator->SetDegree(angle);
 }
 
 /**
  * @brief servoElevatorSetAngle
- * @param angle The angle that the servo will be set to [0, 180]
+ * @param angle The angle that the servo will be set to [25, 127]
  */
 void RobotNormal::servoArmSetAngle(int angle) {
+    if (angle < 25)
+        angle = 25;
+    if (angle > 127)
+        angle = 127;
     servoArm->SetDegree(angle);
 }
 
