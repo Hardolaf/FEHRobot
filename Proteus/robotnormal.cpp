@@ -28,7 +28,7 @@ void RobotNormal::setup(bool calibrate) {
     motorSAM = new FEHMotor( FEHMotor::Motor2);
 
     // Set up  left and right encoders
-    encoderLeft = new FEHEncoder( FEHIO::P0_6 );
+    encoderLeft = new FEHEncoder( FEHIO::P0_1 );
     encoderRight = new FEHEncoder( FEHIO::P0_7);
 
     // Set up servos
@@ -41,16 +41,16 @@ void RobotNormal::setup(bool calibrate) {
     // Set up analog optosenors
     optosensorLeft = new AnalogInputPin( FEHIO::P0_3 );
     optosensorMiddle = new AnalogInputPin( FEHIO::P0_4 );
-    optosensorRight = new AnalogInputPin( FEHIO::P0_5 );
+    optosensorRight = new AnalogInputPin( FEHIO::P0_6 );
 
     // Set up buttons
     buttons = new ButtonBoard( FEHIO::Bank3 );
 
     // Set up bump switches
-    bumpSwitchFrontRight = new DigitalInputPin( FEHIO::P1_2 );
-    bumpSwitchFrontLeft = new DigitalInputPin( FEHIO::P1_4 );
-    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_6 );
-    bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P1_6 );
+    bumpSwitchFrontRight = new DigitalInputPin( FEHIO::P1_0 );
+    bumpSwitchFrontLeft = new DigitalInputPin( FEHIO::P1_2 );
+    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_0 );
+    bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P2_6 );
 
     // Calibrate the robot if we need to
     if (calibrate) {
@@ -267,6 +267,22 @@ void RobotNormal::servoElevatorSetAngle(int angle) {
 }
 
 /**
+ * @brief RobotNormal::servoElevatorHighest Sets the elevator to its highest
+ * position.
+ */
+void RobotNormal::servoElevatorHighest() {
+    servoElevatorSetAngle(133);
+}
+
+/**
+ * @brief RobotNormal::servoElevatorLowest Sets the elevator to its lowest
+ * position.
+ */
+void RobotNormal::servoElevatorLowest() {
+    servoElevatorSetAngle(29);
+}
+
+/**
  * @brief servoElevatorSetAngle
  * @param angle The angle that the servo will be set to [25, 127]
  */
@@ -276,6 +292,28 @@ void RobotNormal::servoArmSetAngle(int angle) {
     if (angle > 127)
         angle = 127;
     servoArm->SetDegree(angle);
+}
+
+/**
+ * @brief RobotNormal::servoArmHighest Sets the arm to its furthest up position.
+ */
+void RobotNormal::servoArmHighest() {
+    servoArmSetAngle(25);
+}
+
+/**
+ * @brief RobotNormal::servoArmLowest Sets the arm to its lowest down position.
+ */
+void RobotNormal::servoArmLowest() {
+    servoArmSetAngle(127);
+}
+
+/**
+ * @brief RobotNormal::servoArmSetTask Sets the arm to the location at which is
+ * needed in order to complete most tasks on the course.
+ */
+void RobotNormal::servoArmSetTask() {
+    servoArmSetAngle(110);
 }
 
 /**

@@ -49,7 +49,7 @@ int main(void)
                 robot.testServoArm();
                 debug_menu();
             } else if (buttons.MiddlePressed()) {
-                robot.testServoElevator();
+                robot.testServoElevatorSetAngle();
                 debug_menu();
             } else if (buttons.RightPressed()) {
                 robot.testMotorSAM();
@@ -70,7 +70,7 @@ void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
     LCD.WriteLine("Left: Test Arm Servo");
-    LCD.WriteLine("Middle: Test Elevator Servo");
+    LCD.WriteLine("Middle: Test Elevator Servo Set Angle");
     LCD.WriteLine("Right: Test SAM");
     Sleep( 300 );
 }

@@ -290,3 +290,22 @@ void RobotDebug::testServoArm() {
         Sleep(50);
     }
 }
+
+void RobotDebug::testServoElevatorSetAngle() {
+    this->calibrate();
+    LCD.Clear( FEHLCD::Black );
+    LCD.WriteLine("Test Elevator Servo");
+    LCD.WriteLine("Press middle button to return to menu.");
+    LCD.WriteLine("Press left button to set to lowest position.");
+    LCD.WriteLine("Press right button to set to highest position.");
+
+    while (!buttonMiddlePressed()) {
+        if (buttonRightPressed()) {
+            servoElevatorHighest();
+            Sleep(300);
+        } else if (buttonLeftPressed()) {
+            servoElevatorLowest();
+            Sleep(300);
+        }
+    }
+}

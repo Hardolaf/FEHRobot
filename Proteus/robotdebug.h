@@ -19,6 +19,7 @@ public:
     void testMotorSAM();
     void testServoElevator();
     void testServoArm();
+    void testServoElevatorSetAngle();
 };
 
 #endif // ROBOTDEBUG_H
