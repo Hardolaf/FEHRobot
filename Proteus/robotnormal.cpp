@@ -28,7 +28,7 @@ void RobotNormal::setup(bool calibrate) {
     motorSAM = new FEHMotor( FEHMotor::Motor2);
 
     // Set up  left and right encoders
-    encoderLeft = new FEHEncoder( FEHIO::P0_1 );
+    encoderLeft = new FEHEncoder( FEHIO::P2_3 );
     encoderRight = new FEHEncoder( FEHIO::P0_7);
 
     // Set up servos
@@ -433,12 +433,8 @@ int RobotNormal::optosensorLeftSeesLine() {
  */
 int RobotNormal::optosensorMiddleSeesLine() {
     if (optosensorMiddle->Value() > OPTOSENSOR_MIDDLE_HIGH_THRESHOLD) {
-        LCD.Write(optosensorMiddle->Value());
-        Sleep(100);
         return -1;
     } else if (optosensorMiddle->Value() < OPTOSENSOR_MIDDLE_HIGH_THRESHOLD) {
-        LCD.Write(optosensorMiddle->Value());
-        Sleep(100);
         return 1;
     } else {
         return 0;

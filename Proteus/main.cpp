@@ -56,7 +56,7 @@ int main(void)
                 robot.testServoElevatorSetAngle();
                 debug_menu();
             } else if (buttons.RightPressed()) {
-                robot.testMotorSAM();
+                robot.testMovementForward();
                 debug_menu();
             }
 
@@ -75,7 +75,7 @@ void debug_menu() {
     LCD.WriteLine("DEBUG MODE");
     LCD.WriteLine("Left: Calibrate Optosensors");
     LCD.WriteLine("Middle: Test Elevator Servo Set Angle");
-    LCD.WriteLine("Right: Test SAM");
+    LCD.WriteLine("Right: Test movement");
     Sleep( 300 );
 }
 
@@ -89,6 +89,13 @@ void startup_sequence(RobotNormal robot) {
     // light.
     LCD.Clear( FEHLCD::Scarlet );
     LCD.SetFontColor( FEHLCD::Gray );
+
+    // Ensure that the servos are in the correct start positions
+    robot.servoArmHighest();
+    Sleep(100);
+    robot.servoElevatorLowest();
+    Sleep(100);
+
     LCD.WriteLine("NORMAL MODE");
     LCD.WriteLine("");
     LCD.WriteLine("Press middle button to robot start.");
@@ -211,25 +218,37 @@ void performance_test_5(RobotNormal robot) {
  * @param robot A RobotNormal with RobotNormal::setup() and
  * RobotNormal::calibrate()run
  * @param timeout How long do you want to line follow in ms?
+ * @param direction -1 for backwards, 1 for forwards
  */
-void follow_line(RobotNormal robot, int timeout) {
+void follow_line(RobotNormal robot, int timeout, int8 direction) {
     timeout += TimeNowMSec();
 
     // Follow the line for timeout
     while(TimeNowMSec() < timeout) {
         if (robot.optosensorMiddleSeesLine() == 1) {
-            robot.movementMotorManualSet(63, 127);
+            robot.movementMotorManualSet(direction * 80, direction * 40);
         } else {
-            robot.movementMotorManualSet(127, 63);
+            robot.movementMotorManualSet(direction * 40, direction * 80);
         }
     }
 
     // Stop the motors
     robot.movementMotorManualSet(0, 0);
+    Sleep(100);
 }
 
+/**
+ * @brief competition_satellite
+ * @param robot A RobotNormal with RobotNormal::setup() and
+ * RobotNormal::calibrate()run
+ */
 void competition_satellite(RobotNormal robot) {
-
+    // Press a button for now.
+    // TODO: Implement MOM
+    robot.servoElevatorLowest();
+    Sleep(100);
+    robot.servoArmSetTask();
+    Sleep(100);
 }
 
 /**
@@ -247,12 +266,40 @@ void competition(RobotNormal robot) {
     //MOM.Enable();
 
     // Move to the line.
+    robot.movementStraight(63, 5.0);
+    Sleep(100);
     robot.movementMotorManualSet(63, 63);
     while(robot.optosensorMiddleSeesLine() != 1);
+    robot.movementStraight(63, 7.0);
+    robot.movementMotorManualSet(0,0);
+    Sleep(100);
+
+    // Follow the line backwards for a bit to line ourselves up and give
+    // ourselves room.
+    robot.movementLeft(90);
+    Sleep(100);
+
+    // Prep for hitting satellite button
+    competition_satellite(robot);
 
     // Follow the line to the button
-    follow_line(robot, 500);
+    follow_line(robot, 650, 1);
+    Sleep(100);
 
-    // Press a button
-    competition_satellite(robot);
+    // Back up 3 inches
+    robot.movementStraight(-80, 3.0);
+    Sleep(100);
+    robot.servoArmHighest();
+    Sleep(300);
+
+    // Turn left
+    robot.movementLeft(60);
+
+    // Line up with wall
+    robot.movementFrontSquareToWall();
+
+    // Move back a bit
+    robot.movementStraight(-63, 0.25);
+    Sleep(100);
+    robot.movementRight(90);
 }

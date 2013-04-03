@@ -158,7 +158,8 @@ void RobotDebug::testMovementForward() {
 
     this->calibrate();
 
-    movementStraight(127, 6.0);
+    //movementStraight(127, 6.0);
+    movementLeft(90);
     Sleep(500);
 
     LCD.WriteLine("");
