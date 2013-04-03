@@ -284,6 +284,9 @@ void competition(RobotNormal robot) {
 
     // Follow the line to the button
     follow_line(robot, 650, 1);
+    robot.movementMotorManualSet(80,80);
+    Sleep(100);
+    robot.movementMotorManualSet(0,0);
     Sleep(100);
 
     // Back up 3 inches
@@ -301,5 +304,82 @@ void competition(RobotNormal robot) {
     // Move back a bit
     robot.movementStraight(-63, 0.25);
     Sleep(100);
+    robot.movementRight(80);
+
+    // Go up the stairs
+    LCD.WriteLine("Forward 30 inches");
+    robot.movementStraight(127, 36.0);
+    Sleep(100);
+
+    // Turn 45 degress towards wall
+    LCD.WriteLine("Left 45 degrees");
+    robot.movementLeft(45);
+    Sleep(100);
+
+    // Square up against the wall (turn into a function)
+    robot.movementFrontSquareToWall();
+
+    // Turn 90 towards pryramid (front facing)
+    LCD.WriteLine("Back up 0.25 inches");
+    robot.movementStraight(-63, 0.30);
+    Sleep(50);
+    LCD.WriteLine("Turning right");
     robot.movementRight(90);
+    Sleep(100);
+
+    // Set up the arm + elevator
+    robot.servoElevatorSetAngle(110);
+    Sleep(500);
+    robot.servoArmSetTask();
+
+    // Charge the stone like a madman
+    bool hitStone = false;
+    int charges = 0;
+    bool hfr = false;
+    while(!hitStone || charges < 2) {
+        LCD.WriteLine("Charge STONE");
+        double end_time = TimeNow() + 2.0;
+
+        // Move straight forward for 2.0 seconds
+        robot.movementMotorManualSet(80, 80);
+        while (end_time > TimeNow() && !robot.bumpSwitchBackRightPressed()) {
+            LCD.WriteLine(robot.bumpSwitchBackRightPressed());
+            if (robot.bumpSwitchBackRightPressed()) {
+                hitStone = true;
+                LCD.WriteLine("Hit STONE");
+            }
+            if (robot.bumpSwitchFrontRightPressed()) {
+                hfr = true;
+            }
+        }
+        Sleep(100);
+        LCD.WriteLine("Move backwards");
+
+        // Move it backwards
+        if (hfr || hitStone) {
+            robot.movementStraight(-100, 4.0);
+        } else {
+            robot.movementMotorManualSet(-80, -100);
+            Sleep(250);
+            robot.movementMotorManualSet(0, 0);
+        }
+        Sleep(100);
+        charges++;
+    }
+
+    // Move backwards for ___ inches or _ seconds
+    LCD.WriteLine("Performing SAM drop");
+    robot.movementMotorManualSet(-80, -80);
+    while(!robot.bumpSwitchBackLeftPressed());
+    Sleep(100);
+    robot.movementMotorManualSet(0, 0);
+    Sleep(100);
+
+    // Drop SAM in the hole.
+    //robot.motorSAMOpen();
+    //Sleep(100);
+
+    // Close SAM enclosure.
+    //robot.motorSAMClose();
+    //Sleep(100);
 }

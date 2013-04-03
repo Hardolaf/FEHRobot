@@ -204,13 +204,13 @@ void RobotNormal::movementFrontSquareToWall() {
                 if (last != 1) {
                     LCD.WriteLine("Left front pressed");
                     last = 1;
-                    movementMotorManualSet(63, 127);
+                    movementMotorManualSet(60, 100);
                 }
             } else {
                 if (last != 2) {
                     last = 2;
                     LCD.WriteLine("Right front pressed");
-                    movementMotorManualSet(127, 63);
+                    movementMotorManualSet(100, 60);
                 }
             }
         } else {
