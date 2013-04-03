@@ -5,9 +5,13 @@
 #include <FEHLCD.h>
 #include <FEHIO.h>
 #include <FEHUtility.h>
+//#include <FEHMOM.h>
 
 void debug_menu();
 void performance_test_5(RobotNormal robot);
+void line_follow(RobotNormal robot, int timeout);
+void competition(RobotNormal robot);
+void competition_satellite(RobotNormal robot);
 
 int main(void)
 {
@@ -38,7 +42,7 @@ int main(void)
     if (runTimeMode == RobotFactory::RUN_MODE_NORMAL) {
         RobotNormal robot;
 
-        performance_test_5(robot);
+        competition(robot);
     } else if (runTimeMode == RobotFactory::RUN_MODE_DEBUG) {
         RobotDebug robot;
 
@@ -46,7 +50,7 @@ int main(void)
 
         while ( true ) {
             if (buttons.LeftPressed()) {
-                robot.testServoArm();
+                robot.calibrateOptosensors();
                 debug_menu();
             } else if (buttons.MiddlePressed()) {
                 robot.testServoElevatorSetAngle();
@@ -69,7 +73,7 @@ int main(void)
 void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
-    LCD.WriteLine("Left: Test Arm Servo");
+    LCD.WriteLine("Left: Calibrate Optosensors");
     LCD.WriteLine("Middle: Test Elevator Servo Set Angle");
     LCD.WriteLine("Right: Test SAM");
     Sleep( 300 );
@@ -200,4 +204,55 @@ void performance_test_5(RobotNormal robot) {
     // End run
     robot.movementMotorManualSet(0, 0);
     LCD.WriteLine("Run complete");
+}
+
+/**
+ * @brief follow_line This function follows a line
+ * @param robot A RobotNormal with RobotNormal::setup() and
+ * RobotNormal::calibrate()run
+ * @param timeout How long do you want to line follow in ms?
+ */
+void follow_line(RobotNormal robot, int timeout) {
+    timeout += TimeNowMSec();
+
+    // Follow the line for timeout
+    while(TimeNowMSec() < timeout) {
+        if (robot.optosensorMiddleSeesLine() == 1) {
+            robot.movementMotorManualSet(63, 127);
+        } else {
+            robot.movementMotorManualSet(127, 63);
+        }
+    }
+
+    // Stop the motors
+    robot.movementMotorManualSet(0, 0);
+}
+
+void competition_satellite(RobotNormal robot) {
+
+}
+
+/**
+ * @brief competition The competition code. Assumes the robot is facing the
+ * right wall.
+ * @param robot A RobotNormal with RobotNormal::setup() and
+ * RobotNormal::calibrate()run
+ * @see startup_sequence()
+ */
+void competition(RobotNormal robot) {
+    // Run the standard startup sequence
+    startup_sequence(robot);
+
+    // Enable MOM
+    //MOM.Enable();
+
+    // Move to the line.
+    robot.movementMotorManualSet(63, 63);
+    while(robot.optosensorMiddleSeesLine() != 1);
+
+    // Follow the line to the button
+    follow_line(robot, 500);
+
+    // Press a button
+    competition_satellite(robot);
 }
