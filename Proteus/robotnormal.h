@@ -67,6 +67,8 @@ protected:
     FEHEncoder* encoderLeft;
     /*! Right encoder */
     FEHEncoder* encoderRight;
+    /*! SAM Encoder */
+    FEHEncoder* encoderSAM;
 
     /*! Elevator servo motor */
     FEHServo* servoElevator;

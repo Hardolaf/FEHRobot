@@ -27,9 +27,10 @@ void RobotNormal::setup(bool calibrate) {
     motorRight = new FEHMotor( FEHMotor::Motor1 );
     motorSAM = new FEHMotor( FEHMotor::Motor2);
 
-    // Set up  left and right encoders
+    // Set up encoders
     encoderLeft = new FEHEncoder( FEHIO::P2_3 );
     encoderRight = new FEHEncoder( FEHIO::P0_7);
+    encoderSAM = new FEHEncoder ( FEHIO::P1_7 );
 
     // Set up servos
     servoElevator =  new FEHServo( FEHServo::Servo0 );
@@ -69,6 +70,10 @@ void RobotNormal::calibrate() {
     float rightLowThreshold = 3.100;
     float rightHighThreshold = 3.200;
     encoderRight->SetThresholds( rightLowThreshold, rightHighThreshold );
+
+    float SAMLowThreshold = 0.050;
+    float SAMHighThreshold = 3.300;
+    encoderSAM->SetThresholds( SAMLowThreshold, SAMHighThreshold );
 
     servoElevator->SetMin( 530 );
     servoElevator->SetMax( 2300 );
@@ -230,8 +235,13 @@ void RobotNormal::movementFrontSquareToWall() {
  * @brief RobotNormal::motorSAMOpen Opens the SAM enclosure
  */
 void RobotNormal::motorSAMOpen() {
-    motorSAM->SetPower(126/2);
-    Sleep(100);
+    encoderSAM->ResetCounts();
+
+    // 90 degree rotation
+    int encoderLimit = SAM_ENCODER_COUNTS_PER_DEGREE_TURN * 90;
+
+    motorSAM->SetPower(-80);
+    while(encoderSAM->Counts() < encoderLimit);
     motorSAM->SetPower(0);
 }
 
@@ -239,8 +249,13 @@ void RobotNormal::motorSAMOpen() {
  * @brief RobotNormal::motorSAMClose Closes the SAM enclosure
  */
 void RobotNormal::motorSAMClose() {
-    motorSAM->SetPower(-126/2);
-    Sleep(100);
+    encoderSAM->ResetCounts();
+
+    // 90 degree rotation
+    int encoderLimit = SAM_ENCODER_COUNTS_PER_DEGREE_TURN * 90;
+
+    motorSAM->SetPower(80);
+    while(encoderSAM->Counts() < encoderLimit);
     motorSAM->SetPower(0);
 }
 

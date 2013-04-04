@@ -56,7 +56,7 @@ int main(void)
                 robot.testServoElevatorSetAngle();
                 debug_menu();
             } else if (buttons.RightPressed()) {
-                robot.testMovementForward();
+                robot.testMotorSAM();
                 debug_menu();
             }
 
@@ -75,7 +75,7 @@ void debug_menu() {
     LCD.WriteLine("DEBUG MODE");
     LCD.WriteLine("Left: Calibrate Optosensors");
     LCD.WriteLine("Middle: Test Elevator Servo Set Angle");
-    LCD.WriteLine("Right: Test movement");
+    LCD.WriteLine("Right: Tes SAM Motor");
     Sleep( 300 );
 }
 

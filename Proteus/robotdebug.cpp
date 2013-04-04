@@ -187,14 +187,11 @@ void RobotDebug::testMotorSAM() {
 
     while(!buttonMiddlePressed()) {
         if (buttonLeftPressed()) {
-            motorSAMsetManualPower(127);
-            Sleep(500);
-            motorSAMsetManualPower(0);
+            motorSAMOpen();
             Sleep(200);
-            //motorSAMsetManualPower(-127);
-            //Sleep(500);
-            //motorSAMsetManualPower(0);
-            //Sleep(200);
+            LCD.Write("Encoder Counts: ");
+            LCD.WriteLine(encoderSAM->Counts());
+            Sleep(500);
         }
     }
     motorSAMsetManualPower(0);
