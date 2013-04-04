@@ -71,9 +71,9 @@ void RobotNormal::calibrate() {
     float rightHighThreshold = 3.200;
     encoderRight->SetThresholds( rightLowThreshold, rightHighThreshold );
 
-    float SAMLowThreshold = 0.050;
-    float SAMHighThreshold = 3.300;
-    encoderSAM->SetThresholds( SAMLowThreshold, SAMHighThreshold );
+//    float SAMLowThreshold = 0.050;
+//    float SAMHighThreshold = 3.300;
+//    encoderSAM->SetThresholds( SAMLowThreshold, SAMHighThreshold );
 
     servoElevator->SetMin( 530 );
     servoElevator->SetMax( 2300 );

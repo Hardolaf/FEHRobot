@@ -193,6 +193,13 @@ void RobotDebug::testMotorSAM() {
             LCD.WriteLine(encoderSAM->Counts());
             Sleep(500);
         }
+        if (buttonRightPressed()) {
+            motorSAMClose();
+            Sleep(200);
+            LCD.Write("Encoder Counts: ");
+            LCD.WriteLine(encoderSAM->Counts());
+            Sleep(500);
+        }
     }
     motorSAMsetManualPower(0);
 }

@@ -285,7 +285,7 @@ void competition(RobotNormal robot) {
     // Follow the line to the button
     follow_line(robot, 650, 1);
     robot.movementMotorManualSet(80,80);
-    Sleep(100);
+    Sleep(200);
     robot.movementMotorManualSet(0,0);
     Sleep(100);
 
@@ -318,11 +318,12 @@ void competition(RobotNormal robot) {
 
     // Square up against the wall (turn into a function)
     robot.movementFrontSquareToWall();
+    Sleep(100);
 
     // Turn 90 towards pryramid (front facing)
     LCD.WriteLine("Back up 0.25 inches");
     robot.movementStraight(-63, 0.30);
-    Sleep(50);
+    Sleep(100);
     LCD.WriteLine("Turning right");
     robot.movementRight(90);
     Sleep(100);
@@ -367,6 +368,16 @@ void competition(RobotNormal robot) {
         charges++;
     }
 
+    // Put arm + Elevator down
+    robot.servoArmHighest();
+    Sleep(300);
+    robot.servoElevatorLowest();
+    Sleep(300);
+
+    // Drive forward into wall
+    robot.movementFrontSquareToWall();
+    Sleep(100);
+
     // Move backwards for ___ inches or _ seconds
     LCD.WriteLine("Performing SAM drop");
     robot.movementMotorManualSet(-80, -80);
@@ -376,10 +387,10 @@ void competition(RobotNormal robot) {
     Sleep(100);
 
     // Drop SAM in the hole.
-    //robot.motorSAMOpen();
-    //Sleep(100);
+    robot.motorSAMOpen();
+    Sleep(1000);
 
     // Close SAM enclosure.
-    //robot.motorSAMClose();
-    //Sleep(100);
+    robot.motorSAMClose();
+    Sleep(100);
 }
