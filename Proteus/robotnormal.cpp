@@ -28,30 +28,30 @@ void RobotNormal::setup(bool calibrate) {
     motorSAM = new FEHMotor( FEHMotor::Motor2);
 
     // Set up encoders
-    encoderLeft = new FEHEncoder( FEHIO::P2_3 );
-    encoderRight = new FEHEncoder( FEHIO::P0_7);
-    encoderSAM = new FEHEncoder ( FEHIO::P1_7 );
+    encoderLeft = new FEHEncoder( FEHIO::P2_6 );
+    encoderRight = new FEHEncoder( FEHIO::P1_7);
+    encoderSAM = new FEHEncoder ( FEHIO::P2_3 );
 
     // Set up servos
     servoElevator =  new FEHServo( FEHServo::Servo0 );
     servoArm = new FEHServo( FEHServo::Servo1 );
 
     // Set up light sensor (CDS cell)
-    lightSensor = new AnalogInputPin( FEHIO::P0_1 );
+    lightSensor = new AnalogInputPin( FEHIO::P1_1 );
 
     // Set up analog optosenors
-    optosensorLeft = new AnalogInputPin( FEHIO::P0_3 );
-    optosensorMiddle = new AnalogInputPin( FEHIO::P0_4 );
-    optosensorRight = new AnalogInputPin( FEHIO::P0_6 );
+    optosensorLeft = new AnalogInputPin( FEHIO::P1_3 );
+    optosensorMiddle = new AnalogInputPin( FEHIO::P1_4 );
+    optosensorRight = new AnalogInputPin( FEHIO::P1_6 );
 
     // Set up buttons
     buttons = new ButtonBoard( FEHIO::Bank3 );
 
     // Set up bump switches
-    bumpSwitchFrontRight = new DigitalInputPin( FEHIO::P1_0 );
-    bumpSwitchFrontLeft = new DigitalInputPin( FEHIO::P1_2 );
-    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_0 );
-    bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P2_6 );
+    bumpSwitchFrontRight = new DigitalInputPin( FEHIO::P2_0 );
+    bumpSwitchFrontLeft = new DigitalInputPin( FEHIO::P2_2 );
+    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_4 );
+    bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P2_7 );
 
     // Calibrate the robot if we need to
     if (calibrate) {
