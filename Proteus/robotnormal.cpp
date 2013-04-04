@@ -33,8 +33,8 @@ void RobotNormal::setup(bool calibrate) {
     encoderSAM = new FEHEncoder ( FEHIO::P2_3 );
 
     // Set up servos
-    servoElevator =  new FEHServo( FEHServo::Servo0 );
-    servoArm = new FEHServo( FEHServo::Servo1 );
+    servoElevator =  new FEHServo( FEHServo::Servo6 );
+    servoArm = new FEHServo( FEHServo::Servo7 );
 
     // Set up light sensor (CDS cell)
     lightSensor = new AnalogInputPin( FEHIO::P1_1 );
