@@ -8,12 +8,12 @@ public:
     virtual void movementLeft(int) = 0;
     virtual void movementRight(int) = 0;
 
-    static const float ENCODER_COUNTS_PER_INCH = 3.316344860705540019742322139111;
+    static const float ENCODER_COUNTS_PER_INCH = 3.4545454545454545454545454545455;
     static const float ENCODER_COUNTS_PER_DEGREE_TURN = 0.22222222222222222222222222222222;
 
     static const float SAM_ENCODER_COUNTS_PER_DEGREE_TURN = 0.80740740740740740740740740740741;
 
-    static const int MOVEMENT_MOTOR_TURN_SPEED = 80;
+    static const int MOVEMENT_MOTOR_TURN_SPEED = 70;
 
     static const float LIGHT_SENSOR_MAX_LIGHT_VALUE = 2.000;
 

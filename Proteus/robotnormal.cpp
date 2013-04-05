@@ -209,13 +209,13 @@ void RobotNormal::movementFrontSquareToWall() {
                 if (last != 1) {
                     LCD.WriteLine("Left front pressed");
                     last = 1;
-                    movementMotorManualSet(60, 100);
+                    movementMotorManualSet(60, 110);
                 }
             } else {
                 if (last != 2) {
                     last = 2;
                     LCD.WriteLine("Right front pressed");
-                    movementMotorManualSet(100, 60);
+                    movementMotorManualSet(110, 60);
                 }
             }
         } else {
@@ -328,7 +328,7 @@ void RobotNormal::servoArmLowest() {
  * needed in order to complete most tasks on the course.
  */
 void RobotNormal::servoArmSetTask() {
-    servoArmSetAngle(110);
+    servoArmSetAngle(115);
 }
 
 /**
