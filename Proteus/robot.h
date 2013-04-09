@@ -36,29 +36,29 @@ public:
     /**
      * Low threshold of the left line following optosensor.
      */
-    static const float OPTOSENSOR_LEFT_LOW_THRESHOLD = 2.000;
+    static const float OPTOSENSOR_LEFT_LOW_THRESHOLD = 3.060;
     /**
      * High threshold of the left line following optosensor.
      */
-    static const float OPTOSENSOR_LEFT_HIGH_THRESHOLD = 2.100;
+    static const float OPTOSENSOR_LEFT_HIGH_THRESHOLD = 3.150;
 
     /**
      * Low threshold of the middle line following optosensor.
      */
-    static const float OPTOSENSOR_MIDDLE_LOW_THRESHOLD = 2.875;
+    static const float OPTOSENSOR_MIDDLE_LOW_THRESHOLD = 3.100;
     /**
      * High threshold of the middle line following optosensor.
      */
-    static const float OPTOSENSOR_MIDDLE_HIGH_THRESHOLD = 3.175;
+    static const float OPTOSENSOR_MIDDLE_HIGH_THRESHOLD = 3.150;
 
     /**
      * Low threshold of the right line following optosensor.
      */
-    static const float OPTOSENSOR_RIGHT_LOW_THRESHOLD = 2.000;
+    static const float OPTOSENSOR_RIGHT_LOW_THRESHOLD = 3.100;
     /**
      * High threshold of the right line following optosensor.
      */
-    static const float OPTOSENSOR_RIGHT_HIGH_THRESHOLD = 2.100;
+    static const float OPTOSENSOR_RIGHT_HIGH_THRESHOLD = 3.180;
 };
 
 #endif // ROBOT_H

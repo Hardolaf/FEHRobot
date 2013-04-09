@@ -19,6 +19,7 @@ public:
     int movementEncoderCountRight();
     void movementEncoderCountReset();
     void movementFrontSquareToWall();
+    void movementBackSquaretoWall();
 
     void motorSAMOpen();
     void motorSAMClose();
@@ -44,6 +45,9 @@ public:
     bool bumpSwitchBackLeftPressed();
     bool bumpSwitchBackRightPressed();
     bool bumpSwitchBackBothPressed();
+
+    bool bumpSwitchBackMiddlePressed();
+    bool bumpSwitchArmPressed();
 
     bool buttonRightPressed();
     bool buttonMiddlePressed();
@@ -95,6 +99,10 @@ protected:
     DigitalInputPin* bumpSwitchBackRight;
     /** Back left bump switch */
     DigitalInputPin* bumpSwitchBackLeft;
+    /** Back middle bump switch */
+    DigitalInputPin* bumpSwitchBackMiddle;
+    /** Arm bump switch */
+    DigitalInputPin* bumpSwitchArm;
 };
 
 #endif // ROBOTNORMAL_H

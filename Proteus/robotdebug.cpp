@@ -83,14 +83,28 @@ void RobotDebug::calibrateOptosensors() {
     LCD.Clear( FEHLCD::Black );
     LCD.SetFontColor( FEHLCD::White );
 
-    float min = 4.0, max = 0.0;
+    float mMin = 4.0, mMax = 0.0;
+    float rMin = 4.0, rMax = 0.0;
+    float lMin = 4.0, lMax = 0.0;
 
     while (!buttonMiddlePressed()) {
-        if (optosensorMiddle->Value() > max) {
-            max = optosensorMiddle->Value();
+        if (optosensorMiddle->Value() > mMax) {
+            mMax = optosensorMiddle->Value();
         }
-        if (optosensorMiddle->Value() < min) {
-            min = optosensorMiddle->Value();
+        if (optosensorMiddle->Value() < mMin) {
+            mMin = optosensorMiddle->Value();
+        }
+        if (optosensorRight->Value() > rMax) {
+            rMax = optosensorRight->Value();
+        }
+        if (optosensorRight->Value() < rMin) {
+            rMin = optosensorRight->Value();
+        }
+        if (optosensorLeft->Value() > lMax) {
+            lMax = optosensorLeft->Value();
+        }
+        if (optosensorLeft->Value() < lMin) {
+            lMin = optosensorLeft->Value();
         }
 
         // Print
@@ -98,13 +112,26 @@ void RobotDebug::calibrateOptosensors() {
         LCD.WriteLine("Optosensor Calibration");
         LCD.WriteLine("  Press middle button to stop.");
         LCD.WriteLine("");
-        LCD.Write("Min: ");
-        LCD.Write(min);
-        LCD.Write("   Max: ");
-        LCD.WriteLine(max);
+        LCD.Write("M Min: ");
+        LCD.Write(mMin);
+        LCD.Write("   M Max: ");
+        LCD.WriteLine(mMax);
+        LCD.Write("L Min: ");
+        LCD.Write(lMin);
+        LCD.Write("   L Max: ");
+        LCD.WriteLine(lMax);
+        LCD.Write("R Min: ");
+        LCD.Write(rMin);
+        LCD.Write("   R Max: ");
+        LCD.WriteLine(rMax);
         LCD.WriteLine("");
-        LCD.Write("Current: ");
+        LCD.WriteLine("Current: ");
+        LCD.Write("M: ");
         LCD.WriteLine(optosensorMiddle->Value());
+        LCD.Write("R: ");
+        LCD.WriteLine(optosensorRight->Value());
+        LCD.Write("L: ");
+        LCD.WriteLine(optosensorLeft->Value());
         Sleep(50);
     }
 }

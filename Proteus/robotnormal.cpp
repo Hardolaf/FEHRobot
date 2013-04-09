@@ -50,8 +50,11 @@ void RobotNormal::setup(bool calibrate) {
     // Set up bump switches
     bumpSwitchFrontRight = new DigitalInputPin( FEHIO::P2_0 );
     bumpSwitchFrontLeft = new DigitalInputPin( FEHIO::P2_2 );
-    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P2_4 );
-    bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P2_7 );
+    bumpSwitchBackRight = new DigitalInputPin( FEHIO::P0_5 );
+    bumpSwitchBackLeft = new DigitalInputPin( FEHIO::P0_7 );
+    bumpSwitchBackMiddle = new DigitalInputPin( FEHIO::P2_7 );
+    bumpSwitchArm = new DigitalInputPin( FEHIO::P2_4 );
+
 
     // Calibrate the robot if we need to
     if (calibrate) {
@@ -75,8 +78,8 @@ void RobotNormal::calibrate() {
 //    float SAMHighThreshold = 3.300;
 //    encoderSAM->SetThresholds( SAMLowThreshold, SAMHighThreshold );
 
-    servoElevator->SetMin( 530 );
-    servoElevator->SetMax( 2300 );
+    servoElevator->SetMin( 1103 );
+    servoElevator->SetMax( 2134 );
 
     servoArm->SetMin( 500 );
     servoArm->SetMax( 2414 );
@@ -235,6 +238,40 @@ void RobotNormal::movementFrontSquareToWall() {
 }
 
 /**
+ * @brief RobotNormal::movementBackSquaretoWall Squares the robot up
+ * to the wall behind it.
+ */
+void RobotNormal::movementBackSquaretoWall() {
+    int last = -1;
+    while(!bumpSwitchBackBothPressed()) {
+        if (bumpSwitchBackEitherPressed()) {
+            if (bumpSwitchBackLeftPressed()) {
+                if (last != 1) {
+                    LCD.WriteLine("Left back pressed");
+                    last = 1;
+                    movementMotorManualSet(-60, -110);
+                }
+            } else {
+                if (last != 2) {
+                    last = 2;
+                    LCD.WriteLine("Right back pressed");
+                    movementMotorManualSet(-110, -60);
+                }
+            }
+        } else {
+            if (last != 0) {
+                last = 0;
+                movementMotorManualSet(-80, -80);
+                LCD.WriteLine("Neither back pressed");
+            }
+        }
+    }
+
+    Sleep(50);
+    movementMotorManualSet(0, 0);
+}
+
+/**
  * @brief RobotNormal::motorSAMOpen Opens the SAM enclosure.
  */
 void RobotNormal::motorSAMOpen() {
@@ -276,14 +313,14 @@ void RobotNormal::motorSAMsetManualPower(int8 power) {
  * @brief servoElevatorSetAngle Sets the angle of the servo elevator. Includes
  * checks to constrain the angle within the domain of the function in order to
  * not exceed the operational range of the elevator.
- * @param angle The angle that the servo will bet set to [29, 133]
+ * @param angle The angle that the servo will bet set to [32, 162]
  */
 void RobotNormal::servoElevatorSetAngle(int angle) {
     // Correct for out of bounds angles
-    if (angle < 29)
-        angle = 29;
-    if (angle > 133)
-        angle = 133;
+    if (angle < 32)
+        angle = 32;
+    if (angle > 162)
+        angle = 162;
 
     servoElevator->SetDegree(angle);
 }
@@ -293,7 +330,7 @@ void RobotNormal::servoElevatorSetAngle(int angle) {
  * position.
  */
 void RobotNormal::servoElevatorHighest() {
-    servoElevatorSetAngle(133);
+    servoElevatorSetAngle(180);
 }
 
 /**
@@ -301,20 +338,20 @@ void RobotNormal::servoElevatorHighest() {
  * position.
  */
 void RobotNormal::servoElevatorLowest() {
-    servoElevatorSetAngle(29);
+    servoElevatorSetAngle(0);
 }
 
 /**
  * @brief servoArmSetAngle Sets the arm's servo to the specified angle within
  * the domain of the function (it corrects for invalid input) in order to not
  * exceed the operational range of the arm.
- * @param angle The angle that the servo will be set to [25, 127]
+ * @param angle The angle that the servo will be set to [21, 124]
  */
 void RobotNormal::servoArmSetAngle(int angle) {
-    if (angle < 25)
-        angle = 25;
-    if (angle > 127)
-        angle = 127;
+    if (angle < 21)
+        angle = 21;
+    if (angle > 124)
+        angle = 124;
     servoArm->SetDegree(angle);
 }
 
@@ -322,14 +359,14 @@ void RobotNormal::servoArmSetAngle(int angle) {
  * @brief RobotNormal::servoArmHighest Sets the arm to its furthest up position.
  */
 void RobotNormal::servoArmHighest() {
-    servoArmSetAngle(25);
+    servoArmSetAngle(0);
 }
 
 /**
  * @brief RobotNormal::servoArmLowest Sets the arm to its lowest down position.
  */
 void RobotNormal::servoArmLowest() {
-    servoArmSetAngle(127);
+    servoArmSetAngle(180);
 }
 
 /**
@@ -337,7 +374,7 @@ void RobotNormal::servoArmLowest() {
  * needed in order to complete most tasks on the course.
  */
 void RobotNormal::servoArmSetTask() {
-    servoArmSetAngle(115);
+    servoArmSetAngle(107);
 }
 
 /**
@@ -400,7 +437,7 @@ bool RobotNormal::bumpSwitchBackEitherPressed() {
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchBackLeftPressed() {
-    return bumpSwitchBackLeft->Value() == 0;
+    return (bumpSwitchBackLeft->Value() == 0);
 }
 
 /**
@@ -419,6 +456,24 @@ bool RobotNormal::bumpSwitchBackRightPressed() {
  */
 bool RobotNormal::bumpSwitchBackBothPressed() {
     return (bumpSwitchBackLeftPressed() && bumpSwitchBackRightPressed());
+}
+
+/**
+ * @brief RobotNormal::bumpSwitchBackMiddlePressed Checks to see if the middle
+ * rear bump switch is pressed at the time of the function call.
+ * @return True for pressed, false for other cases.
+ */
+bool RobotNormal::bumpSwitchBackMiddlePressed() {
+    return (bumpSwitchBackMiddle->Value() == 0);
+}
+
+/**
+ * @brief RobotNormal::bumpSwitchArmPressed Checks to see if the bump switch on
+ * the robot's arm is pressed at the time of the function call.
+ * @return True for pressed, false for other cases.
+ */
+bool RobotNormal::bumpSwitchArmPressed() {
+    return (bumpSwitchArm->Value() == 0);
 }
 
 /**

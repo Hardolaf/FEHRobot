@@ -55,13 +55,13 @@ int main(void)
 
         while ( true ) {
             if (buttons.LeftPressed()) {
-                robot.testMovementForward();
+                robot.calibrateOptosensors();
                 debug_menu();
             } else if (buttons.MiddlePressed()) {
-                robot.testServoElevatorSetAngle();
+                robot.testServoArm();
                 debug_menu();
             } else if (buttons.RightPressed()) {
-                robot.testMotorSAM();
+                robot.testServoElevator();
                 debug_menu();
             }
 
@@ -78,9 +78,9 @@ int main(void)
 void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
-    LCD.WriteLine("Left: Test movement forward");
-    LCD.WriteLine("Middle: Test Elevator Servo Set Angle");
-    LCD.WriteLine("Right: Tes SAM Motor");
+    LCD.WriteLine("Left: Calibrate optosensors");
+    LCD.WriteLine("Middle: Test Arm Servo");
+    LCD.WriteLine("Right: Test Eleveator Servo");
     Sleep( 300 );
 }
 
@@ -331,7 +331,8 @@ void competition(RobotNormal robot) {
     Sleep(100);
     robot.movementMotorManualSet(63, 63);
     while(robot.optosensorMiddleSeesLine() != 1);
-    robot.movementStraight(63, 7.0);
+    while(robot.optosensorMiddleSeesLine() != -1);
+    while(robot.optosensorMiddleSeesLine() != 1);
     robot.movementMotorManualSet(0,0);
     Sleep(100);
 
@@ -366,11 +367,11 @@ void competition(RobotNormal robot) {
     // Move back a bit
     robot.movementStraight(-63, 0.30);
     Sleep(100);
-    robot.movementRight(80);
+    robot.movementRight(85);
 
     // Go up the stairs
     LCD.WriteLine("Forward 30 inches");
-    robot.movementStraight(127, 36.0);
+    robot.movementStraight(127, 32.0);
     Sleep(100);
 
     // Turn 45 degress towards wall
@@ -387,30 +388,30 @@ void competition(RobotNormal robot) {
     robot.movementStraight(-63, 0.40);
     Sleep(100);
     LCD.WriteLine("Turning right");
-    robot.movementRight(90);
+    robot.movementRight(85);
     Sleep(100);
     robot.movementFrontSquareToWall();
     Sleep(100);
     robot.movementStraight(-70, 5.0);
 
     // Set up the arm + elevator
-    robot.servoElevatorSetAngle(112);
+    robot.servoElevatorSetAngle(130);
     Sleep(500);
-    robot.servoArmSetTask();
+    robot.servoArmSetAngle(110);
 
     // Charge the stone like a madman
     bool hitStone = false;
     int charges = 0;
     bool hfr = false;
-    while(!hitStone || charges < 2) {
+    while((!hitStone || charges < 2) && (charges < 3)) {
         LCD.WriteLine("Charge STONE");
-        double end_time = TimeNow() + 2.0;
+        double end_time = TimeNow() + 1.5;
 
         // Move straight forward for 2.0 seconds
         robot.movementMotorManualSet(80, 80);
-        while (end_time > TimeNow() && !robot.bumpSwitchBackRightPressed()) {
-            LCD.WriteLine(robot.bumpSwitchBackRightPressed());
-            if (robot.bumpSwitchBackRightPressed()) {
+        while (end_time > TimeNow() && !robot.bumpSwitchArmPressed()) {
+            LCD.WriteLine(robot.bumpSwitchArmPressed());
+            if (robot.bumpSwitchArmPressed()) {
                 hitStone = true;
                 LCD.WriteLine("Hit STONE");
             }
@@ -423,12 +424,14 @@ void competition(RobotNormal robot) {
 
         // Move it backwards
         if (hfr || hitStone) {
-            robot.movementStraight(-100, 4.0);
+            robot.movementStraight(-100, 8.0);
         } else {
             robot.movementMotorManualSet(-80, -100);
             Sleep(250);
             robot.movementMotorManualSet(0, 0);
         }
+        Sleep(100);
+        robot.servoArmSetAngle(110);
         Sleep(100);
         charges++;
     }
@@ -446,17 +449,17 @@ void competition(RobotNormal robot) {
     // Move backwards for ___ inches or _ seconds
     LCD.WriteLine("Performing SAM drop");
     robot.movementMotorManualSet(-80, -80);
-    while(!robot.bumpSwitchBackLeftPressed());
+    while(!robot.bumpSwitchBackMiddlePressed());
     Sleep(100);
     robot.movementMotorManualSet(0, 0);
     Sleep(100);
 
     // Drop SAM in the hole.
-    //robot.motorSAMOpen();
+    robot.motorSAMOpen();
     Sleep(1000);
 
     // Close SAM enclosure.
-    //robot.motorSAMClose();
+    robot.motorSAMClose();
     Sleep(100);
 
     // Straight to wall
@@ -505,7 +508,7 @@ void competition(RobotNormal robot) {
 
     // Drag sled to back wall
     robot.movementMotorManualSet(-80, -80);
-    while(!robot.bumpSwitchBackLeftPressed());
+    while(!robot.bumpSwitchBackMiddlePressed());
     robot.movementMotorManualSet(0, 0);
 
     // Right 45
