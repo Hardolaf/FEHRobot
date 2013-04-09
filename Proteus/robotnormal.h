@@ -56,44 +56,44 @@ protected:
     void setup(bool);
     void calibrate();
 
-    /*! Left motor */
+    /** Left motor */
     FEHMotor* motorLeft;
-    /*! Right motor */
+    /** Right motor */
     FEHMotor* motorRight;
-    /*! SAM motor */
+    /** SAM motor */
     FEHMotor* motorSAM;
 
-    /*! Left Encoder */
+    /** Left Encoder */
     FEHEncoder* encoderLeft;
-    /*! Right encoder */
+    /** Right encoder */
     FEHEncoder* encoderRight;
-    /*! SAM Encoder */
+    /** SAM Encoder */
     FEHEncoder* encoderSAM;
 
-    /*! Elevator servo motor */
+    /** Elevator servo motor */
     FEHServo* servoElevator;
-    /*! Arm servo */
+    /** Arm servo */
     FEHServo* servoArm;
 
-    /*! Light sensor (CDS cell) */
+    /** Light sensor (CDS cell) */
     AnalogInputPin* lightSensor;
-    /*! Left analog optosensor */
+    /** Left analog optosensor */
     AnalogInputPin* optosensorLeft;
-    /*! Middle analog optosensor */
+    /** Middle analog optosensor */
     AnalogInputPin* optosensorMiddle;
-    /*! Right analog optosensor */
+    /** Right analog optosensor */
     AnalogInputPin* optosensorRight;
 
-    /*! Buttons */
+    /** Buttons */
     ButtonBoard* buttons;
 
-    /*! Front right bump switch */
+    /** Front right bump switch */
     DigitalInputPin* bumpSwitchFrontRight;
-    /*! Front left bump switch */
+    /** Front left bump switch */
     DigitalInputPin* bumpSwitchFrontLeft;
-    /*! Back right bump switch */
+    /** Back right bump switch */
     DigitalInputPin* bumpSwitchBackRight;
-    /*! Back left bump switch */
+    /** Back left bump switch */
     DigitalInputPin* bumpSwitchBackLeft;
 };
 

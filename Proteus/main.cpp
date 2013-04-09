@@ -14,6 +14,10 @@ void follow_line_three_optosensor(RobotNormal robot, int timeout, int8 direction
 void competition(RobotNormal robot);
 void competition_satellite(RobotNormal robot);
 
+/**
+ * @brief Handles the startup sequence of the robot. It provides a debug menu
+ * and a way to start the robot competition code.
+ */
 int main(void)
 {
     ButtonBoard buttons( FEHIO::Bank3 );
@@ -81,7 +85,8 @@ void debug_menu() {
 }
 
 /**
- * @brief startup_sequence
+ * @brief startup_sequence Runs the competition start code common to all
+ * possible starts.
  * @param robot A RobotNormal with RobotNormal::setup() and
  * RobotNormal::calibrate()run
  */
@@ -116,7 +121,7 @@ void startup_sequence(RobotNormal robot) {
 }
 
 /**
- * @brief performance_test_5
+ * @brief performance_test_5 Performs the fifth performance test.
  * @param robot A RobotNormal with RobotNormal::setup() and
  * RobotNormal::calibrate()run
  */
@@ -217,7 +222,7 @@ void performance_test_5(RobotNormal robot) {
 /**
  * @brief follow_line_one_optosensor This function follows a line
  * @param robot A RobotNormal with RobotNormal::setup() and
- * RobotNormal::calibrate()run
+ * RobotNormal::calibrate()
  * @param timeout How long do you want to line follow in ms?
  * @param direction -1 for backwards, 1 for forwards
  */
@@ -241,7 +246,7 @@ void follow_line_one_optosensor(RobotNormal robot, int timeout, int8 direction) 
 /**
  * @brief follow_line_three_optosensor This function follows a line
  * @param robot A RobotNormal with RobotNormal::setup() and
- * RobotNormal::calibrate()run
+ * RobotNormal::calibrate()
  * @param timeout How long do you want to line follow in ms?
  * @param direction -1 for backwards, 1 for forwards
  */
@@ -287,9 +292,10 @@ void follow_line_three_optosensor(RobotNormal robot, int timeout, int8 direction
 }
 
 /**
- * @brief competition_satellite
+ * @brief competition_satellite Performs set up for completing the satellite
+ * portion of the competition.
  * @param robot A RobotNormal with RobotNormal::setup() and
- * RobotNormal::calibrate()run
+ * RobotNormal::calibrate()
  */
 void competition_satellite(RobotNormal robot) {
     // Press a button for now.

@@ -235,7 +235,9 @@ void RobotDebug::calibrateServoArm() {
 }
 
 /**
- * @brief RobotDebug::testServoElevator
+ * @brief RobotDebug::testServoElevator Tests the servo elevator by moving the
+ * elevator up or down depending on which button is pressed by no more than one
+ * degree changes in the servo motor every 50 milliseconds.
  */
 void RobotDebug::testServoElevator() {
     this->calibrate();
@@ -266,7 +268,9 @@ void RobotDebug::testServoElevator() {
 }
 
 /**
- * @brief RobotDebug::testServoArm
+ * @brief RobotDebug::testServoArm Tests the servo motor by moving the arm up or
+ * down depending on which button is pressed by no more than one degree changes
+ * in the servo motor every 50 milliseconds.
  */
 void RobotDebug::testServoArm() {
     this->calibrate();
@@ -296,6 +300,12 @@ void RobotDebug::testServoArm() {
     }
 }
 
+/**
+ * @brief RobotDebug::testServoElevatorSetAngle This function moves the elevator
+ * between its highest and lowest position depending on which button is pressed.
+ * This is used to check to see if the correct minimum and correct maximum
+ * angles of operation are defined.
+ */
 void RobotDebug::testServoElevatorSetAngle() {
     this->calibrate();
     LCD.Clear( FEHLCD::Black );

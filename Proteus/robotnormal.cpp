@@ -174,7 +174,8 @@ void RobotNormal::movementRight(int angle) {
 }
 
 /**
- * @brief RobotNormal::movementEncoderCountLeft
+ * @brief RobotNormal::movementEncoderCountLeft Returns the current encoder
+ * counts as measured by the left encoder.
  * @return Left encoder counts
  */
 int RobotNormal::movementEncoderCountLeft() {
@@ -182,7 +183,8 @@ int RobotNormal::movementEncoderCountLeft() {
 }
 
 /**
- * @brief RobotNormal::movementEncoderCountRight
+ * @brief RobotNormal::movementEncoderCountRight Returns the current encoder
+ * counts as measured by the right encoder.
  * @return Right encoder counts
  */
 int RobotNormal::movementEncoderCountRight() {
@@ -190,7 +192,8 @@ int RobotNormal::movementEncoderCountRight() {
 }
 
 /**
- * @brief RobotNormal::movementEncoderCountReset
+ * @brief RobotNormal::movementEncoderCountReset Resets the encoder count as
+ * stored by the right and left encoder objects.
  */
 void RobotNormal::movementEncoderCountReset() {
     encoderLeft->ResetCounts();
@@ -232,7 +235,7 @@ void RobotNormal::movementFrontSquareToWall() {
 }
 
 /**
- * @brief RobotNormal::motorSAMOpen Opens the SAM enclosure
+ * @brief RobotNormal::motorSAMOpen Opens the SAM enclosure.
  */
 void RobotNormal::motorSAMOpen() {
     encoderSAM->ResetCounts();
@@ -246,7 +249,7 @@ void RobotNormal::motorSAMOpen() {
 }
 
 /**
- * @brief RobotNormal::motorSAMClose Closes the SAM enclosure
+ * @brief RobotNormal::motorSAMClose Closes the SAM enclosure.
  */
 void RobotNormal::motorSAMClose() {
     encoderSAM->ResetCounts();
@@ -260,15 +263,19 @@ void RobotNormal::motorSAMClose() {
 }
 
 /**
- * @brief Robot::motorSAMsetManualPower
- * @param power The power settig of the motor [-127, 127]
+ * @brief Robot::motorSAMsetManualPower Sets the power of SAM motor manually
+ * taking only an argument of a signed 8-bit integer which is the numerical
+ * representation of the power setting.
+ * @param power The power setting of the motor [-127, 127]
  */
 void RobotNormal::motorSAMsetManualPower(int8 power) {
     motorSAM->SetPower(power);
 }
 
 /**
- * @brief servoElevatorSetAngle
+ * @brief servoElevatorSetAngle Sets the angle of the servo elevator. Includes
+ * checks to constrain the angle within the domain of the function in order to
+ * not exceed the operational range of the elevator.
  * @param angle The angle that the servo will bet set to [29, 133]
  */
 void RobotNormal::servoElevatorSetAngle(int angle) {
@@ -298,7 +305,9 @@ void RobotNormal::servoElevatorLowest() {
 }
 
 /**
- * @brief servoElevatorSetAngle
+ * @brief servoArmSetAngle Sets the arm's servo to the specified angle within
+ * the domain of the function (it corrects for invalid input) in order to not
+ * exceed the operational range of the arm.
  * @param angle The angle that the servo will be set to [25, 127]
  */
 void RobotNormal::servoArmSetAngle(int angle) {
@@ -341,7 +350,8 @@ bool RobotNormal::lightSensorSeeStart() {
 }
 
 /**
- * @brief RobotNormal::bumpSwitchFrontEitherPressed
+ * @brief RobotNormal::bumpSwitchFrontEitherPressed Checks to see if either of
+ * the two front bump switches are pressed at the time of the function call.
  * @return True for either pressed, false for neither pressed.
  */
 bool RobotNormal::bumpSwitchFrontEitherPressed() {
@@ -349,7 +359,8 @@ bool RobotNormal::bumpSwitchFrontEitherPressed() {
 }
 
 /**
- * @brief RobotNormal::bumpSwitchFrontLeftPressed
+ * @brief RobotNormal::bumpSwitchFrontLeftPressed Checks to see if the left
+ * front bump switch is pressed at the time of the function call.
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchFrontLeftPressed() {
@@ -357,7 +368,8 @@ bool RobotNormal::bumpSwitchFrontLeftPressed() {
 }
 
 /**
- * @brief RobotNormal::bumpSwitchFrontRightPressed
+ * @brief RobotNormal::bumpSwitchFrontRightPressed Checks to see if the right
+ * front bump switch is pressed at the time of the function.
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchFrontRightPressed() {
@@ -365,7 +377,8 @@ bool RobotNormal::bumpSwitchFrontRightPressed() {
 }
 
 /**
- * @brief RobotNormal::bumpSwitchFrontBothPressed
+ * @brief RobotNormal::bumpSwitchFrontBothPressed Checks to see if both front
+ * bump switches are pressed at the time of the function call.
  * @return True for both pressed, false for all other cases.
  */
 bool RobotNormal::bumpSwitchFrontBothPressed() {
@@ -373,7 +386,8 @@ bool RobotNormal::bumpSwitchFrontBothPressed() {
 }
 
 /**
- * @brief RobotNormal::bumpSwitchBackEitherPressed
+ * @brief RobotNormal::bumpSwitchBackEitherPressed Checks to see if the either
+ * of the rear bump switches are pressed at the time of the function call.
  * @return True for either pressed, false for neither pressed.
  */
 bool RobotNormal::bumpSwitchBackEitherPressed() {
@@ -381,7 +395,8 @@ bool RobotNormal::bumpSwitchBackEitherPressed() {
 }
 
 /**
- * @brief RobotNormal::bumpSwitchBackLeftPressed
+ * @brief RobotNormal::bumpSwitchBackLeftPressed Checks to see if the rear left
+ * bump switch is pressed at the time of the function call.
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchBackLeftPressed() {
@@ -389,7 +404,8 @@ bool RobotNormal::bumpSwitchBackLeftPressed() {
 }
 
 /**
- * @brief RobotNormal::bumpSwitchBackRightPressed
+ * @brief RobotNormal::bumpSwitchBackRightPressed Checks to see if the rear
+ * right bump switch is pressed at the time of the function call.
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchBackRightPressed() {
@@ -397,7 +413,8 @@ bool RobotNormal::bumpSwitchBackRightPressed() {
 }
 
 /**
- * @brief RobotNormal::bumpSwitchBackBothPressed
+ * @brief RobotNormal::bumpSwitchBackBothPressed Checks to see if both of the
+ * rear bump switches are pressed at the time of the function call.
  * @return True for both pressed, false for all other cases.
  */
 bool RobotNormal::bumpSwitchBackBothPressed() {
@@ -405,7 +422,8 @@ bool RobotNormal::bumpSwitchBackBothPressed() {
 }
 
 /**
- * @brief RobotNormal::buttonRightPressed
+ * @brief RobotNormal::buttonRightPressed Checks to see if the right button on
+ * the button board is pressed.
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::buttonRightPressed() {
@@ -413,7 +431,8 @@ bool RobotNormal::buttonRightPressed() {
 }
 
 /**
- * @brief RobotNormal::buttonMiddlePressed
+ * @brief RobotNormal::buttonMiddlePressed Checks to see if the middle button on
+ * the button board is pressed.
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::buttonMiddlePressed() {
@@ -421,7 +440,8 @@ bool RobotNormal::buttonMiddlePressed() {
 }
 
 /**
- * @brief RobotNormal::buttonLeftPressed
+ * @brief RobotNormal::buttonLeftPressed Checks to see if the left button on the
+ * button board is pressed.
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::buttonLeftPressed() {
@@ -429,7 +449,8 @@ bool RobotNormal::buttonLeftPressed() {
 }
 
 /**
- * @brief RobotNormal::optosensorLeftSeesLine
+ * @brief RobotNormal::optosensorLeftSeesLine Checks to see if the robot can
+ * currently see the line with the left optosensor.
  * @return 1 for sees line, -1 for does not see line, 0 for indeterminate.
  */
 int RobotNormal::optosensorLeftSeesLine() {
@@ -443,7 +464,8 @@ int RobotNormal::optosensorLeftSeesLine() {
 }
 
 /**
- * @brief RobotNormal::optosensorMiddleSeesLine
+ * @brief RobotNormal::optosensorMiddleSeesLine Checks to see if the robot can
+ * currently see the line with the middle optosensor.
  * @return 1 for sees line, -1 for does not see line, 0 for indeterminate.
  */
 int RobotNormal::optosensorMiddleSeesLine() {
@@ -457,7 +479,8 @@ int RobotNormal::optosensorMiddleSeesLine() {
 }
 
 /**
- * @brief RobotNormal::optosensorRightSeesLine
+ * @brief RobotNormal::optosensorRightSeesLine Checks to see if the robot can
+ * currently see the line with the right optosensor.
  * @return 1 for sees line, -1 for does not see line, 0 for indeterminate.
  */
 int RobotNormal::optosensorRightSeesLine() {

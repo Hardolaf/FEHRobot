@@ -9,7 +9,8 @@ RobotFactory::RobotFactory()
 }
 
 /**
- * @brief RobotFactory::Create
+ * @brief RobotFactory::Create Creates a new robot in either normal or debug
+ * mode.
  * @param mode The run time mode of the robot (normal or debug)
  * @return Robot a new robot
  */
