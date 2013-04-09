@@ -6,6 +6,14 @@
 #ifndef ROBOTNORMAL_H
 #define ROBOTNORMAL_H
 
+/**
+ * RobotNormal represents a robot in normal operational mode. This robot has all
+ * functions that would be used in the execution of operations. It abstracts
+ * away all internal objects and controls and provides a simple interface for
+ * accessing the various components on the robot without giving direct access to
+ * these components. A RobotNormal is assumed to be calibrated if it is not
+ * extended by another class.
+ */
 class RobotNormal : virtual public Robot
 {
 public:

@@ -1,6 +1,11 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
+/**
+ * Robot represents the base class of all other derived robots. It defines all
+ * run time constants that are not passed directly to objects. It defines a
+ * limited subset of functions that must be implemented by all robots.
+ */
 class Robot
 {
 public:

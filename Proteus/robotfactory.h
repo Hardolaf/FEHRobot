@@ -3,6 +3,9 @@
 #ifndef ROBOTFACTORY_H
 #define ROBOTFACTORY_H
 
+/**
+ * RobotFactory generates a robot.
+ */
 class RobotFactory
 {
 public:
