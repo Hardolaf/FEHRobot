@@ -321,8 +321,7 @@ void competition(RobotNormal robot) {
     //MOM.Enable();
 
     // Backup to the wall
-    robot.movementMotorManualSet(-80, -80);
-    while(!robot.bumpSwitchBackLeftPressed());
+    robot.movementBackSquaretoWall();
     Sleep(400);
     robot.movementMotorManualSet(0, 0);
 
@@ -385,7 +384,7 @@ void competition(RobotNormal robot) {
 
     // Turn 90 towards pryramid (front facing)
     LCD.WriteLine("Back up 0.25 inches");
-    robot.movementStraight(-63, 0.40);
+    robot.movementStraight(-63, 0.50);
     Sleep(100);
     LCD.WriteLine("Turning right");
     robot.movementRight(85);
@@ -428,6 +427,8 @@ void competition(RobotNormal robot) {
         } else {
             robot.movementMotorManualSet(-80, -100);
             Sleep(250);
+            robot.movementMotorManualSet(-100, -100);
+            Sleep(500);
             robot.movementMotorManualSet(0, 0);
         }
         Sleep(100);
@@ -522,7 +523,7 @@ void competition(RobotNormal robot) {
     Sleep(500);
 
     // Right 90
-    robot.movementRight(80);
+    robot.movementRight(90);
 
     // forward to wall
     robot.movementFrontSquareToWall();
