@@ -9,7 +9,8 @@
 
 void debug_menu();
 void performance_test_5(RobotNormal robot);
-void line_follow(RobotNormal robot, int timeout);
+void follow_line_one_optosensor(RobotNormal robot, int timeout);
+void follow_line_three_optosensor(RobotNormal robot, int timeout, int8 direction);
 void competition(RobotNormal robot);
 void competition_satellite(RobotNormal robot);
 
@@ -214,13 +215,13 @@ void performance_test_5(RobotNormal robot) {
 }
 
 /**
- * @brief follow_line This function follows a line
+ * @brief follow_line_one_optosensor This function follows a line
  * @param robot A RobotNormal with RobotNormal::setup() and
  * RobotNormal::calibrate()run
  * @param timeout How long do you want to line follow in ms?
  * @param direction -1 for backwards, 1 for forwards
  */
-void follow_line(RobotNormal robot, int timeout, int8 direction) {
+void follow_line_one_optosensor(RobotNormal robot, int timeout, int8 direction) {
     timeout += TimeNowMSec();
 
     // Follow the line for timeout
@@ -229,6 +230,54 @@ void follow_line(RobotNormal robot, int timeout, int8 direction) {
             robot.movementMotorManualSet(direction * 80, direction * 40);
         } else {
             robot.movementMotorManualSet(direction * 40, direction * 80);
+        }
+    }
+
+    // Stop the motors
+    robot.movementMotorManualSet(0, 0);
+    Sleep(100);
+}
+
+/**
+ * @brief follow_line_three_optosensor This function follows a line
+ * @param robot A RobotNormal with RobotNormal::setup() and
+ * RobotNormal::calibrate()run
+ * @param timeout How long do you want to line follow in ms?
+ * @param direction -1 for backwards, 1 for forwards
+ */
+void follow_line_three_optosensor(RobotNormal robot, int timeout, int8 direction) {
+    timeout += TimeNowMSec();
+
+    // Track the last action
+    int last = -1;
+    // Track how many cycles the optosensors haven't seen the line for, if this
+    // exceeds 10 stop line following
+    int iLostLine = 0;
+    // Follow the line for timeout
+    while (TimeNowMSec() < timeout) {
+        if (robot.optosensorMiddleSeesLine() == 1) {
+            if (last != 0) {
+                last = 0;
+                // Both wheels same speed
+                robot.movementMotorManualSet(direction * 63, direction * 63);
+            }
+        } else if (robot.optosensorLeftSeesLine() == 1) {
+            if (last != 1) {
+                last = 1;
+                // Left wheel faster than right
+                robot.movementMotorManualSet(direction * 63, direction * 40);
+            }
+        } else if (robot.optosensorRightSeesLine()) {
+            if (last != 2) {
+                last = 2;
+                // Right wheel faster than left
+                robot.movementMotorManualSet(direction * 40, direction * 63);
+            }
+        } else {
+            if (++iLostLine > 10) {
+                LCD.WriteLine("Line lost");
+                break;
+            }
         }
     }
 
@@ -289,7 +338,7 @@ void competition(RobotNormal robot) {
     competition_satellite(robot);
 
     // Follow the line to the button
-    follow_line(robot, 650, 1);
+    follow_line_one_optosensor(robot, 650, 1);
     robot.movementMotorManualSet(80,80);
 //    while(!robot.bumpSwitchBackRightPressed());
     Sleep(200);
@@ -442,7 +491,7 @@ void competition(RobotNormal robot) {
     // Line follow to SLED
     robot.movementMotorManualSet(63, 63);
     while(robot.optosensorMiddleSeesLine() != 1);
-    follow_line(robot, 1500, 1);
+    follow_line_one_optosensor(robot, 1500, 1);
 
     // Elevator down
     robot.servoElevatorLowest();
