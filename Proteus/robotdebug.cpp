@@ -208,6 +208,7 @@ void RobotDebug::testMovementForward() {
  */
 void RobotDebug::testMotorSAM() {
     LCD.Clear( FEHLCD::Black );
+    Sleep(500);
     LCD.WriteLine("Test SAM motor");
     LCD.WriteLine("  Press left button to power");
     LCD.WriteLine("  Press middle button to return to menu");

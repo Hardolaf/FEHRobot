@@ -27,6 +27,7 @@ public:
     int movementEncoderCountRight();
     void movementEncoderCountReset();
     void movementFrontSquareToWall();
+    void movementFrontSquareToWall(int timeout);
     void movementBackSquaretoWall();
 
     void motorSAMOpen();

@@ -208,20 +208,39 @@ void RobotNormal::movementEncoderCountReset() {
  * to the wall in front of it.
  */
 void RobotNormal::movementFrontSquareToWall() {
+    movementFrontSquareToWall(2000);
+}
+
+/**
+ * @brief RobotNormal::movementFrontSquareToWall Squares the robot up
+ * to the wall in front of it.
+ * @param timeout Time between hitting the first button and stopping execution
+ * of the forward motion.
+ */
+void RobotNormal::movementFrontSquareToWall(int timeout) {
     int last = -1;
-    while(!bumpSwitchFrontBothPressed()) {
+    bool oneSensorHit = false;
+    while(!bumpSwitchFrontBothPressed() && (!oneSensorHit || timeout > TimeNowMSec())) {
         if (bumpSwitchFrontEitherPressed()) {
             if (bumpSwitchFrontLeftPressed()) {
                 if (last != 1) {
                     LCD.WriteLine("Left front pressed");
                     last = 1;
-                    movementMotorManualSet(70, 120);
+                    movementMotorManualSet(63, 127);
+                    if (!oneSensorHit) {
+                        timeout += TimeNowMSec();
+                    }
+                    oneSensorHit = true;
                 }
             } else {
                 if (last != 2) {
                     last = 2;
                     LCD.WriteLine("Right front pressed");
-                    movementMotorManualSet(120, 70);
+                    movementMotorManualSet(127, 63);
+                    if (!oneSensorHit) {
+                        timeout += TimeNowMSec();
+                    }
+                    oneSensorHit = true;
                 }
             }
         } else {
@@ -282,7 +301,7 @@ void RobotNormal::motorSAMOpen() {
     // 90 degree rotation
     int encoderLimit = SAM_ENCODER_COUNTS_PER_DEGREE_TURN * 90;
 
-    motorSAM->SetPower(-80);
+    motorSAM->SetPower(-100);
     while(encoderSAM->Counts() < encoderLimit);
     motorSAM->SetPower(0);
 }
@@ -296,7 +315,7 @@ void RobotNormal::motorSAMClose() {
     // 90 degree rotation
     int encoderLimit = SAM_ENCODER_COUNTS_PER_DEGREE_TURN * 90;
 
-    motorSAM->SetPower(80);
+    motorSAM->SetPower(100);
     while(encoderSAM->Counts() < encoderLimit);
     motorSAM->SetPower(0);
 }
@@ -385,7 +404,7 @@ void RobotNormal::servoArmSetTask() {
  * @return True on sees light, false on does not see light
  */
 bool RobotNormal::lightSensorSeeStart() {
-    return lightSensor->Value() < LIGHT_SENSOR_MAX_LIGHT_VALUE;
+    return (lightSensor->Value() < LIGHT_SENSOR_MAX_LIGHT_VALUE);
 }
 
 /**
@@ -403,7 +422,7 @@ bool RobotNormal::bumpSwitchFrontEitherPressed() {
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchFrontLeftPressed() {
-    return bumpSwitchFrontLeft->Value() == 0;
+    return (bumpSwitchFrontLeft->Value() == 0);
 }
 
 /**
@@ -412,7 +431,7 @@ bool RobotNormal::bumpSwitchFrontLeftPressed() {
  * @return True for pressed, false for not pressed.
  */
 bool RobotNormal::bumpSwitchFrontRightPressed() {
-    return bumpSwitchFrontRight->Value() == 0;
+    return (bumpSwitchFrontRight->Value() == 0);
 }
 
 /**
