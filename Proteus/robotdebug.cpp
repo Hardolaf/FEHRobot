@@ -289,7 +289,7 @@ void RobotDebug::testServoElevator() {
             angle = 180;
         }
 
-        servoElevatorSetAngle(angle);
+        servoElevator->SetDegree(angle);
         LCD.WriteLine(angle);
         Sleep(50);
     }

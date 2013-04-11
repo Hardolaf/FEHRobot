@@ -338,10 +338,10 @@ void RobotNormal::motorSAMsetManualPower(int8 power) {
  */
 void RobotNormal::servoElevatorSetAngle(int angle) {
     // Correct for out of bounds angles
-    if (angle < 32)
-        angle = 32;
-    if (angle > 162)
-        angle = 162;
+    if (angle < 0)
+        angle = 0;
+    if (angle > 156)
+        angle = 156;
 
     servoElevator->SetDegree(angle);
 }

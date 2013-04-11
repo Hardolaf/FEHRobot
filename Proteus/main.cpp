@@ -58,10 +58,10 @@ int main(void)
                 robot.calibrateOptosensors();
                 debug_menu();
             } else if (buttons.MiddlePressed()) {
-                robot.testServoArm();
+                robot.testServoElevatorSetAngle();
                 debug_menu();
             } else if (buttons.RightPressed()) {
-                robot.testMotorSAM();
+                robot.testServoElevator();
                 debug_menu();
             }
 
@@ -79,8 +79,8 @@ void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
     LCD.WriteLine("Left: Calibrate optosensors");
-    LCD.WriteLine("Middle: Test Arm Servo");
-    LCD.WriteLine("Right: Test SAM");
+    LCD.WriteLine("Middle: Test Elevator Extreme");
+    LCD.WriteLine("Right: Test Elevator Servo");
     Sleep( 300 );
 }
 
@@ -384,12 +384,12 @@ void competition(RobotNormal robot) {
 
     // Turn 90 towards pryramid (front facing)
     LCD.WriteLine("Back up 0.25 inches");
-    robot.movementStraight(-80, 0.60);
+    robot.movementStraight(-80, 0.40);
     Sleep(100);
     LCD.WriteLine("Turning right");
     robot.movementRight(90);
     Sleep(100);
-    robot.movementFrontSquareToWall(1000);
+    robot.movementFrontSquareToWall(2000);
     Sleep(100);
     robot.movementStraight(-70, 5.0);
 
@@ -510,8 +510,10 @@ void competition(RobotNormal robot) {
 
     // Line follow to SLED
     robot.movementMotorManualSet(63, 63);
-    while(robot.optosensorMiddleSeesLine() != 1);
-    follow_line_one_optosensor(robot, 1600, 1);
+    while(robot.optosensorMiddleSeesLine() != 1
+          && robot.optosensorLeftSeesLine()!= 1
+          && robot.optosensorRightSeesLine() != 1);
+    follow_line_three_optosensor(robot, 3500, 1);
 
     // Elevator down
     robot.servoElevatorLowest();
