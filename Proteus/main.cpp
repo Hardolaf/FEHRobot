@@ -5,7 +5,7 @@
 #include <FEHLCD.h>
 #include <FEHIO.h>
 #include <FEHUtility.h>
-//#include <FEHMOM.h>
+#include <FEHMOM.h>
 
 void debug_menu();
 void performance_test_5(RobotNormal robot);
@@ -102,9 +102,12 @@ void startup_sequence(RobotNormal robot) {
     robot.servoElevatorLowest();
     Sleep(100);
 
+    // Enable MOM:
+    MOM.InitializeMenu();
+
     LCD.WriteLine("NORMAL MODE");
     LCD.WriteLine("");
-    LCD.WriteLine("Press middle button to robot start.");
+    LCD.WriteLine("Press middle button to start robot.");
     Sleep(100);
 
     // Wait for the middle button to be pressed.
@@ -117,6 +120,7 @@ void startup_sequence(RobotNormal robot) {
 
     // Wait for line
     while(!robot.lightSensorSeeStart());
+    MOM.Enable();
     LCD.WriteLine("Run started.");
 }
 
@@ -329,9 +333,15 @@ void competition(RobotNormal robot) {
     robot.movementStraight(63, 8.0);
     Sleep(100);
     robot.movementMotorManualSet(63, 63);
-    while(robot.optosensorMiddleSeesLine() != 1);
-    while(robot.optosensorMiddleSeesLine() != -1);
-    while(robot.optosensorMiddleSeesLine() != 1);
+    while(robot.optosensorMiddleSeesLine() != 1
+          && robot.optosensorLeftSeesLine()!= 1
+          && robot.optosensorRightSeesLine() != 1);
+    while(robot.optosensorMiddleSeesLine() == 1
+          || robot.optosensorLeftSeesLine()== 1
+          || robot.optosensorRightSeesLine() == 1);
+    while(robot.optosensorMiddleSeesLine() != 1
+          && robot.optosensorLeftSeesLine()!= 1
+          && robot.optosensorRightSeesLine() != 1);
     robot.movementMotorManualSet(0,0);
     Sleep(100);
 
@@ -384,7 +394,7 @@ void competition(RobotNormal robot) {
 
     // Turn 90 towards pryramid (front facing)
     LCD.WriteLine("Back up 0.25 inches");
-    robot.movementStraight(-80, 0.40);
+    robot.movementStraight(-80, 0.25);
     Sleep(100);
     LCD.WriteLine("Turning right");
     robot.movementRight(90);
@@ -402,7 +412,7 @@ void competition(RobotNormal robot) {
     bool hitStone = false;
     int charges = 0;
     bool hfr = false, hfl = true;
-    while((!hitStone || charges < 2) && (charges < 3)) {
+    while((!hitStone || charges < 2) && (charges < 2)) {
         LCD.WriteLine("Charge STONE");
         double end_time = TimeNow() + 1.5;
 
@@ -477,10 +487,11 @@ void competition(RobotNormal robot) {
     robot.movementFrontSquareToWall();
 
     // Turn 90 degrees right
+    robot.movementStraight(-63, 0.50);
     robot.movementRight(100);
 
     // Straight to clear wall (15.0) inches
-    robot.movementStraight(80, 15.0);
+    robot.movementStraight(80, 13.0);
 
     // Turn 90 degress left
     robot.movementLeft(90);
@@ -490,14 +501,13 @@ void competition(RobotNormal robot) {
     Sleep(100);
 
     // Backup 0.25 in
-    //robot.movementStraight(63, 0.25);
+    robot.movementStraight(-63, 0.25);
 
     // Right 90
-    robot.movementRight(117);
+    robot.movementRight(110);
 
     // Back into wall
-    robot.movementMotorManualSet(-100, -80);
-    while(!robot.bumpSwitchBackLeftPressed());
+    robot.movementBackSquaretoWall(4000);
     robot.movementMotorManualSet(0, 0);
 
     // Elevator up
@@ -509,47 +519,68 @@ void competition(RobotNormal robot) {
     Sleep(1000);
 
     // Line follow to SLED
-    robot.movementMotorManualSet(63, 63);
-    while(robot.optosensorMiddleSeesLine() != 1
-          && robot.optosensorLeftSeesLine()!= 1
-          && robot.optosensorRightSeesLine() != 1);
-    follow_line_three_optosensor(robot, 3500, 1);
+//    robot.movementMotorManualSet(63, 63);
+//    timeout = TimeNowMSec() + 3000;
+//    while(robot.optosensorMiddleSeesLine() != 1
+//          && robot.optosensorLeftSeesLine()!= 1
+//          && robot.optosensorRightSeesLine() != 1
+//          && timeout > TimeNowMSec());
+//    follow_line_three_optosensor(robot, 2800, 1);
+    robot.movementStraight(63, 14.25);
 
     // Elevator down
     robot.servoElevatorLowest();
     Sleep(1000);
 
     // Drag sled to back wall
-    robot.movementMotorManualSet(-80, -80);
-    while(!robot.bumpSwitchBackMiddlePressed());
+    robot.movementStraight(-80, 5.5);
+    Sleep(200);
+    robot.servoArmHighest();
+    Sleep(500);
+    robot.movementBackSquaretoWall();
     robot.movementMotorManualSet(0, 0);
 
     // Right 45
-    robot.movementRight(50);
+    robot.movementStraight(70, 7.0);
+    Sleep(100);
+    robot.movementRight(42);
 
     // Move straight ___ in.
     robot.movementStraight(80, 35.0);
 
     // Arm up
-    robot.servoArmHighest();
-    Sleep(500);
+    //robot.servoArmHighest();
+    //Sleep(500);
 
     // Right 90
+    robot.movementRight(140);
+
+//    // forward to wall
+//    robot.movementFrontSquareToWall();
+
+    // back into wall
+    robot.movementBackSquaretoWall(3000);
+
+    // Forward to second line
+    robot.movementMotorManualSet(80, 80);
+    while(robot.optosensorMiddleSeesLine() != 1
+          && robot.optosensorLeftSeesLine()!= 1
+          && robot.optosensorRightSeesLine() != 1);
+    while(robot.optosensorMiddleSeesLine() == 1
+          || robot.optosensorLeftSeesLine()== 1
+          || robot.optosensorRightSeesLine() == 1);
+    while(robot.optosensorMiddleSeesLine() != 1
+          && robot.optosensorLeftSeesLine()!= 1
+          && robot.optosensorRightSeesLine() != 1);
+    robot.movementStraight(0, 0);
+    Sleep(200);
+
+    // right
     robot.movementRight(90);
 
-    // forward to wall
-    robot.movementFrontSquareToWall();
-
-    // left 90
-    robot.movementStraight(-63, 0.25);
-    robot.movementLeft(90);
-
-    // to the wall
-    robot.movementFrontSquareToWall();
-
-    // Right 90
-    robot.movementLeft(90);
-
-    // Forward to success!
-    robot.movementStraight(90, 14.0);
+    // back into switch
+    robot.movementMotorManualSet(-80, -80);
+    timeout = TimeNowMSec() + 5000;
+    while (timeout > TimeNowMSec());
+    robot.movementMotorManualSet(0, 0);
 }

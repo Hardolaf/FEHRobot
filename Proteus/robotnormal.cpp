@@ -257,11 +257,22 @@ void RobotNormal::movementFrontSquareToWall(int timeout) {
 }
 
 /**
- * @brief RobotNormal::movementBackSquaretoWall Squares the robot up
- * to the wall behind it.
+ * @brief RobotNormal::movementBackSquaretoWall Squares the robot up to the wall
+ * behind it.
  */
 void RobotNormal::movementBackSquaretoWall() {
+    movementBackSquaretoWall(2000);
+}
+
+/**
+ * @brief RobotNormal::movementBackSquaretoWall Squares the robot up
+ * to the wall behind it.
+ * @param timeout Time between hitting the first button and stopping execution
+ * of the forward motion.
+ */
+void RobotNormal::movementBackSquaretoWall(int timeout) {
     int last = -1;
+    bool oneSensorHit = false;
     while(!bumpSwitchBackBothPressed()) {
         if (bumpSwitchBackEitherPressed()) {
             if (bumpSwitchBackLeftPressed()) {
@@ -269,12 +280,20 @@ void RobotNormal::movementBackSquaretoWall() {
                     LCD.WriteLine("Left back pressed");
                     last = 1;
                     movementMotorManualSet(-60, -110);
+                    if (!oneSensorHit) {
+                        timeout += TimeNowMSec();
+                    }
+                    oneSensorHit = true;
                 }
             } else {
                 if (last != 2) {
                     last = 2;
                     LCD.WriteLine("Right back pressed");
                     movementMotorManualSet(-110, -60);
+                    if (!oneSensorHit) {
+                        timeout += TimeNowMSec();
+                    }
+                    oneSensorHit = true;
                 }
             }
         } else {
@@ -314,10 +333,18 @@ void RobotNormal::motorSAMClose() {
 
     // 90 degree rotation
     int encoderLimit = SAM_ENCODER_COUNTS_PER_DEGREE_TURN * 90;
+    int timeout = TimeNowMSec() + 5000;
 
     motorSAM->SetPower(100);
-    while(encoderSAM->Counts() < encoderLimit);
+    while(encoderSAM->Counts() < encoderLimit && timeout > TimeNowMSec());
     motorSAM->SetPower(0);
+
+    if (timeout <= TimeNowMSec()) {
+        Sleep(200);
+        motorSAMOpen();
+        Sleep(200);
+        motorSAMClose();
+    }
 }
 
 /**

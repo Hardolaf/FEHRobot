@@ -29,6 +29,7 @@ public:
     void movementFrontSquareToWall();
     void movementFrontSquareToWall(int timeout);
     void movementBackSquaretoWall();
+    void movementBackSquaretoWall(int timeout);
 
     void motorSAMOpen();
     void motorSAMClose();
