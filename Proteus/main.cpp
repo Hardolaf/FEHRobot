@@ -58,10 +58,10 @@ int main(void)
                 robot.calibrateOptosensors();
                 debug_menu();
             } else if (buttons.MiddlePressed()) {
-                robot.testServoElevatorSetAngle();
+                robot.calibrateLightSensor();
                 debug_menu();
             } else if (buttons.RightPressed()) {
-                robot.testServoElevator();
+                robot.calibrateEncoders();
                 debug_menu();
             }
 
@@ -79,8 +79,8 @@ void debug_menu() {
     LCD.Clear( FEHLCD::Black );
     LCD.WriteLine("DEBUG MODE");
     LCD.WriteLine("Left: Calibrate optosensors");
-    LCD.WriteLine("Middle: Test Elevator Extreme");
-    LCD.WriteLine("Right: Test Elevator Servo");
+    LCD.WriteLine("Middle: Calibrate light sensor");
+    LCD.WriteLine("Right: Calibrate shaft encoders");
     Sleep( 300 );
 }
 
